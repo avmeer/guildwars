@@ -171,18 +171,23 @@ void generateEnvironmentDL() {
     environmentDL = glGenLists( 1 );
 	glNewList( environmentDL, GL_COMPILE );
 	drawCity();
-	for (float u = 0; u <= 1.0; u+= 0.05){
-			myBezPatch.populateBezierPatch(u);
+	
+	float stepSize = 0.01;
+	int numCurvePoints = (int) 1.0f / stepSize;
+	
+	
+	for (float u = 0; u <= 1.0; u+= stepSize){
+			myBezPatch.populateBezierPatch(u, stepSize);
 	}
 	
 	vector<Point>* bezPoints = myBezPatch.getCurvePoints();
 	glDisable(GL_LIGHTING);
 	glColor3ub(153,0,0);
-	for (int j = 0; j < 380; j+=20){
+	for (int j = 0; j < (*bezPoints).size() - numCurvePoints; j+=numCurvePoints){
 		glBegin(GL_QUAD_STRIP);
-		for (int i = 0; i < 20; i++){
+		for (int i = 0; i < numCurvePoints; i++){
 			glVertex3f((*bezPoints)[j + i].getX(),(*bezPoints)[j + i].getY(),(*bezPoints)[j + i].getZ());
-			glVertex3f((*bezPoints)[j + i + 20].getX(),(*bezPoints)[j + i + 20].getY(),(*bezPoints)[j + i + 20].getZ());
+			glVertex3f((*bezPoints)[j + i + numCurvePoints].getX(),(*bezPoints)[j + i + numCurvePoints].getY(),(*bezPoints)[j + i + numCurvePoints].getZ());
 		}
 		glEnd();
 	}

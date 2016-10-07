@@ -10,7 +10,7 @@ BezierPatch::BezierPatch(vector<Point> *pointVector){
 	c3 = BezierCurve(points[12],points[13],points[14],points[15]);
 }
 
-void BezierPatch::populateBezierPatch(float u){
+void BezierPatch::populateBezierPatch(float u, float stepSize){
 	c4 = BezierCurve(c0.evaluateBezierCurve(u), c1.evaluateBezierCurve(u), c2.evaluateBezierCurve(u), c3.evaluateBezierCurve(u));
 	
 	//add c4 to list of points
@@ -19,7 +19,7 @@ void BezierPatch::populateBezierPatch(float u){
 	//c1.renderBezierCurve();
 	//c2.renderBezierCurve();
 	//c3.renderBezierCurve();
-	 for (float i = 0; i < 1.0; i+= 0.05){
+	 for (float i = 0; i < 1.0; i+= stepSize){
 		tempPoint = c4.evaluateBezierCurve(i);
 		curvePoints.push_back(tempPoint);
 	}
@@ -28,7 +28,7 @@ void BezierPatch::populateBezierPatch(float u){
 	//fprintf(stdout, "%d", curvePoints.size());
 	
 	
-	//c4.renderBezierCurve();
+	c4.renderBezierCurve();
 }
 
 vector<Point>* BezierPatch::getCurvePoints(){

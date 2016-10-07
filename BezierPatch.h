@@ -12,6 +12,6 @@ class BezierPatch{
 	public:
 	BezierPatch();
 	BezierPatch(vector<Point> *points);
-	void populateBezierPatch(float u);
+	void populateBezierPatch(float u, float stepSize);
 	vector<Point>* getCurvePoints();
 };
