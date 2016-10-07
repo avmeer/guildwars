@@ -171,6 +171,24 @@ void generateEnvironmentDL() {
     environmentDL = glGenLists( 1 );
 	glNewList( environmentDL, GL_COMPILE );
 	drawCity();
+	for (float u = 0; u <= 1.0; u+= 0.05){
+			myBezPatch.populateBezierPatch(u);
+	}
+	
+	vector<Point>* bezPoints = myBezPatch.getCurvePoints();
+	glDisable(GL_LIGHTING);
+	glColor3ub(153,0,0);
+	for (int j = 0; j < 380; j+=20){
+		glBegin(GL_QUAD_STRIP);
+		for (int i = 0; i < 20; i++){
+			glVertex3f((*bezPoints)[j + i].getX(),(*bezPoints)[j + i].getY(),(*bezPoints)[j + i].getZ());
+			glVertex3f((*bezPoints)[j + i + 20].getX(),(*bezPoints)[j + i + 20].getY(),(*bezPoints)[j + i + 20].getZ());
+		}
+		glEnd();
+	}
+	
+	glEnable(GL_LIGHTING);
+	
 	drawGrid();
 	glEndList();
 }
@@ -334,11 +352,7 @@ void renderScene(void)  {
 				bezierCurves[i].renderBezierCurve();
 		}
 		
-		for (float u = 0; u <= 1.0; u+= 0.05){
-			for (float v = 0; v <= 1.0; v+= 0.05){
-				myBezPatch.renderBezierPatch(u,v);
-			}
-		}
+		
     }; glPopMatrix();
 
     //push the back buffer to the screen
@@ -519,7 +533,7 @@ bool loadControlPoints( char* filename ) {
 		
 		for (int i = 0; i < 4; i++){
 			for (int j = 0; j < 4; j++){
-				bezPatchPoints.push_back(Point(i,j,getRand()*5));
+				bezPatchPoints.push_back(Point(i,getRand()*5,j));
 			}
 		}
 
