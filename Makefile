@@ -22,7 +22,7 @@
 ########################################
 
 TARGET = a4
-OBJECTS = main.o Camera.o Point.o Car.o BezierCurve.o Sprite.o
+OBJECTS = main.o Camera.o Point.o Car.o BezierCurve.o Sprite.o BezierPatch.o
 
 #Professor's desktop path!
 #LOCAL_INC_PATH = /Users/jpaone/Desktop/include

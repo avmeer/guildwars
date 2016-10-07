@@ -2,12 +2,13 @@
 #include "Point.h"
 #include <vector>
 
-BezierPatch{
+class BezierPatch{
 	private:
 	vector<Point> points;
-	
+	BezierCurve c0, c1, c2, c3, c4;
+
 	public:
 	BezierPatch();
 	BezierPatch(vector<Point> *points);
-	createBezierPatch(vector<Point> points, u, v);
+	void renderBezierPatch(float u, float v);
 };

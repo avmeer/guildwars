@@ -45,6 +45,7 @@ using namespace std;
 #include "Car.h"
 #include "BezierCurve.h"
 #include "Sprite.h"
+#include "BezierPatch.h"
 
 // GLOBAL VARIABLES ////////////////////////////////////////////////////////////
 
@@ -69,6 +70,10 @@ Camera myCamera = Camera(myCar.getX(), myCar.getY(), myCar.getZ());
 vector<Point> controlPoints;
 //collection of bezier curves (consist of 4 points each)
 vector<BezierCurve> bezierCurves;
+
+vector<Point> bezPatchPoints;
+
+BezierPatch myBezPatch;
 
 //array of keys to keep track of which keys are currently pressed
 bool keys[256];
@@ -308,7 +313,7 @@ void renderScene(void)  {
 		glTranslatef(myCar.getX(),myCar.getY(),myCar.getZ());
 		//adjust cars heading (updated in timer via user input)
 		glRotatef(myCar.getTheta(),0,1,0);
-	    myCar.drawCar();
+	    //myCar.drawCar();
 		
 		//want the curve/sprite to be drawn around car
 		glPushMatrix();
@@ -327,6 +332,12 @@ void renderScene(void)  {
 				bezierCurves[i].drawControlPoints();
 				bezierCurves[i].connectControlPoints();
 				bezierCurves[i].renderBezierCurve();
+		}
+		
+		for (float u = 0; u <= 1.0; u+= 0.05){
+			for (float v = 0; v <= 1.0; v+= 0.05){
+				myBezPatch.renderBezierPatch(u,v);
+			}
 		}
     }; glPopMatrix();
 
@@ -505,6 +516,14 @@ bool loadControlPoints( char* filename ) {
 			//increment by only 3 to use last point of previous curve as starting point for next curve
 			startingIndex += 3;
 		}
+		
+		for (int i = 0; i < 4; i++){
+			for (int j = 0; j < 4; j++){
+				bezPatchPoints.push_back(Point(i,j,getRand()*5));
+			}
+		}
+
+		myBezPatch = BezierPatch(&bezPatchPoints);
 		
 	}else{
 		//if here, file was not opened correctly, notify user
