@@ -31,3 +31,8 @@
 *.out
 *.app
 *.ini
+
+include/*
+www/*
+lib/*
+.DS_Store
