@@ -304,29 +304,7 @@ void initScene()  {
     generateEnvironmentDL();
 }
 
-// renderScene() ///////////////////////////////////////////////////////////////
-//
-//  GLUT callback for scene rendering. Sets up the modelview matrix, renders
-//      a scene to the back buffer, and switches the back buffer with the
-//      front buffer (what the user sees).
-//
-////////////////////////////////////////////////////////////////////////////////
-void renderScene(void)  {
-    //clear the render buffer
-    glDrawBuffer( GL_BACK );
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    //update the modelview matrix based on the camera's position
-    glMatrixMode(GL_MODELVIEW);              //make sure we aren't changing the projection matrix!
-    glLoadIdentity();
-	
-	//call camerainfo getter for arcball camera object
-	float* c = myCamera.getCameraInfo();
-	//c0-c2 are camera position + object position (xyz)
-	//c3-c5 are object position xyz (camera keeps track and updates accordingly in timer)
-	//c6-c8 are the xyz of the up vector (0,1,0) 
-	gluLookAt(c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8]);
-
+void drawScene(){
 	//call display list so dont have to recompute each time
 	glCallList( environmentDL );
 	
@@ -359,6 +337,53 @@ void renderScene(void)  {
 		
 		
     }; glPopMatrix();
+}
+
+// renderScene() ///////////////////////////////////////////////////////////////
+//
+//  GLUT callback for scene rendering. Sets up the modelview matrix, renders
+//      a scene to the back buffer, and switches the back buffer with the
+//      front buffer (what the user sees).
+//
+////////////////////////////////////////////////////////////////////////////////
+void renderScene(void)  {
+	//clear the render buffer
+    glDrawBuffer( GL_BACK );
+	glDisable(GL_SCISSOR_TEST);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	//set the width and height of the camera to fill the screen
+	glViewport(0, 0, windowWidth, windowHeight);
+	
+    //update the modelview matrix based on the camera's position
+    glMatrixMode(GL_MODELVIEW);              //make sure we aren't changing the projection matrix!
+    glLoadIdentity();
+	
+	//call camerainfo getter for arcball camera object
+	float* c = myCamera.getCameraInfo();
+	//c0-c2 are camera position + object position (xyz)
+	//c3-c5 are object position xyz (camera keeps track and updates accordingly in timer)
+	//c6-c8 are the xyz of the up vector (0,1,0) 
+	gluLookAt(c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8]);
+
+	drawScene();
+	
+	
+	//Clear the way for the second camera
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glViewport(0, 0, windowWidth/3, windowHeight/3);
+	glScissor(0, 0, windowWidth/3, windowHeight/3);
+	glEnable(GL_SCISSOR_TEST);
+	glClear(GL_COLOR_BUFFER_BIT);
+	
+	glMatrixMode(GL_MODELVIEW); 
+	glLoadIdentity();
+    gluLookAt(0, 15, 0, 0, 0, 0, 1.0, 0.0, 0.0);
+	
+	glRotatef(-myCar.getTheta(), 0, 1, 0);
+	glTranslatef(-myCar.getX(), 0, -myCar.getZ());
+	
+	drawScene();
 
     //push the back buffer to the screen
     glutSwapBuffers();

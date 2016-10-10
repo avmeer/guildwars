@@ -30,11 +30,11 @@ OBJECTS = main.o Camera.o Point.o Car.o BezierCurve.o Sprite.o BezierPatch.o
 #LOCAL_BIN_PATH = /Users/jpaone/Desktop/bin
 
 #Stephen's desktop path!
-LOCAL_INC_PATH = C:\Users\spst2_000\Desktop\CSCI441Gfx\include
-LOCAL_LIB_PATH = C:\Users\spst2_000\Desktop\CSCI441Gfx\lib
-LOCAL_BIN_PATH = C:\Users\spst2_000\Desktop\CSCI441Gfx\bin
+LOCAL_INC_PATH = C:\Users\Alan\Desktop\CSCI441GFx\include
+LOCAL_LIB_PATH = C:\Users\Alan\Desktop\CSCI441GFx\lib
+LOCAL_BIN_PATH = C:\Strawberry\c\bin
 
-BUILDING_IN_LAB = 1
+BUILDING_IN_LAB = 0
 
 USING_OPENGL = 1
 USING_GLUI = 1
