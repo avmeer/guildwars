@@ -41,7 +41,7 @@ using namespace std;
 #include <GL/glui.h>			// include our GLUI header
 
 //user defined header files
-#include "Camera.h"
+#include "ArcballCamera.h"
 #include "Car.h"
 #include "BezierCurve.h"
 #include "Sprite.h"
@@ -64,7 +64,7 @@ Car myCar = Car();
 //sprite object rotating around myCar
 Sprite mySprite = Sprite();
 //Arcball camera object, looking at player object location
-Camera myCamera = Camera(myCar.getX(), myCar.getY(), myCar.getZ());
+ArcballCamera myArcballCamera = ArcballCamera(myCar.getX(), myCar.getY(), myCar.getZ());
 
 //collection of all control points which will be made into Bcurves
 vector<Point> controlPoints;
@@ -183,7 +183,7 @@ void generateEnvironmentDL() {
 	vector<Point>* bezPoints = myBezPatch.getCurvePoints();
 	glDisable(GL_LIGHTING);
 	glColor3ub(153,0,0);
-	for (int j = 0; j < (*bezPoints).size() - numCurvePoints; j+=numCurvePoints){
+	for (unsigned int j = 0; j < (*bezPoints).size() - numCurvePoints; j+=numCurvePoints){
 		glBegin(GL_QUAD_STRIP);
 		for (int i = 0; i < numCurvePoints; i++){
 			glVertex3f((*bezPoints)[j + i].getX(),(*bezPoints)[j + i].getY(),(*bezPoints)[j + i].getZ());
@@ -253,13 +253,13 @@ void mouseMotion(int x, int y) {
 		//then check whether or not control is being held
 		if (glutGetModifiers() == GLUT_ACTIVE_CTRL){
 			//call arcball zoom function
-			myCamera.handleZoom(mouseX, x, mouseY, y);
+			myArcballCamera.handleZoom(mouseX, x, mouseY, y);
 		}
 		
 		//if control was not being held during click/drag
 		else{
 			//call moving arcball function
-			myCamera.handleCameraDrag(mouseX, x, mouseY, y);
+			myArcballCamera.handleCameraDrag(mouseX, x, mouseY, y);
 		}
 		//store last position of mouse
 		mouseX = x;
@@ -360,7 +360,7 @@ void renderScene(void)  {
     glLoadIdentity();
 	
 	//call camerainfo getter for arcball camera object
-	float* c = myCamera.getCameraInfo();
+	float* c = myArcballCamera.getCameraInfo();
 	//c0-c2 are camera position + object position (xyz)
 	//c3-c5 are object position xyz (camera keeps track and updates accordingly in timer)
 	//c6-c8 are the xyz of the up vector (0,1,0) 
@@ -430,10 +430,16 @@ void myTimer(int value){
 	//doing in timer for multiple keys being held down 
 	//make sure to update the camera variables for object that it is looking at by passing in the camera
 	//move forward W is being pressed
-	if (keys['w'] == true){myCar.handleWKey(&myCamera);}
+	if (keys['w'] == true){
+		myCar.handleWKey();
+		myArcballCamera.setObjPos(myCar.getPos());
+	}
 	
 	//move backwards if S is being pressed
-	if (keys['s'] == true){myCar.handleSKey(&myCamera);}
+	if (keys['s'] == true){
+		myCar.handleSKey();
+		myArcballCamera.setObjPos(myCar.getPos());
+	}
 	
 	//updates step values which are to be used for updating car variables
 	myCar.checkMotion();
@@ -450,7 +456,7 @@ void myTimer(int value){
 	
 	//keep car in bounds of grid, which the car object handles
 	//make sure to update the camera variables for object that it is looking at by passing in the camera
-	myCar.checkCarBounds(&myCamera);
+	myCar.checkCarBounds();
 	
 	//update interpolant value used for sprite movement along curve
 	//render scene handles lopping everything but the decimal portion of the value
@@ -561,8 +567,8 @@ bool loadControlPoints( char* filename ) {
 			startingIndex += 3;
 		}
 		
-		for (int i = 0; i < 4; i++){
-			for (int j = 0; j < 4; j++){
+		for (unsigned int i = 0; i < 4; i++){
+			for (unsigned int j = 0; j < 4; j++){
 				bezPatchPoints.push_back(Point(i,getRand()*5,j));
 			}
 		}

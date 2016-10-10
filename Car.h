@@ -1,6 +1,5 @@
 //wont compile without these which is annoying
 /////////////////////////
-#include "Camera.h"
 
 #ifdef __APPLE__			// if compiling on Mac OS
 	#include <GLUT/glut.h>
@@ -16,6 +15,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h> 
+
+#include "Point.h"
+
 ////////////////////////
 
 //header file for drawing a car object
@@ -70,6 +72,7 @@ class Car{
 	float getX();
 	float getY();
 	float getZ();
+	Point getPos();
 	float getTheta();
 	float getDirZ();
 	float getDirX();
@@ -89,9 +92,9 @@ class Car{
 	void drawCarBody();
 	
 	//functions for handling interaction during execution (based on timers, user input etc)
-	void handleWKey(Camera *myCamera);
-	void handleSKey(Camera *myCamera);
-	void checkCarBounds(Camera *myCamera);
+	void handleWKey();
+	void handleSKey();
+	void checkCarBounds();
 	void checkMotion();
 	void handleAKey();
 	void handleDKey();

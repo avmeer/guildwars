@@ -1,7 +1,9 @@
+#include "Point.h"
+
 #ifndef CAMERA_H
 #define CAMERA_H
 class Camera{
-	private:
+	protected:
 	float cameraX, cameraY, cameraZ; // camera position in cartesian coordinates
 	float cameraTheta, cameraPhi;    // camera DIRECTION in spherical coordinates
 	float objX, objY, objZ;          // lookat point in cartesian coordinates
@@ -27,14 +29,9 @@ class Camera{
 	void setObjY(float y);
 	void setObjZ(float z);
 	
-	//computes x y z of camera based on theta phi and radius
-	void computeArcballPositionAndSet();
+	void setObjPos(Point p);
 	
-	//handle mouse dragging for changing orientation (based on user input)
-	void handleCameraDrag(float xOld, float xNew, float yOld, float yNew);
 	
-	//handle user choosing to zoom
-	void handleZoom(float xOld, float xNew, float yOld, float yNew);
 	
 	//update object location if object location changes
 	void updateObjectLocation(float x, float y, float z);

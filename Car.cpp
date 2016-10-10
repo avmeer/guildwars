@@ -70,6 +70,7 @@ void Car::setBackwardsCarMotion(bool bcm){backwardsCarMotion = bcm;}
 float Car::getX(){return carX;}
 float Car::getY(){return carY;}
 float Car::getZ(){return carZ;}
+Point Car::getPos(){return Point(carX,carY,carZ);}
 float Car::getTheta(){return carTheta;}
 float Car::getDirZ(){return carDirZ;}
 float Car::getDirX(){return carDirX;}
@@ -224,12 +225,9 @@ void Car::drawCar(){
 //user interaction anims for going forward
 //update x and z translation based on heading (dirZ and dirX) by the specified step size
 //tell the camera that we did this, tell the car we are going forward because w key was pressed
-void Car::handleWKey(Camera *myCamera){
+void Car::handleWKey(){
 	carZ -= carDirZ*carTranslationStepSize;
 	carX -= carDirX*carTranslationStepSize;
-	
-	myCamera->setObjZ(carZ);
-	myCamera->setObjX(carX);
 	
 	forwardCarMotion = true;
 }
@@ -237,23 +235,20 @@ void Car::handleWKey(Camera *myCamera){
 //user interaction anims for going backwads
 //update x and z translation based on heading (dirZ and dirX) by the specified step size
 //tell the camera that we did this, tell the car we are going backwards because s key was pressed
-void Car::handleSKey(Camera *myCamera){
+void Car::handleSKey(){
 	carZ += carDirZ*carTranslationStepSize;
 	carX += carDirX*carTranslationStepSize;
-	
-	myCamera->setObjZ(carZ);
-	myCamera->setObjX(carX);
 	
 	backwardsCarMotion = true;
 }
 
 //keep car in bounds by checking position and limiting car position
 //updating camera lookat position to reflect constraint so camera knows object limitations
-void Car::checkCarBounds(Camera *myCamera){
-	if(carX >= 46){carX = 46; myCamera->setObjX(carX);}
-	if(carZ >= 46){carZ = 46; myCamera->setObjZ(carZ);}
-	if(carX <= -46){carX = -46; myCamera->setObjX(carX);}
-	if(carZ <= -46){carZ = -46; myCamera->setObjZ(carZ);}
+void Car::checkCarBounds(){
+	if(carX >= 46){carX = 46;}
+	if(carZ >= 46){carZ = 46; }
+	if(carX <= -46){carX = -46;}
+	if(carZ <= -46){carZ = -46;}
 }
 
 void Car::checkMotion(){
