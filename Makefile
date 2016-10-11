@@ -21,7 +21,7 @@
 ## compile against.
 ########################################
 
-TARGET = a4
+TARGET = mp
 OBJECTS = main.o ArcballCamera.o Camera.o Point.o Car.o BezierCurve.o Sprite.o BezierPatch.o 
 
 #Professor's desktop path!
