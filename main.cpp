@@ -46,6 +46,7 @@ using namespace std;
 #include "BezierCurve.h"
 #include "Sprite.h"
 #include "BezierPatch.h"
+#include "Vector3f.h"
 
 // GLOBAL VARIABLES ////////////////////////////////////////////////////////////
 
@@ -74,6 +75,10 @@ vector<BezierCurve> bezierCurves;
 vector<Point> bezPatchPoints;
 
 BezierPatch myBezPatch;
+
+Vector3f surfaceNormal = Vector3f();
+Vector3f carAxisOfRotation = Vector3f();
+float carAngle = 0.0f;
 
 //array of keys to keep track of which keys are currently pressed
 bool keys[256];
@@ -322,6 +327,7 @@ void drawScene(){
 		glTranslatef(myCar.getX(),myCar.getY(),myCar.getZ());
 		//adjust cars heading (updated in timer via user input)
 		glRotatef(myCar.getTheta(),0,1,0);
+		//glRotatef(carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
 	    myCar.drawCar();
 		
 		//want the curve/sprite to be drawn around car
@@ -445,6 +451,16 @@ void myTimer(int value){
 
 		float v = (tempX + 50.0) / 100.0f;
 		float u = (tempZ + 50.0) / 100.0f;
+
+		Point tempP = myBezPatch.dVBezier(u,v);
+		Vector3f dV = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
+		tempP = myBezPatch.dUBezier(u,v);
+		Vector3f dU = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
+
+		surfaceNormal = dU.crossProduct(dV);
+		carAxisOfRotation = surfaceNormal.crossProduct(Vector3f(0.0f,1.0f,0.0f));
+		carAngle = surfaceNormal.getAngleBetween(carAxisOfRotation);
+
 
 		fprintf(stdout, "\nu: %f, v: %f\n", u,v);
 
