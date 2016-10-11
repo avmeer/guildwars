@@ -187,7 +187,7 @@ void generateEnvironmentDL() {
 	
 	glPushMatrix();
 	glTranslatef(-50,0,-50);
-	glScalef(100,0,100);
+	//glScalef(100,0,100);
 	glDisable(GL_LIGHTING);
 	glColor3ub(153,0,0);
 	for (unsigned int j = 0; j < (*bezPoints).size() - numCurvePoints; j+=numCurvePoints){
@@ -575,8 +575,8 @@ bool loadControlPoints( char* filename ) {
 			startingIndex += 3;
 		}
 		
-		for (unsigned int i = 0; i < 4; i++){
-			for (unsigned int j = 0; j < 4; j++){
+		for (unsigned int i = 0; i < 100; i+=25){
+			for (unsigned int j = 0; j < 100; j+=25){
 				bezPatchPoints.push_back(Point(i,getRand()*5,j));
 			}
 		}
