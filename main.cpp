@@ -450,8 +450,8 @@ void myTimer(int value){
 		float tempX = myCar.getX();
 		float tempZ = myCar.getZ();
 
-		float v = (tempX + 50.0) / 100.0f;
-		float u = (tempZ + 50.0) / 100.0f;
+		float u = (tempX + 50.0) / 100.0f;
+		float v = (tempZ + 50.0) / 100.0f;
 
 		Point tempP = myBezPatch.dVBezier(u,v);
 		Vector3f dV = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
@@ -475,8 +475,8 @@ void myTimer(int value){
 		float tempX = myCar.getX();
 		float tempZ = myCar.getZ();
 
-		float v = (tempX + 50.0) / 100.0f;
-		float u = (tempZ + 50.0) / 100.0f;
+		float u = (tempX + 50.0) / 100.0f;
+		float v = (tempZ + 50.0) / 100.0f;
 
 		fprintf(stdout, "\nu: %f, v: %f\n", u,v);
 

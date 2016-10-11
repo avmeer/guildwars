@@ -91,5 +91,5 @@ float BezierPatch::getYPosition(const float &u, const float &v)
 
     //fprintf(stdout, "\nx: %f y: %f z: %f\n", p.getX(), p.getY(), p.getZ());
     BezierCurve derpyBezCurve = BezierCurve(P[0], P[1], P[2], P[3]);
-    return derpyBezCurve.evaluateBezierCurve(v).getY(); 
+    return derpyBezCurve.evaluateBezierCurve(v).getY();
 }
