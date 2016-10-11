@@ -175,7 +175,9 @@ void generateEnvironmentDL() {
 	float stepSize = 0.05;
 	int numCurvePoints = floor(1.0f / stepSize);
 	
-	
+	glPushMatrix();
+	glTranslatef(-50,0,-50);
+	//glScalef(100,0,100);
 	for (float u = 0; u <= 1.0; u+= stepSize){
 			//fprintf(stdout, "%f", u);
 			myBezPatch.populateBezierPatch(u, stepSize);
@@ -185,9 +187,7 @@ void generateEnvironmentDL() {
 	
 	//fprintf(stdout, "%d", bezPoints->size());
 	
-	glPushMatrix();
-	glTranslatef(-50,0,-50);
-	//glScalef(100,0,100);
+	
 	glDisable(GL_LIGHTING);
 	glColor3ub(153,0,0);
 	for (unsigned int j = 0; j < (*bezPoints).size() - numCurvePoints; j+=numCurvePoints){
@@ -386,7 +386,7 @@ void renderScene(void)  {
 	
 	glMatrixMode(GL_MODELVIEW); 
 	glLoadIdentity();
-    gluLookAt(0, 15, 0, 0, 0, 0, 1.0, 0.0, 0.0);
+    gluLookAt(0, 150, 0, 0, 0, 0, 1.0, 0.0, 0.0);
 	
 	glRotatef(-myCar.getTheta(), 0, 1, 0);
 	glTranslatef(-myCar.getX(), 0, -myCar.getZ());
