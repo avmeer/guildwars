@@ -322,7 +322,7 @@ void drawScene(){
 		glTranslatef(myCar.getX(),myCar.getY(),myCar.getZ());
 		//adjust cars heading (updated in timer via user input)
 		glRotatef(myCar.getTheta(),0,1,0);
-	    //myCar.drawCar();
+	    myCar.drawCar();
 		
 		//want the curve/sprite to be drawn around car
 		glPushMatrix();
@@ -440,12 +440,31 @@ void myTimer(int value){
 	//move forward W is being pressed
 	if (keys['w'] == true){
 		myCar.handleWKey();
+		float tempX = myCar.getX();
+		float tempZ = myCar.getZ();
+
+		float v = (tempX + 50.0) / 100.0f;
+		float u = (tempZ + 50.0) / 100.0f;
+
+		fprintf(stdout, "\nu: %f, v: %f\n", u,v);
+
+		myCar.setY(myBezPatch.getYPosition(u,v) + 2.5f);
 		myArcballCamera.setObjPos(myCar.getPos());
 	}
 	
 	//move backwards if S is being pressed
 	if (keys['s'] == true){
 		myCar.handleSKey();
+		float tempX = myCar.getX();
+		float tempZ = myCar.getZ();
+
+		float v = (tempX + 50.0) / 100.0f;
+		float u = (tempZ + 50.0) / 100.0f;
+
+		fprintf(stdout, "\nu: %f, v: %f\n", u,v);
+
+		myCar.setY(myBezPatch.getYPosition(u,v) + 2.5f);
+
 		myArcballCamera.setObjPos(myCar.getPos());
 	}
 	

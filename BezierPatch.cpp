@@ -75,20 +75,22 @@ Point BezierPatch::dVBezier(const float &u, const float &v)
        3 * v * v * uCurve[3]; 
 } 
 
-float BezierPatch::getYPosition(const float &u, const float &v){
-   Point P[4]; 
-   Point vCurve[4]; 
-   for (int i = 0; i < 4; ++i) { 
-       P[0] = controlPoints[i]; 
-       P[1] = controlPoints[4 + i]; 
-       P[2] = controlPoints[8 + i]; 
-       P[3] = controlPoints[12 + i]; 
-	   
-	   BezierCurve bezCurve = BezierCurve(P[0], P[1], P[2], P[3]);
-       vCurve[i] = bezCurve.evaluateBezierCurve(v); 
-   }
+float BezierPatch::getYPosition(const float &u, const float &v) 
+{ 
+
+	Point P[4];
+    Point uCurve[4]; 
+    for (int i = 0; i < 4; ++i){ 
+    	P[0] = controlPoints[4*i]; 
+	    P[1] = controlPoints[4*i + 1]; 
+	    P[2] = controlPoints[4*i + 2]; 
+	    P[3] = controlPoints[4*i + 3];
+        BezierCurve bezCurve = BezierCurve(P[0], P[1], P[2], P[3]);
+       uCurve[i] = bezCurve.evaluateBezierCurve(u); 
+    }
 
 
-   BezierCurve bezCurve2 = BezierCurve(vCurve[0], vCurve[1], vCurve[2], vCurve[3]);
-   return bezCurve2.evaluateBezierCurve(u).getY();
+    //fprintf(stdout, "\nx: %f y: %f z: %f\n", p.getX(), p.getY(), p.getZ());
+    BezierCurve derpyBezCurve = BezierCurve(P[0], P[1], P[2], P[3]);
+    return derpyBezCurve.evaluateBezierCurve(v).getY(); 
 }
