@@ -25,14 +25,14 @@ TARGET = a4
 OBJECTS = main.o ArcballCamera.o Camera.o Point.o Car.o BezierCurve.o Sprite.o BezierPatch.o 
 
 #Professor's desktop path!
-#LOCAL_INC_PATH = /Users/jpaone/Desktop/include
-#LOCAL_LIB_PATH = /Users/jpaone/Desktop/lib
-#LOCAL_BIN_PATH = /Users/jpaone/Desktop/bin
+LOCAL_INC_PATH = /Users/jpaone/Desktop/include
+LOCAL_LIB_PATH = /Users/jpaone/Desktop/lib
+LOCAL_BIN_PATH = /Users/jpaone/Desktop/bin
 
 #Stephen's desktop path!
-LOCAL_INC_PATH = C:\CSCI441GFx\include
-LOCAL_LIB_PATH = C:\CSCI441GFx\lib
-LOCAL_BIN_PATH = C:\Strawberry\c\bin
+#LOCAL_INC_PATH = C:\CSCI441GFx\include
+#LOCAL_LIB_PATH = C:\CSCI441GFx\lib
+#LOCAL_BIN_PATH = C:\Strawberry\c\bin
 
 BUILDING_IN_LAB = 0
 

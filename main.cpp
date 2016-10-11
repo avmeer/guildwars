@@ -185,6 +185,9 @@ void generateEnvironmentDL() {
 	
 	//fprintf(stdout, "%d", bezPoints->size());
 	
+	glPushMatrix();
+	glTranslatef(-50,0,-50);
+	glScalef(100,0,100);
 	glDisable(GL_LIGHTING);
 	glColor3ub(153,0,0);
 	for (unsigned int j = 0; j < (*bezPoints).size() - numCurvePoints; j+=numCurvePoints){
@@ -197,6 +200,7 @@ void generateEnvironmentDL() {
 	}
 	
 	glEnable(GL_LIGHTING);
+	glPopMatrix();
 	
 	drawGrid();
 	glEndList();
