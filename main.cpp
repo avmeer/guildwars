@@ -182,7 +182,7 @@ void generateEnvironmentDL() {
 	
 	glPushMatrix();
 	glTranslatef(-50,0,-50);
-	//glScalef(100,0,100);
+	glScalef(1.333333333333333333333333333333333333333333333333,1,1.333333333333333333333333333333333333333333333333);
 	for (float u = 0; u <= 1.0; u+= stepSize){
 			//fprintf(stdout, "%f", u);
 			myBezPatch.populateBezierPatch(u, stepSize);
@@ -322,6 +322,7 @@ void drawScene(){
 	glCallList( environmentDL );
 	
 	//draw the car! translate/rotate based on input
+	fprintf(stdout, "\ny: %f\n", myCar.getY());
     glPushMatrix(); {
 		//translate the car to current position (which is changed by user input)
 		glTranslatef(myCar.getX(),myCar.getY(),myCar.getZ());
@@ -462,7 +463,7 @@ void myTimer(int value){
 		carAngle = surfaceNormal.getAngleBetween(carAxisOfRotation);
 
 
-		fprintf(stdout, "\nu: %f, v: %f\n", u,v);
+		//fprintf(stdout, "\nu: %f, v: %f\n", u,v);
 
 		myCar.setY(myBezPatch.getYPosition(u,v) + 2.5f);
 		myArcballCamera.setObjPos(myCar.getPos());
@@ -612,7 +613,12 @@ bool loadControlPoints( char* filename ) {
 		
 		for (unsigned int i = 0; i < 100; i+=25){
 			for (unsigned int j = 0; j < 100; j+=25){
-				bezPatchPoints.push_back(Point(i,getRand()*5,j));
+				if(i == 50)
+					bezPatchPoints.push_back(Point(i,50,j));
+				else if (j == 50)
+					bezPatchPoints.push_back(Point(i,50,j));
+				else
+					bezPatchPoints.push_back(Point(i,getRand()*5,j));
 			}
 		}
 
