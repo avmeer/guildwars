@@ -172,15 +172,19 @@ void generateEnvironmentDL() {
 	glNewList( environmentDL, GL_COMPILE );
 	drawCity();
 	
-	float stepSize = 0.01;
-	int numCurvePoints = (int) 1.0f / stepSize;
+	float stepSize = 0.05;
+	int numCurvePoints = floor(1.0f / stepSize);
 	
 	
 	for (float u = 0; u <= 1.0; u+= stepSize){
+			//fprintf(stdout, "%f", u);
 			myBezPatch.populateBezierPatch(u, stepSize);
 	}
 	
 	vector<Point>* bezPoints = myBezPatch.getCurvePoints();
+	
+	//fprintf(stdout, "%d", bezPoints->size());
+	
 	glDisable(GL_LIGHTING);
 	glColor3ub(153,0,0);
 	for (unsigned int j = 0; j < (*bezPoints).size() - numCurvePoints; j+=numCurvePoints){
