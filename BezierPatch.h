@@ -17,6 +17,5 @@ class BezierPatch{
 	
 	Point dUBezier(const float &u, const float &v); 
 	Point dVBezier(const float &u, const float &v); 
-	
-	
+	float getYPosition(const float &u, const float &v);
 };
