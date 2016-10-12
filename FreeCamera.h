@@ -6,6 +6,9 @@
 
 class FreeCamera:public Camera
 {
+	private:
+	float stepSize;
+
 	public:
 	//constructors
 	
@@ -22,5 +25,7 @@ class FreeCamera:public Camera
 	void handleCameraDrag(float xOld, float xNew, float yOld, float yNew);
 
 	float* getCameraInfo();
+	void handleForwardKey();
+	void handleBackwardsKey();
 };
 #endif

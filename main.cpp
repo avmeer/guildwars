@@ -437,9 +437,9 @@ void mouseMotion(int x, int y) {
 		
 		//if control was not being held during click/drag
 		else{
-			//call moving arcball function
-			myArcballCamera.handleCameraDrag(mouseX, x, mouseY, y);
-			myFreeCam.handleCameraDrag(mouseX, x, mouseY, y);
+			if (usingArcball){
+				myArcballCamera.handleCameraDrag(mouseX, x, mouseY, y);
+			}else{myFreeCam.handleCameraDrag(mouseX, x, mouseY, y);}
 		}
 		//store last position of mouse
 		mouseX = x;
@@ -666,6 +666,8 @@ void normalKeysDown(unsigned char key, int x, int y) {
 	if(key == 's'){keys['s'] = true;}
 	if (key == 'a'){keys['a'] = true;}
 	if (key == 'd'){keys['d'] = true;}
+	if (key == 'i'){keys['i'] = true;}
+	if (key == 'k'){keys['k'] = true;}
 }
 
 //determine which keys are released
@@ -676,6 +678,8 @@ void keyboard_up(unsigned char key, int x, int y){
 	if (key == 's'){keys['s'] = false; myCar.setBackwardsCarMotion(false);}
 	if (key == 'a'){keys['a'] = false;}
 	if (key == 'd'){keys['d'] = false;}
+	if (key == 'i'){keys['i'] = false;}
+	if (key == 'k'){keys['k'] = false;}
 }
 
 void orientCar(){
@@ -754,6 +758,10 @@ void myTimer(int value){
 	//change cars heading if a or d is pressed (rotate left or right)
 	if (keys['a'] == true){myCar.handleAKey();}
 	if (keys['d'] == true){myCar.handleDKey();}
+
+	//handle free cam movement
+	if (keys['i'] == true){myFreeCam.handleForwardKey();}
+	if (keys['k'] == true){myFreeCam.handleBackwardsKey();}
 	
 	//passive motion for stuff on back of car, car object handles
 	myCar.updateBackTorus();
