@@ -65,6 +65,16 @@ float* Camera::getCameraInfo(){
 	return cameraInfo;
 }
 
+void Camera::recomputeOrientation() {
+    cameraDirX =  sinf( cameraTheta ) * sinf( cameraPhi );
+    cameraDirZ = -cosf( cameraTheta ) * sinf( cameraPhi );
+    cameraDirY = -cosf( cameraPhi );
+
+    //and normalize this directional vector!
+    float mag = sqrt( cameraDirX*cameraDirX + cameraDirY*cameraDirY + cameraDirZ*cameraDirZ );
+    cameraDirX /= mag;  cameraDirY /= mag;  cameraDirZ /= mag;
+}
+
 //getters (not needed but useful for debugging)
 float Camera::getX(){return cameraX;}
 float Camera::getY(){return cameraY;}
