@@ -53,6 +53,7 @@ using namespace std;
 //fps global vars
 time_t lastTime = time(NULL);
 int nbFrames = 0;
+int displayValue = 0;
 
 
 //variables for window
@@ -357,6 +358,34 @@ void drawScene(){
 		
 		
     }; glPopMatrix();
+
+    	glMatrixMode(GL_PROJECTION);
+		glPushMatrix();
+		glLoadIdentity();
+		gluOrtho2D(0.0, windowWidth, 0.0, windowHeight);
+
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		glLoadIdentity();
+
+	    glColor3f(1, 0, 0); // Green
+	    glRasterPos2i(10, 10);
+	    char buffer [33];
+	    itoa (displayValue,buffer,10);
+	    string s(buffer);
+		void * font = GLUT_BITMAP_9_BY_15;
+		for (string::iterator i = s.begin(); i != s.end(); ++i)
+		{
+		    char c = *i;
+		    glutBitmapCharacter(font, c);
+		}
+
+		glMatrixMode(GL_MODELVIEW);
+		glPopMatrix();
+
+		glMatrixMode(GL_PROJECTION);
+		glPopMatrix();
+
 }
 
 // renderScene() ///////////////////////////////////////////////////////////////
@@ -534,9 +563,13 @@ void myTimer(int value){
 	nbFrames++;
 	if (difftime(currentTime, lastTime) >= 1.0f){
 		fprintf(stdout, "\n%d\n", nbFrames);
+		displayValue = nbFrames;
 		nbFrames = 0;
 		lastTime = time(NULL);
+
+
 	}
+
 
 	
 	//force a redisplay and re register a timer callback!
