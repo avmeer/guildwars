@@ -19,19 +19,9 @@
 #ifndef HERO3_H
 #define HERO3_H
 
-class Hero3
+class Hero3:public Hero
 {
 	protected:
-	//position
-	float carX;
-	float carY;
-	float carZ;
-	
-	//heading
-	float carTheta;
-	float carDirZ;
-	float carDirX;
-
 	bool wingFlap;
 	int wingAngle;
 	public:
