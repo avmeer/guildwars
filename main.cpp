@@ -50,6 +50,11 @@ using namespace std;
 
 // GLOBAL VARIABLES ////////////////////////////////////////////////////////////
 
+//fps global vars
+time_t lastTime = time(NULL);
+int nbFrames = 0;
+
+
 //variables for window
 static size_t windowWidth  = 640;
 static size_t windowHeight = 480;
@@ -457,7 +462,7 @@ void orientCar(){
 		//fprintf(stdout, "\nx: %f, y: %f, z: %f\n", surfaceNormal.getX(), surfaceNormal.getY(), surfaceNormal.getZ());
 		carAxisOfRotation = surfaceNormal.crossProduct(myCar.getCarNormal());
 		carAngle = surfaceNormal.getAngleBetween(myCar.getCarNormal());
-		fprintf(stdout, "\nangle: %f\n", carAngle);
+		//fprintf(stdout, "\nangle: %f\n", carAngle);
 		//myCar.setCarNormal(surfaceNormal);
 
 
@@ -523,6 +528,16 @@ void myTimer(int value){
 	
 	//update the sprite anims variables, let the class handle this
 	mySprite.updateSprite();
+
+
+	time_t currentTime = time(NULL);
+	nbFrames++;
+	if (difftime(currentTime, lastTime) >= 1.0f){
+		fprintf(stdout, "\n%d\n", nbFrames);
+		nbFrames = 0;
+		lastTime = time(NULL);
+	}
+
 	
 	//force a redisplay and re register a timer callback!
 	glutPostRedisplay();
