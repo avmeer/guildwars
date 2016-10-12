@@ -123,6 +123,9 @@ ALCcontext *context;
 ALuint buffers[ NUM_BUFFERS ];
 ALuint sources[ NUM_SOURCES ];
 
+GLint windowId;                             // id for our main window
+
+
 // getRand() ///////////////////////////////////////////////////////////////////
 //
 //  Simple helper function to return a random number between 0.0f and 1.0f.
@@ -160,6 +163,30 @@ void positionSource( ALuint src, float posX, float posY, float posZ ) {
     /* TODO #09: Position a Source */
 	ALfloat srcPosition[3] = { posX, posY, posZ };
 	alSourcefv(src, AL_POSITION, srcPosition);
+}
+
+// cleanupOpenAL() /////////////////////////////////////////////////////////////
+//
+//  At exit, clean up all of our OpenAL objects
+//
+////////////////////////////////////////////////////////////////////////////////
+void cleanupOpenAL() {
+    /* TODO #03: Cleanup OpenAL & ALUT */
+	alcMakeContextCurrent(NULL);
+	alcDestroyContext(context);
+	alcCloseDevice(device);
+    /* TODO #07: Delete our Buffers and Sources */
+	alDeleteBuffers(NUM_BUFFERS, buffers);
+	alDeleteSources(NUM_SOURCES, sources);
+}
+
+// cleanupOpenGL() /////////////////////////////////////////////////////////////
+//
+//  At exit, clean up all of our OpenGL objects
+//
+////////////////////////////////////////////////////////////////////////////////
+void cleanupOpenGL() {
+    glutDestroyWindow( windowId );  // destroy our window
 }
 
 // initializeOpenAL() //////////////////////////////////////////////////////////
@@ -891,7 +918,7 @@ int main(int argc, char **argv) {
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(50,50);
     glutInitWindowSize(windowWidth,windowHeight);
-    glutCreateWindow("a3");
+    windowId=glutCreateWindow("a3");
 
     // register callback functions...
 	glutIgnoreKeyRepeat(1);//for multiple buttons to be pressed at same time
@@ -904,6 +931,9 @@ int main(int argc, char **argv) {
 	glutTimerFunc(1000.0f / 60.0f, myTimer, 0);
 
 	initializeOpenAL( argc, argv );     // do all of our setup for OpenAL
+
+	atexit( cleanupOpenGL );            // callback that gets called right before the program exits
+	atexit( cleanupOpenAL );            // callback that gets called right before the program exits
 
 	orientCar();
 	
