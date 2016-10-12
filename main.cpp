@@ -213,8 +213,8 @@ void initializeOpenAL( int argc, char *argv[] ) {
     
     /* TODO #01: Setup ALUT and OpenAL */
 	alutInit(&argc, argv);
-	ALCdevice *device = alcOpenDevice(NULL);
-	ALCcontext *context = alcCreateContext(device, NULL);
+	device = alcOpenDevice(NULL);
+	context = alcCreateContext(device, NULL);
 	alcMakeContextCurrent(context);
 
     /* TODO #06: Generate Buffers & Sources */
@@ -976,7 +976,7 @@ int main(int argc, char **argv) {
 
 	initializeOpenAL( argc, argv );     // do all of our setup for OpenAL
 
-	atexit( cleanupOpenGL );            // callback that gets called right before the program exits
+	//atexit( cleanupOpenGL );            // callback that gets called right before the program exits
 	atexit( cleanupOpenAL );            // callback that gets called right before the program exits
 
 	orientCar();
