@@ -55,8 +55,12 @@ using namespace std;
 #include "Sprite.h"
 #include "BezierPatch.h"
 #include "Vector3f.h"
+#include "FreeCamera.h"
 
 // GLOBAL VARIABLES ////////////////////////////////////////////////////////////
+
+//cameraselection
+bool usingArcball = true;
 
 //fps global vars
 time_t lastTime = time(NULL);
@@ -86,6 +90,7 @@ Car carSprite = Car();
 Sprite mySprite = Sprite();
 //Arcball camera object, looking at player object location
 ArcballCamera myArcballCamera = ArcballCamera(myCar.getX(), myCar.getY(), myCar.getZ());
+FreeCamera myFreeCam = FreeCamera();
 
 //collection of all control points which will be made into Bcurves
 vector<Point> controlPoints;
@@ -429,6 +434,7 @@ void mouseMotion(int x, int y) {
 		else{
 			//call moving arcball function
 			myArcballCamera.handleCameraDrag(mouseX, x, mouseY, y);
+			myFreeCam.handleCameraDrag(mouseX, x, mouseY, y);
 		}
 		//store last position of mouse
 		mouseX = x;
@@ -581,7 +587,11 @@ void renderScene(void)  {
     glLoadIdentity();
 	
 	//call camerainfo getter for arcball camera object
-	float* c = myArcballCamera.getCameraInfo();
+    float* c;
+    if(usingArcball){
+    	c = myArcballCamera.getCameraInfo();
+    }else{c = myFreeCam.getCameraInfo();}
+	
 	//c0-c2 are camera position + object position (xyz)
 	//c3-c5 are object position xyz (camera keeps track and updates accordingly in timer)
 	//c6-c8 are the xyz of the up vector (0,1,0) 
@@ -805,6 +815,9 @@ void myMenu( int value ) {
 		//toggle all the bezier curves for each bezier curve (toggle variable in class for each curve)
 		for(unsigned int i = 0; i < bezierCurves.size(); i++){bezierCurves[i].toggleCurve();}
 		break;
+	case 3: 
+		usingArcball = !usingArcball;
+		break;
 	}	
 }
 
@@ -845,6 +858,7 @@ void createMenus() {
 	glutAddMenuEntry( "Quit", 0 ); 
 	glutAddMenuEntry( "Toggle displaying control cage", 1 );
 	glutAddMenuEntry( "Toggle displaying bezier curve", 2 );
+	glutAddMenuEntry( "TEST", 3 );
 	glutAddSubMenu("First Person Camera", subMenuFirstPerson);
 	glutAddSubMenu("First Person Camera", subMenuArcball);
 
