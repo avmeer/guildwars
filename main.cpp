@@ -599,9 +599,10 @@ void renderScene(void)  {
 	//glRotatef(-myCar.getTheta(), 0, 1, 0);
 	//glTranslatef(-myCar.getX(), 0, -myCar.getZ());
 
-	gluLookAt(myCar.getX(), myCar.getY() + 5, myCar.getZ(), heroNormal.getX(), heroNormal.getY(), heroNormal.getZ(), 0,1,0);
+	glTranslatef(myCar.getX(), myCar.getY() + 5, myCar.getZ());
+	gluLookAt(0,0,0, heroNormal.getX(), heroNormal.getY(), heroNormal.getZ(), 0,1,0);
 	glRotatef(90,cameraAxisOfRotation.getX(), cameraAxisOfRotation.getY(), cameraAxisOfRotation.getZ());
-	glRotatef(myCar.getTheta(),0,1,0);
+	//glRotatef(myCar.getTheta(),0,1,0);
 	//glRotatef(-myCar.getTheta(), 0, 1, 0);
 	//glTranslatef(-myCar.getX(), 0, -myCar.getZ());
 	
