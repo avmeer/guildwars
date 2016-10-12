@@ -22,6 +22,17 @@ float Vector3f::getZ(){
 	return z;
 }
 
+void Vector3f::setX(float _x){
+	x = _x;
+}
+void Vector3f::setY(float _y){
+	y = _y;
+}
+void Vector3f::setZ(float _z){
+	z = _z;
+}
+
+
 void Vector3f::normalizeVec(){
 	float magnitude = sqrt(x*x + y*y + z*z);
 	x = x/magnitude;

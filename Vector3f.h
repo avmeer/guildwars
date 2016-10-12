@@ -18,6 +18,12 @@ class Vector3f{
 	Vector3f crossProduct(Vector3f otherVec);
 	void normalizeVec();
 	float getAngleBetween(Vector3f otherVec);
+
+
+
+	void setX(float);
+	void setY(float);
+	void setZ(float);
 	
 };
 

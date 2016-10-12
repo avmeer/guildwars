@@ -17,7 +17,7 @@
 #include <math.h> 
 
 #include "Point.h"
-
+#include "Vector3f.h"
 ////////////////////////
 
 //header file for drawing a car object
@@ -35,6 +35,8 @@ class Car{
 	float carTheta;
 	float carDirZ;
 	float carDirX;
+
+	Vector3f carNormal;
 	
 	//values updated by timer for passive info
 	float backTorusRotation;
@@ -67,6 +69,9 @@ class Car{
 	void setCarTranslationStepSize(float ctss);
 	void setForwardCarMotion(bool fcm);
 	void setBackwardsCarMotion(bool bcm);
+
+	void setCarNormal(Vector3f);
+	Vector3f getCarNormal();
 	
 	//getters for instance variables, not necessarily needed in A4 but useful for debugging
 	float getX();

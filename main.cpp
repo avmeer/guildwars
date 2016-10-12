@@ -328,7 +328,7 @@ void drawScene(){
 		glTranslatef(myCar.getX(),myCar.getY(),myCar.getZ());
 		//adjust cars heading (updated in timer via user input)
 		//glRotatef(myCar.getTheta(),0,1,0);
-		glRotatef(carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
+		glRotatef(-carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
 	    myCar.drawCar();
 		
 		//want the curve/sprite to be drawn around car
@@ -434,6 +434,39 @@ void keyboard_up(unsigned char key, int x, int y){
 	if (key == 'd'){keys['d'] = false;}
 }
 
+void orientCar(){
+		float tempX = myCar.getX();
+		float tempZ = myCar.getZ();
+
+		float u = (tempX + 50.0) / 100.0f;
+		float v = (tempZ + 50.0) / 100.0f;
+
+		Point tempP = myBezPatch.dVBezier(u,v);
+		Vector3f dV = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
+		tempP = myBezPatch.dUBezier(u,v);
+		Vector3f dU = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
+
+		surfaceNormal = dU.crossProduct(dV);
+
+
+		float tempVar = surfaceNormal.getX();
+		surfaceNormal.setX(surfaceNormal.getZ());
+		surfaceNormal.setZ(tempVar);
+
+
+		//fprintf(stdout, "\nx: %f, y: %f, z: %f\n", surfaceNormal.getX(), surfaceNormal.getY(), surfaceNormal.getZ());
+		carAxisOfRotation = surfaceNormal.crossProduct(myCar.getCarNormal());
+		carAngle = surfaceNormal.getAngleBetween(myCar.getCarNormal());
+		fprintf(stdout, "\nangle: %f\n", carAngle);
+		//myCar.setCarNormal(surfaceNormal);
+
+
+		//fprintf(stdout, "\nu: %f, v: %f\n", u,v);
+
+		myCar.setY(myBezPatch.getYPosition(u,v) + 2.5f);
+}
+
+
 //timer function handles actions done by button presses,
 //updating passive motion variables
 //and updating input based variables for animation
@@ -447,42 +480,14 @@ void myTimer(int value){
 	//move forward W is being pressed
 	if (keys['w'] == true){
 		myCar.handleWKey();
-		float tempX = myCar.getX();
-		float tempZ = myCar.getZ();
-
-		float u = (tempX + 50.0) / 100.0f;
-		float v = (tempZ + 50.0) / 100.0f;
-
-		Point tempP = myBezPatch.dVBezier(u,v);
-		Vector3f dV = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
-		tempP = myBezPatch.dUBezier(u,v);
-		Vector3f dU = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
-
-		surfaceNormal = dU.crossProduct(dV);
-		fprintf(stdout, "\nx: %f, y: %f, z: %f\n", surfaceNormal.getX(), surfaceNormal.getY(), surfaceNormal.getZ());
-		carAxisOfRotation = surfaceNormal.crossProduct(Vector3f(0.0f,1.0f,0.0f));
-		carAngle = surfaceNormal.getAngleBetween(carAxisOfRotation);
-
-
-		//fprintf(stdout, "\nu: %f, v: %f\n", u,v);
-
-		myCar.setY(myBezPatch.getYPosition(u,v) + 2.5f);
+		orientCar();
 		myArcballCamera.setObjPos(myCar.getPos());
 	}
 	
 	//move backwards if S is being pressed
 	if (keys['s'] == true){
 		myCar.handleSKey();
-		float tempX = myCar.getX();
-		float tempZ = myCar.getZ();
-
-		float u = (tempX + 50.0) / 100.0f;
-		float v = (tempZ + 50.0) / 100.0f;
-
-		//fprintf(stdout, "\nu: %f, v: %f\n", u,v);
-
-		myCar.setY(myBezPatch.getYPosition(u,v) + 2.5f);
-
+		orientCar();
 		myArcballCamera.setObjPos(myCar.getPos());
 	}
 	

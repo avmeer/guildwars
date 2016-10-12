@@ -11,6 +11,8 @@ Car::Car(){
 	carTheta = 0;
 	carDirZ = 1;
 	carDirX = 0;
+
+	carNormal = Vector3f(0.0f, 1.0f, 0.0f);
 	
 	//passive animation value that gets updated
 	backTorusRotation = 0;
@@ -295,6 +297,13 @@ void Car::updateWheelMotion(){
 	}
 }
 
+Vector3f Car::getCarNormal(){
+	return carNormal;
+}
+
+void Car::setCarNormal(Vector3f vector){
+	carNormal = vector;
+}
 
 
 
