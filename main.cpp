@@ -808,6 +808,14 @@ void myMenu( int value ) {
 	}	
 }
 
+void mySubMenuArcball(int value){
+
+}
+
+void mySubMenuFirstPerson(int value){
+
+}
+
 // createMenus() ///////////////////////////////////////////////////////////////
 //
 //  Handles creating a menu, adding menu entries, and attaching the menu to
@@ -817,13 +825,32 @@ void myMenu( int value ) {
 void createMenus() {
 	//Create a Simple Menu
 	
+
+	//Make sub-menu for first person camera
+	int subMenuFirstPerson = glutCreateMenu(mySubMenuFirstPerson);
+	glutAddMenuEntry("Hero 1", 0);
+	glutAddMenuEntry("Hero 2", 1);
+	glutAddMenuEntry("Hero 3", 2);
+
+	//Make sub-menu for arcball camera
+	int subMenuArcball = glutCreateMenu(mySubMenuArcball);
+	glutAddMenuEntry("Hero 1", 0);
+	glutAddMenuEntry("Hero 2", 1);
+	glutAddMenuEntry("Hero 3", 2);
+
 	//menu callback
-	glutCreateMenu(myMenu);
-	
+	int mainMenu = glutCreateMenu(myMenu);
+
 	//menu options
 	glutAddMenuEntry( "Quit", 0 ); 
 	glutAddMenuEntry( "Toggle displaying control cage", 1 );
 	glutAddMenuEntry( "Toggle displaying bezier curve", 2 );
+	glutAddSubMenu("First Person Camera", subMenuFirstPerson);
+	glutAddSubMenu("First Person Camera", subMenuArcball);
+
+
+
+
 	
 	//attach menu to right mouse button
 	glutAttachMenu(2); 
