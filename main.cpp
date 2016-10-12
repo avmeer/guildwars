@@ -848,10 +848,6 @@ void createMenus() {
 	glutAddSubMenu("First Person Camera", subMenuFirstPerson);
 	glutAddSubMenu("First Person Camera", subMenuArcball);
 
-
-
-
-	
 	//attach menu to right mouse button
 	glutAttachMenu(2); 
 }
