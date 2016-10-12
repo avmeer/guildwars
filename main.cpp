@@ -57,6 +57,9 @@ using namespace std;
 #include "Vector3f.h"
 #include "FreeCamera.h"
 
+//Heroes
+#include "Hero3.h"
+
 // GLOBAL VARIABLES ////////////////////////////////////////////////////////////
 
 //cameraselection
@@ -86,6 +89,8 @@ int mouseX = 0, mouseY = 0;
 //Player object
 Car myCar = Car();
 Car carSprite = Car();
+
+Hero3 hero3 = Hero3();
 //sprite object rotating around myCar
 Sprite mySprite = Sprite();
 //Arcball camera object, looking at player object location
@@ -513,7 +518,8 @@ void drawScene(bool drawCar=true){
 		//glRotatef()
 		//glScalef(.1,.1,.1);
 		//carSprite.drawCar();
-		mySprite.drawSprite();
+		//mySprite.drawSprite();
+		hero3.draw();
 		glPopMatrix();
 		
 		//for each bezier curve, draw the control points, connect the control points, and draw the bezier curve

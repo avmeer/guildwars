@@ -93,5 +93,8 @@ void Hero3::drawHead(){
 }
 
 void Hero3::draw(){
+	glPushMatrix();
+	glScalef(.03,.03,.03);
 	drawHead();
+	glPopMatrix();
 }

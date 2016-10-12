@@ -27,7 +27,7 @@ class Hero3:public Hero
 	int wingAngle;
 	public:
 	//constructors
-	Hero3();
+	Hero3():Hero(){};
 
 	void draw();
 	void drawTriangle();
