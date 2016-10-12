@@ -322,13 +322,13 @@ void drawScene(){
 	glCallList( environmentDL );
 	
 	//draw the car! translate/rotate based on input
-	fprintf(stdout, "\ny: %f\n", myCar.getY());
+	//fprintf(stdout, "\ny: %f\n", myCar.getY());
     glPushMatrix(); {
 		//translate the car to current position (which is changed by user input)
 		glTranslatef(myCar.getX(),myCar.getY(),myCar.getZ());
 		//adjust cars heading (updated in timer via user input)
-		glRotatef(myCar.getTheta(),0,1,0);
-		//glRotatef(carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
+		//glRotatef(myCar.getTheta(),0,1,0);
+		glRotatef(carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
 	    myCar.drawCar();
 		
 		//want the curve/sprite to be drawn around car
@@ -459,6 +459,7 @@ void myTimer(int value){
 		Vector3f dU = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
 
 		surfaceNormal = dU.crossProduct(dV);
+		fprintf(stdout, "\nx: %f, y: %f, z: %f\n", surfaceNormal.getX(), surfaceNormal.getY(), surfaceNormal.getZ());
 		carAxisOfRotation = surfaceNormal.crossProduct(Vector3f(0.0f,1.0f,0.0f));
 		carAngle = surfaceNormal.getAngleBetween(carAxisOfRotation);
 
@@ -478,7 +479,7 @@ void myTimer(int value){
 		float u = (tempX + 50.0) / 100.0f;
 		float v = (tempZ + 50.0) / 100.0f;
 
-		fprintf(stdout, "\nu: %f, v: %f\n", u,v);
+		//fprintf(stdout, "\nu: %f, v: %f\n", u,v);
 
 		myCar.setY(myBezPatch.getYPosition(u,v) + 2.5f);
 

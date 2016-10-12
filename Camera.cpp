@@ -7,7 +7,7 @@ Camera::Camera(){
 	objZ = 0;
 	
 	//pretty starting point
-	cameraRadius = 12.0f;
+	cameraRadius = 25.0f;
     cameraTheta = 2.80;
     cameraPhi = 2.0;
 }
@@ -19,7 +19,7 @@ Camera::Camera(float ox, float oy, float oz){
 	objZ = oz;
 	
 	//pretty starting point
-	cameraRadius = 12.0f;
+	cameraRadius = 25.0f;
     cameraTheta = 2.80;
     cameraPhi = 2.0;
 
