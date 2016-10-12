@@ -1,20 +1,9 @@
 #include "Hero.h"
 
-#ifndef HERO_H
-#define HERO_H
-class Hero{
-	protected:
-	//position
-	float carX;
-	float carY;
-	float carZ;
-	
-	//heading
-	float carTheta;
-	float carDirZ;
-	float carDirX;
+void Hero::setX(float x){carX = x;}
+void Hero::setY(float y){carY = y;}
+void Hero::setZ(float z){carZ = z;}
 
-	virtual void draw();
-};
-
-#endif
+float Hero::getX(){return carX;}
+float Hero::getY(){return carY;}
+float Hero::getZ(){return carZ;}

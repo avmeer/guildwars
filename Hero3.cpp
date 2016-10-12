@@ -1,11 +1,6 @@
 #include "Hero3.h"
 
 void Hero3(){
-	//position
-	float carX=0;
-	float carY=0;
-	float carZ=0;
-	
 	bool wingFlap=false;
 	int wingAngle=0;
 }

@@ -21,7 +21,7 @@
 
 class Hero3
 {
-	private:
+	protected:
 	//position
 	float carX;
 	float carY;

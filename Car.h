@@ -18,19 +18,15 @@
 
 #include "Point.h"
 #include "Vector3f.h"
+#include "Hero.h"
 ////////////////////////
 
 //header file for drawing a car object
 
 #ifndef CAR_H
 #define CAR_H
-class Car{
+class Car:public Hero{
 	private:
-	//position
-	float carX;
-	float carY;
-	float carZ;
-	
 	//heading
 	float carTheta;
 	float carDirZ;
@@ -57,9 +53,6 @@ class Car{
 	Car(float x, float y, float z, float theta, float dirZ, float dirX, float backTRot);
 	
 	//setters for instance variables, not necessarily needed in A4 but useful for debugging
-	void setX(float x);
-	void setY(float y);
-	void setZ(float z);
 	void setTheta(float theta);
 	void setDirZ(float z);
 	void setDirX(float x);
@@ -74,9 +67,6 @@ class Car{
 	Vector3f getCarNormal();
 	
 	//getters for instance variables, not necessarily needed in A4 but useful for debugging
-	float getX();
-	float getY();
-	float getZ();
 	Point getPos();
 	float getTheta();
 	float getDirZ();
@@ -89,12 +79,14 @@ class Car{
 	bool getBackwardsCarMotion();
 	
 	//functions for drawing the various parts that make up a car
-	void drawCar();
+	void draw();
 	void drawUnitRightTrianglePrism();
 	void drawBallWheel();
 	void drawAxle();
 	void drawBackMagicalSpinnyThingy();
 	void drawCarBody();
+
+	void updateAnimation();
 
 	void drawHeroName();
 	
