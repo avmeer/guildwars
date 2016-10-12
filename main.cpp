@@ -327,8 +327,8 @@ void drawScene(){
 		//translate the car to current position (which is changed by user input)
 		glTranslatef(myCar.getX(),myCar.getY(),myCar.getZ());
 		//adjust cars heading (updated in timer via user input)
-		//glRotatef(myCar.getTheta(),0,1,0);
 		glRotatef(-carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
+		glRotatef(myCar.getTheta(),0,1,0);
 	    myCar.drawCar();
 		
 		//want the curve/sprite to be drawn around car
