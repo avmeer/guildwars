@@ -14,6 +14,7 @@
 #include <math.h> 
 
 #include "Point.h"
+#include "Hero.h"
 #include "Vector3f.h"
 
 #ifndef HERO3_H
