@@ -462,8 +462,9 @@ void renderScene(void)  {
 
 	Vector3f heroNormal = myCar.getCarNormal();
 
-	gluLookAt(myCar.getX(),myCar.getY() + 5, myCar.getZ(),
-				 myCar.getX() - myCar.getDirX(), myCar.getY() + 5, myCar.getZ() - myCar.getDirZ(),
+	//attempt at first person cam. need dirY of car to use this approach
+	gluLookAt(myCar.getX(),myCar.getY() + 15, myCar.getZ(),
+				 myCar.getX() - myCar.getDirX(), myCar.getY() + 15, myCar.getZ() - myCar.getDirZ(),
 				 heroNormal.getX(), heroNormal.getY(), heroNormal.getZ());
 
 	//sky cam
