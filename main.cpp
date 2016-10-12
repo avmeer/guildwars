@@ -73,6 +73,7 @@ int mouseX = 0, mouseY = 0;
 
 //Player object
 Car myCar = Car();
+Car carSprite = Car();
 //sprite object rotating around myCar
 Sprite mySprite = Sprite();
 //Arcball camera object, looking at player object location
@@ -359,6 +360,9 @@ void drawScene(){
 		glTranslatef(point.getX(),point.getY(),point.getZ());
 		//do sprite tangent shit
 		glRotatef(-spriteAngle, spriteAxisOfRotation.getX(), spriteAxisOfRotation.getY(), spriteAxisOfRotation.getZ());
+		//glRotatef()
+		//glScalef(.1,.1,.1);
+		//carSprite.drawCar();
 		mySprite.drawSprite();
 		glPopMatrix();
 		
@@ -452,10 +456,17 @@ void renderScene(void)  {
 	
 	glMatrixMode(GL_MODELVIEW); 
 	glLoadIdentity();
-    gluLookAt(0, 150, 0, 0, 0, 0, 1.0, 0.0, 0.0);
-	
-	glRotatef(-myCar.getTheta(), 0, 1, 0);
-	glTranslatef(-myCar.getX(), 0, -myCar.getZ());
+
+	Vector3f heroNormal = myCar.getCarNormal();
+
+	gluLookAt(myCar.getX(),myCar.getY() + 5, myCar.getZ(),
+				 myCar.getX() + myCar.getDirX(), 0, myCar.getZ() + myCar.getDirZ(), 
+				 heroNormal.getX(), heroNormal.getY(), heroNormal.getZ());
+
+	//sky cam
+    //gluLookAt(0, 150, 0, 0, 0, 0, 1.0, 0.0, 0.0);
+	//glRotatef(-myCar.getTheta(), 0, 1, 0);
+	//glTranslatef(-myCar.getX(), 0, -myCar.getZ());
 	
 	drawScene();
 
@@ -507,17 +518,17 @@ void orientCar(){
 
 		surfaceNormal = dU.crossProduct(dV);
 
-
+		//X and Z are flipped...
 		float tempVar = surfaceNormal.getX();
 		surfaceNormal.setX(surfaceNormal.getZ());
 		surfaceNormal.setZ(tempVar);
 
 
 		//fprintf(stdout, "\nx: %f, y: %f, z: %f\n", surfaceNormal.getX(), surfaceNormal.getY(), surfaceNormal.getZ());
-		carAxisOfRotation = surfaceNormal.crossProduct(myCar.getCarNormal());
-		carAngle = surfaceNormal.getAngleBetween(myCar.getCarNormal());
+		carAxisOfRotation = surfaceNormal.crossProduct(Vector3f(0.0f, 1.0f, 0.0f));
+		carAngle = surfaceNormal.getAngleBetween(Vector3f(0.0f, 1.0f, 0.0f));
 		//fprintf(stdout, "\nangle: %f\n", carAngle);
-		//myCar.setCarNormal(surfaceNormal);
+		myCar.setCarNormal(surfaceNormal);//for first person view
 
 
 		//fprintf(stdout, "\nu: %f, v: %f\n", u,v);

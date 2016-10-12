@@ -199,6 +199,8 @@ void Car::drawCarBody(){
 //function for drawing entire car out of individual pieces
 void Car::drawCar(){
 	glPushMatrix();
+
+	drawHeroName();
 	
 	glRotatef(90,0,1,0);
 	drawCarBody();
@@ -303,6 +305,24 @@ Vector3f Car::getCarNormal(){
 
 void Car::setCarNormal(Vector3f vector){
 	carNormal = vector;
+}
+
+void Car::drawHeroName(){
+	// the text
+	char name[64]= "Oghad Urr";
+	glDisable(GL_LIGHTING);
+	// choose a colour
+	glColor3f(.7, .7, .3);
+	glPushMatrix();
+	// where we want it written
+	glTranslatef(0, 5, 3);
+	// how big we want it
+	glScalef(.01, .01, .01);
+	glRotatef(90, 0, 1, 0);
+	for (int c=0; name[c] != 0; ++c)
+		glutStrokeCharacter(GLUT_STROKE_ROMAN, name[c]);
+	glPopMatrix();
+	glEnable(GL_LIGHTING);
 }
 
 

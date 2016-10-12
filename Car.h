@@ -95,6 +95,8 @@ class Car{
 	void drawAxle();
 	void drawBackMagicalSpinnyThingy();
 	void drawCarBody();
+
+	void drawHeroName();
 	
 	//functions for handling interaction during execution (based on timers, user input etc)
 	void handleWKey();
