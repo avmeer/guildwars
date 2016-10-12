@@ -472,7 +472,7 @@ void initScene()  {
     generateEnvironmentDL();
 }
 
-void drawScene(){
+void drawScene(bool drawCar=true){
 	//call display list so dont have to recompute each time
 	glCallList( environmentDL );
 	
@@ -484,7 +484,8 @@ void drawScene(){
 		//adjust cars heading (updated in timer via user input)
 		glRotatef(-carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
 		glRotatef(myCar.getTheta(),0,1,0);
-	    //myCar.drawCar();
+		if(drawCar)
+	    	myCar.drawCar();
 		
 		//want the curve/sprite to be drawn around car
 		glPushMatrix();
@@ -614,8 +615,9 @@ void renderScene(void)  {
 	//translate the car to current position (which is changed by user input)
 	//glTranslatef(myCar.getX(),myCar.getY(),myCar.getZ());
 	//adjust cars heading (updated in timer via user input)
+	glRotatef(-myCar.getTheta()-90,0,1,0);
 	glRotatef(-carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
-	glRotatef(-myCar.getTheta(),0,1,0);
+	
 		gluLookAt(myCar.getX(),myCar.getY(),myCar.getZ(), 
 		myCar.getX(),myCar.getY(),myCar.getZ()+1, 
 		0.0, 1.0, 0.0);
@@ -625,7 +627,7 @@ void renderScene(void)  {
 	/*glRotatef(-myCar.getTheta(), 0, 1, 0);
 	glTranslatef(-myCar.getX(), 0, -myCar.getZ());*/
 	
-	drawScene();
+	drawScene(false);
 	
 
     //push the back buffer to the screen
