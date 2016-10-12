@@ -292,7 +292,6 @@ void mouseMotion(int x, int y) {
 		//store last position of mouse
 		mouseX = x;
 		mouseY = y;
-	glutPostRedisplay();	    // redraw our scene from our new camera POV
     }
 }
 
@@ -483,8 +482,6 @@ void normalKeysDown(unsigned char key, int x, int y) {
 	if(key == 's'){keys['s'] = true;}
 	if (key == 'a'){keys['a'] = true;}
 	if (key == 'd'){keys['d'] = true;}
-	
-    glutPostRedisplay();		// redraw our scene from our new camera POV
 }
 
 //determine which keys are released
