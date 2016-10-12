@@ -160,11 +160,15 @@ void drawCity() {
 	for (int i = -50; i <= 50; i++){
 		for (int j = -50; j <= 50; j++){
 			if (i % 2 == 0 && j%2 == 0 && getRand() < 0.025){
+				float u = (i + 50.0) / 100.0f;
+				float v = (j + 50.0) / 100.0f;
+				float y =myBezPatch.getYPosition(u,v);
+
 				glColor3f(getRand(), getRand(), getRand());
 				glPushMatrix();
 				float futureHeight = getRand() * 10;//get random number between 1 and 10
 				while (futureHeight < 1){futureHeight = getRand() * 10;}//make sure not below 1 since getRand can return below 0.1
-				glTranslatef(i,futureHeight / 2,j);
+				glTranslatef(i,(futureHeight / 2)+y,j);
 				glScalef(1,futureHeight,1); //change heights of cubes placed
 				glutSolidCube( 1 );
 				glPopMatrix();
@@ -289,7 +293,6 @@ void mouseMotion(int x, int y) {
 		//store last position of mouse
 		mouseX = x;
 		mouseY = y;
-	glutPostRedisplay();	    // redraw our scene from our new camera POV
     }
 }
 
@@ -490,8 +493,6 @@ void normalKeysDown(unsigned char key, int x, int y) {
 	if(key == 's'){keys['s'] = true;}
 	if (key == 'a'){keys['a'] = true;}
 	if (key == 'd'){keys['d'] = true;}
-	
-    glutPostRedisplay();		// redraw our scene from our new camera POV
 }
 
 //determine which keys are released
@@ -534,6 +535,8 @@ void orientCar(){
 		//fprintf(stdout, "\nu: %f, v: %f\n", u,v);
 
 		myCar.setY(myBezPatch.getYPosition(u,v) + 2.5f);
+
+		myArcballCamera.setObjPos(myCar.getPos());
 }
 
 
@@ -551,14 +554,13 @@ void myTimer(int value){
 	if (keys['w'] == true){
 		myCar.handleWKey();
 		orientCar();
-		myArcballCamera.setObjPos(myCar.getPos());
+		
 	}
 	
 	//move backwards if S is being pressed
 	if (keys['s'] == true){
 		myCar.handleSKey();
 		orientCar();
-		myArcballCamera.setObjPos(myCar.getPos());
 	}
 	
 	//updates step values which are to be used for updating car variables
@@ -610,7 +612,7 @@ void myTimer(int value){
 	
 	//force a redisplay and re register a timer callback!
 	glutPostRedisplay();
-	glutTimerFunc( 25, myTimer, 0 );
+	glutTimerFunc(1000.0f / 60.0f, myTimer, 0);
 }
 
 // myMenu() /////////////////////////////////////////////////////////////////////
@@ -753,7 +755,9 @@ int main(int argc, char **argv) {
     glutMouseFunc(mouseCallback);
     glutMotionFunc(mouseMotion);
 	glutKeyboardUpFunc(keyboard_up);
-	glutTimerFunc( 25, myTimer, 0 );
+	glutTimerFunc(1000.0f / 60.0f, myTimer, 0);
+
+	orientCar();
 	
 	// create our menu options and attach to mouse button
     createMenus();
