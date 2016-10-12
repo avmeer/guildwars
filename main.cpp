@@ -359,6 +359,12 @@ void drawScene(){
 		
     }; glPopMatrix();
 
+    	
+
+}
+
+void drawFPS(){
+		glDisable(GL_LIGHTING);
     	glMatrixMode(GL_PROJECTION);
 		glPushMatrix();
 		glLoadIdentity();
@@ -368,11 +374,13 @@ void drawScene(){
 		glPushMatrix();
 		glLoadIdentity();
 
-	    glColor3f(1, 0, 0); // Green
-	    glRasterPos2i(10, 10);
+	    glColor3ub(255, 255, 255); // Green
+	    glRasterPos2i(10, windowHeight - 10);
 	    char buffer [33];
 	    itoa (displayValue,buffer,10);
 	    string s(buffer);
+	    string derp = "FPS: ";
+	    s = derp + s;
 		void * font = GLUT_BITMAP_9_BY_15;
 		for (string::iterator i = s.begin(); i != s.end(); ++i)
 		{
@@ -385,6 +393,7 @@ void drawScene(){
 
 		glMatrixMode(GL_PROJECTION);
 		glPopMatrix();
+		glEnable(GL_LIGHTING);
 
 }
 
@@ -416,6 +425,7 @@ void renderScene(void)  {
 	gluLookAt(c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8]);
 
 	drawScene();
+	drawFPS();
 	
 	
 	//Clear the way for the second camera
@@ -562,7 +572,7 @@ void myTimer(int value){
 	time_t currentTime = time(NULL);
 	nbFrames++;
 	if (difftime(currentTime, lastTime) >= 1.0f){
-		fprintf(stdout, "\n%d\n", nbFrames);
+		//fprintf(stdout, "\n%d\n", nbFrames);
 		displayValue = nbFrames;
 		nbFrames = 0;
 		lastTime = time(NULL);
