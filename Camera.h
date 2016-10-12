@@ -8,7 +8,7 @@ class Camera{
 	float cameraTheta, cameraPhi;    // camera DIRECTION in spherical coordinates
 	float objX, objY, objZ;          // lookat point in cartesian coordinates
 	float cameraRadius;	 			 //Scale factor for camera distance away from character (used for zoom)
-	
+	float cameraDirX, cameraDirY, cameraDirZ;
 	public:
 	
 	//constructors
@@ -23,6 +23,9 @@ class Camera{
 	float getX();
 	float getY();
 	float getZ();
+	float getDirX(){return cameraDirX;};
+	float getDirY(){return cameraDirY;};
+	float getDirZ(){return cameraDirZ;};
 	
 	//setters
 	void setObjX(float x);
@@ -38,5 +41,7 @@ class Camera{
 	
 	//function to return camerainfo to be used in gluLookat function
 	float* getCameraInfo();
+
+	void recomputeOrientation();
 };
 #endif

@@ -38,6 +38,7 @@ LOCAL_BIN_PATH = C:\Strawberry\c\bin
 BUILDING_IN_LAB = 0
 
 USING_OPENGL = 1
+USING_OPENAL = 1
 USING_GLUI = 1
 
 #########################################################################################
@@ -100,6 +101,32 @@ ifeq ($(USING_OPENGL), 1)
 endif
 
 #############################
+## SETUP OpenAL & ALUT
+#############################
+
+# if we are using OpenAL & GLUT in this program
+ifeq ($(USING_OPENAL), 1)
+    # Windows builds
+    ifeq ($(OS), Windows_NT)
+        INCPATH += -I$(LAB_INC_PATH)
+        LIBPATH += -L$(LAB_LIB_PATH)
+        LIBS += -lalut.dll -lOpenAL32.dll
+
+    # Mac builds
+    else ifeq ($(shell uname), Darwin)
+        INCPATH += -I$(LOCAL_INC_PATH)
+        LIBPATH += -L$(LOCAL_LIB_PATH)
+        LIBS += -framework OpenAL
+
+    # Linux and all other builds
+    else
+        INCPATH += -I$(LOCAL_INC_PATH)
+        LIBPATH += -L$(LOCAL_LIB_PATH)
+        LIBS += -lalut -lopenal
+    endif
+endif
+
+#############################
 ## SETUP GLUI
 #############################
 
@@ -117,6 +144,28 @@ ifeq ($(USING_GLUI), 1)
 
 	LIBS += -lglui
 
+endif
+
+#############################
+## SETUP OpenGL & GLUT 
+#############################
+
+# if we are using OpenGL & GLUT in this program
+ifeq ($(USING_OPENGL), 1)
+    # Windows builds
+    ifeq ($(OS), Windows_NT)
+        INCPATH += -I$(LAB_INC_PATH)
+        LIBPATH += -L$(LAB_LIB_PATH)
+        LIBS += -lglut -lopengl32 -lglu32
+
+    # Mac builds
+    else ifeq ($(shell uname), Darwin)
+        LIBS += -framework GLUT -framework OpenGL
+
+    # Linux and all other builds
+    else
+        LIBS += -lglut -lGL -lGLU
+    endif
 endif
 
 #############################

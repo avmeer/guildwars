@@ -5,6 +5,7 @@ void ArcballCamera::computeArcballPositionAndSet(){
 	cameraX = cameraRadius * sinf(cameraTheta)*sinf(cameraPhi);
     cameraY = cameraRadius * -cosf(cameraPhi);
     cameraZ = cameraRadius * -cosf(cameraTheta)*sinf(cameraPhi);
+    recomputeOrientation();
 }
 
 //handle mouse dragging for changing orientation

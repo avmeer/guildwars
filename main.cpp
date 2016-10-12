@@ -18,11 +18,19 @@
  */
 
 #ifdef __APPLE__			// if compiling on Mac OS
-	#include <GLUT/glut.h>
+    #include <ALUT/alut.h>  // OpenAL Headers
+    #include <OpenAL/al.h>
+    #include <OpenAL/alc.h>
+
+    #include <GLUT/glut.h>  // OpenGL Headers
 	#include <OpenGL/gl.h>
 	#include <OpenGL/glu.h>
-#else					// else compiling on Linux OS
-	#include <GL/glut.h>
+#else                       // else compiling on Linux OS
+    #include <AL/alut.h>    // OpenAL Headers
+    #include <AL/al.h>
+    #include <AL/alc.h>
+
+    #include <GL/glut.h>    // OpenGL Headers
 	#include <GL/gl.h>
 	#include <GL/glu.h>
 #endif
@@ -106,6 +114,15 @@ float interpolantValue = 0.0f;
 int resolution = 128;
 float interpolantStepSize = 1.0f/resolution;
 
+// Globals for OpenAL ---------------------------------------------
+#define NUM_BUFFERS 3
+#define NUM_SOURCES 3
+
+ALCdevice *device;
+ALCcontext *context;
+ALuint buffers[ NUM_BUFFERS ];
+ALuint sources[ NUM_SOURCES ];
+
 // getRand() ///////////////////////////////////////////////////////////////////
 //
 //  Simple helper function to return a random number between 0.0f and 1.0f.
@@ -114,6 +131,102 @@ float interpolantStepSize = 1.0f/resolution;
 float getRand() {
    	return rand() / (float)RAND_MAX;
 }
+
+
+// positionListener() //////////////////////////////////////////////////////////
+//
+// This function updates the listener's position and orientation.  First, the
+//  global listener variables are updated.  Then the position and orientation
+//  are set through the approriate OpenAL calls.
+//
+////////////////////////////////////////////////////////////////////////////////
+void positionListener( float posX, float posY, float posZ,
+                       float dirX, float dirY, float dirZ,
+                       float upX = 0, float upY = 1, float upZ = 0 ) {
+    /* TODO #04: Position Our Listener */
+	ALfloat listenerPosition[3] = { posX, posY, posZ };
+	ALfloat listenerOrientation[6] = { dirX, dirY, dirZ, upX, upY, upZ };
+	alListenerfv(AL_POSITION, listenerPosition);
+	alListenerfv(AL_ORIENTATION, listenerOrientation);
+}
+
+// positionSource() ////////////////////////////////////////////////////////////
+//
+// This function updates the sources's position.  The position
+//  is set through the approriate OpenAL calls.
+//
+////////////////////////////////////////////////////////////////////////////////
+void positionSource( ALuint src, float posX, float posY, float posZ ) {
+    /* TODO #09: Position a Source */
+	ALfloat srcPosition[3] = { posX, posY, posZ };
+	alSourcefv(src, AL_POSITION, srcPosition);
+}
+
+// initializeOpenAL() //////////////////////////////////////////////////////////
+//
+//  Do all of our one time OpenAL & ALUT setup
+//
+////////////////////////////////////////////////////////////////////////////////
+void initializeOpenAL( int argc, char *argv[] ) {
+    ALsizei size, freq;
+    ALenum 	format;
+    ALvoid 	*data;
+    ALboolean loop;
+    
+    /* TODO #01: Setup ALUT and OpenAL */
+	alutInit(&argc, argv);
+	ALCdevice *device = alcOpenDevice(NULL);
+	ALCcontext *context = alcCreateContext(device, NULL);
+	alcMakeContextCurrent(context);
+
+    /* TODO #06: Generate Buffers & Sources */
+	alGenBuffers(NUM_BUFFERS, buffers);
+	alGenSources(NUM_SOURCES, sources);
+
+    /* TODO #08: Create Our Stationary Sound */
+	#ifdef __APPLE__
+		alutLoadWAVFile((ALbyte*)"wavs/siren.wav", &format, &data, &size, &freq);
+	#else
+		alutLoadWAVFile((ALbyte*)"wavs/siren.wav", &format, &data, &size, &freq, &loop);
+	#endif
+
+	alBufferData(buffers[0], format, data, size, freq);;
+	alutUnloadWAV(format, data, size, freq);
+
+	alSourcei(sources[0], AL_BUFFER, buffers[0]);
+	alSourcei(sources[0], AL_LOOPING, AL_TRUE);
+
+	#ifdef __APPLE__
+		alutLoadWAVFile((ALbyte*)"wavs/Running.wav", &format, &data, &size, &freq);
+	#else
+		alutLoadWAVFile((ALbyte*)"wavs/Running.wav", &format, &data, &size, &freq, &loop);
+	#endif
+
+	alBufferData(buffers[1], format, data, size, freq);;
+	alutUnloadWAV(format, data, size, freq);
+
+	alSourcei(sources[1], AL_BUFFER, buffers[1]);
+	alSourcei(sources[1], AL_LOOPING, AL_TRUE);
+
+	#ifdef __APPLE__
+		alutLoadWAVFile((ALbyte*)"wavs/background.wav", &format, &data, &size, &freq);
+	#else
+		alutLoadWAVFile((ALbyte*)"wavs/background.wav", &format, &data, &size, &freq, &loop);
+	#endif
+
+	alBufferData(buffers[2], format, data, size, freq);;
+	alutUnloadWAV(format, data, size, freq);
+
+	alSourcei(sources[2], AL_BUFFER, buffers[2]);
+	alSourcei(sources[2], AL_LOOPING, AL_TRUE);
+
+    /* TODO #10: Position our Stationary Source */
+	positionSource(sources[0], 0, 0, 0);
+    
+    //PrintOpenALInfo();					// print our OpenAL versioning information
+}
+
+
 
 // drawGrid() //////////////////////////////////////////////////////////////////
 //
@@ -448,6 +561,15 @@ void renderScene(void)  {
 
 	drawScene();
 	drawFPS();
+
+	//OpenAL sound stuff
+	 c = myArcballCamera.getCameraInfo();
+    /* TODO #05: Place our Listener every frame */
+	positionListener(c[0], c[1], c[2],
+					 myArcballCamera.getDirX(),  myArcballCamera.getDirY(),  myArcballCamera.getDirZ(),
+					 0.0f, 1.0f, 0.0f);
+
+	positionSource(sources[1], myCar.getX(), myCar.getY(), myCar.getZ());
 	
 	
 	//Clear the way for the second camera
@@ -547,6 +669,18 @@ void orientCar(){
 void myTimer(int value){
 	//get current heading of car, let car object handle updating
 	myCar.updateHeading();
+
+	//OpenAL sound stuff for car motor
+	ALenum sourceState;
+	alGetSourcei(sources[1], AL_SOURCE_STATE, &sourceState);
+	if(keys['w'] == true|| keys['a'] == true || keys['s'] == true ||keys['d'] == true){
+		if (sourceState != AL_PLAYING) {
+			alSourcePlay(sources[1]);
+		}
+	}
+	else{
+		alSourceStop(sources[1]);
+	}
 	
 	//check keys and update position
 	//doing in timer for multiple keys being held down 
@@ -757,6 +891,8 @@ int main(int argc, char **argv) {
     glutMotionFunc(mouseMotion);
 	glutKeyboardUpFunc(keyboard_up);
 	glutTimerFunc(1000.0f / 60.0f, myTimer, 0);
+
+	initializeOpenAL( argc, argv );     // do all of our setup for OpenAL
 
 	orientCar();
 	
