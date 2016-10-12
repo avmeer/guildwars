@@ -794,7 +794,7 @@ void myTimer(int value){
 	}
 
 
-	
+	hero3.updateAnimation();
 	//force a redisplay and re register a timer callback!
 	glutPostRedisplay();
 	glutTimerFunc(1000.0f / 60.0f, myTimer, 0);

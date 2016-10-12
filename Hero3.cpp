@@ -1,8 +1,9 @@
 #include "Hero3.h"
 
-void Hero3(){
-	bool wingFlap=false;
-	int wingAngle=0;
+Hero3::Hero3(){
+	wingFlap=false;
+	wingAngle=0;
+	wingTimer=0;
 }
 
 void Hero3::drawTriangle(){
@@ -63,8 +64,16 @@ void Hero3::drawEye(){
 	}glPopMatrix();
 }
 
+void Hero3::updateAnimation(){
+	wingTimer++;
+	if(wingTimer>=5){
+		wingAnimate();
+		wingTimer=0;
+	}
+}
 
-void Hero3::wingTimer( int value ){
+
+void Hero3::wingAnimate(){
 	if(wingFlap){
 		wingAngle=25;
 	}

@@ -25,16 +25,19 @@ class Hero3:public Hero
 	protected:
 	bool wingFlap;
 	int wingAngle;
+	int wingTimer;
 	public:
 	//constructors
-	Hero3():Hero(){};
+	Hero3();
 
 	void draw();
 	void drawTriangle();
 	void drawWings();
 	void drawHead();
 	void drawEye();
-	void wingTimer(int value);
+	void wingAnimate();
+
+	void updateAnimation();
 };
 
 #endif
