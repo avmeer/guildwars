@@ -54,9 +54,6 @@ Car::Car(float x, float y, float z, float theta, float dirZ, float dirX, float b
 
 //setters for all of the instance variables of the car
 //dont need for a4, but useful for debugging and may need later
-void Car::setX(float x){carX = x;}
-void Car::setY(float y){carY = y;}
-void Car::setZ(float z){carZ = z;}
 void Car::setTheta(float theta){carTheta = theta;}
 void Car::setDirZ(float z){carDirZ = z;}
 void Car::setDirX(float x){carDirX = x;}
@@ -69,9 +66,6 @@ void Car::setBackwardsCarMotion(bool bcm){backwardsCarMotion = bcm;}
 
 //getters for all of the instance variables of the car
 //dont need for a4, but useful for debugging and may need later
-float Car::getX(){return carX;}
-float Car::getY(){return carY;}
-float Car::getZ(){return carZ;}
 Point Car::getPos(){return Point(carX,carY,carZ);}
 float Car::getTheta(){return carTheta;}
 float Car::getDirZ(){return carDirZ;}
@@ -196,8 +190,10 @@ void Car::drawCarBody(){
 	glPopMatrix();
 }
 
+void Car::updateAnimation(){};
+
 //function for drawing entire car out of individual pieces
-void Car::drawCar(){
+void Car::draw(){
 	glPushMatrix();
 
 	drawHeroName();

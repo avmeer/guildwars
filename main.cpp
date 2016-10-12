@@ -55,7 +55,7 @@ using namespace std;
 #include "Sprite.h"
 #include "BezierPatch.h"
 #include "Vector3f.h"
-#include "FreeCamera.h"
+//#include "FreeCamera.h"
 
 // GLOBAL VARIABLES ////////////////////////////////////////////////////////////
 
@@ -90,7 +90,7 @@ Car carSprite = Car();
 Sprite mySprite = Sprite();
 //Arcball camera object, looking at player object location
 ArcballCamera myArcballCamera = ArcballCamera(myCar.getX(), myCar.getY(), myCar.getZ());
-FreeCamera myFreeCam = FreeCamera();
+//FreeCamera myFreeCam = FreeCamera();
 
 //collection of all control points which will be made into Bcurves
 vector<Point> controlPoints;
@@ -434,7 +434,7 @@ void mouseMotion(int x, int y) {
 		else{
 			//call moving arcball function
 			myArcballCamera.handleCameraDrag(mouseX, x, mouseY, y);
-			myFreeCam.handleCameraDrag(mouseX, x, mouseY, y);
+			//myFreeCam.handleCameraDrag(mouseX, x, mouseY, y);
 		}
 		//store last position of mouse
 		mouseX = x;
@@ -491,7 +491,7 @@ void drawScene(bool drawCar=true){
 		glRotatef(-carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
 		glRotatef(myCar.getTheta(),0,1,0);
 		if(drawCar)
-	    	myCar.drawCar();
+	    	myCar.draw();
 		
 		//want the curve/sprite to be drawn around car
 		glPushMatrix();
@@ -590,7 +590,7 @@ void renderScene(void)  {
     float* c;
     if(usingArcball){
     	c = myArcballCamera.getCameraInfo();
-    }else{c = myFreeCam.getCameraInfo();}
+    }else{/*c = myFreeCam.getCameraInfo();*/}
 	
 	//c0-c2 are camera position + object position (xyz)
 	//c3-c5 are object position xyz (camera keeps track and updates accordingly in timer)
@@ -862,10 +862,6 @@ void createMenus() {
 	glutAddSubMenu("First Person Camera", subMenuFirstPerson);
 	glutAddSubMenu("First Person Camera", subMenuArcball);
 
-
-
-
-	
 	//attach menu to right mouse button
 	glutAttachMenu(2); 
 }
