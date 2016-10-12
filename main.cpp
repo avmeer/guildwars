@@ -64,6 +64,7 @@ using namespace std;
 
 //cameraselection
 bool usingArcball = true;
+bool usingFirstPersonCam = true;
 
 //fps global vars
 time_t lastTime = time(NULL);
@@ -616,6 +617,7 @@ void renderScene(void)  {
 	positionSource(sources[1], myCar.getX(), myCar.getY(), myCar.getZ());
 	
 	
+	if (usingFirstPersonCam){
 	//Clear the way for the second camera
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glViewport(0, 0, windowWidth/3, windowHeight/3);
@@ -626,26 +628,17 @@ void renderScene(void)  {
 	glMatrixMode(GL_MODELVIEW); 
 	glLoadIdentity();
 
-
-	//gluLookAt(0,20,0,0,0,0,0,1,0);
-	//translate the car to current position (which is changed by user input)
-	//glTranslatef(myCar.getX(),myCar.getY(),myCar.getZ());
-	//adjust cars heading (updated in timer via user input)
+	//first person cam stuff
+	
 	glRotatef(-myCar.getTheta()-90,0,1,0);
 	glRotatef(-carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
-	
-		gluLookAt(myCar.getX(),myCar.getY(),myCar.getZ(), 
-		myCar.getX(),myCar.getY(),myCar.getZ()+1, 
-		0.0, 1.0, 0.0);
+	gluLookAt(myCar.getX(),myCar.getY(),myCar.getZ(), 
+			  myCar.getX(),myCar.getY(),myCar.getZ()+1, 
+										  0.0, 1.0, 0.0);
 
-	
-	
-	/*glRotatef(-myCar.getTheta(), 0, 1, 0);
-	glTranslatef(-myCar.getX(), 0, -myCar.getZ());*/
-	
+		//passing in false so first person cam is inside of hero, no get blocked
 	drawScene(false);
-	
-
+	}
     //push the back buffer to the screen
     glutSwapBuffers();
 }
@@ -832,6 +825,9 @@ void myMenu( int value ) {
 	case 3: 
 		usingArcball = !usingArcball;
 		break;
+	case 4:
+		usingFirstPersonCam = ! usingFirstPersonCam;
+		break;
 	}	
 }
 
@@ -872,9 +868,10 @@ void createMenus() {
 	glutAddMenuEntry( "Quit", 0 ); 
 	glutAddMenuEntry( "Toggle displaying control cage", 1 );
 	glutAddMenuEntry( "Toggle displaying bezier curve", 2 );
-	glutAddMenuEntry( "TEST", 3 );
-	glutAddSubMenu("First Person Camera", subMenuFirstPerson);
-	glutAddSubMenu("First Person Camera", subMenuArcball);
+	glutAddMenuEntry( "Toggle Free Camera", 3 );
+	glutAddMenuEntry( "Toggle First Person Camera", 4 );
+	glutAddSubMenu("First Person Camera Hero", subMenuFirstPerson);
+	glutAddSubMenu("Arcball Camera Hero", subMenuArcball);
 
 	//attach menu to right mouse button
 	glutAttachMenu(2); 
