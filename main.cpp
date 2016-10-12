@@ -484,7 +484,7 @@ void drawScene(){
 		//adjust cars heading (updated in timer via user input)
 		glRotatef(-carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
 		glRotatef(myCar.getTheta(),0,1,0);
-	    myCar.drawCar();
+	    //myCar.drawCar();
 		
 		//want the curve/sprite to be drawn around car
 		glPushMatrix();
@@ -609,31 +609,24 @@ void renderScene(void)  {
 	glMatrixMode(GL_MODELVIEW); 
 	glLoadIdentity();
 
-	//surface normal
-	Vector3f heroNormal = myCar.getCarNormal();
 
-	//combine dirz and dirx into a vector
-	Vector3f testVec = Vector3f(myCar.getDirX(), 0, myCar.getDirZ());
-	Vector3f cameraAxisOfRotation = heroNormal.crossProduct(testVec);
+	//gluLookAt(0,20,0,0,0,0,0,1,0);
+	//translate the car to current position (which is changed by user input)
+	//glTranslatef(myCar.getX(),myCar.getY(),myCar.getZ());
+	//adjust cars heading (updated in timer via user input)
+	glRotatef(-carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
+	glRotatef(-myCar.getTheta(),0,1,0);
+		gluLookAt(myCar.getX(),myCar.getY(),myCar.getZ(), 
+		myCar.getX(),myCar.getY(),myCar.getZ()+1, 
+		0.0, 1.0, 0.0);
 
-	//attempt at first person cam. need dirY of car to use this approach
-	// gluLookAt(myCar.getX(),myCar.getY() + 5, myCar.getZ(),
-	// 			 myCar.getX() - myCar.getDirX() * 10, myCar.getY() + testVec.getY(), myCar.getZ() - myCar.getDirZ() * 10,
-	// 			 heroNormal.getX(), heroNormal.getY(), heroNormal.getZ());
-
-	//sky cam
-    //gluLookAt(0, 150, 0, 0, 0, 0, 1.0, 0.0, 0.0);
-	//glRotatef(-myCar.getTheta(), 0, 1, 0);
-	//glTranslatef(-myCar.getX(), 0, -myCar.getZ());
-
-	glTranslatef(myCar.getX(), myCar.getY() + 5, myCar.getZ());
-	gluLookAt(0,0,0, heroNormal.getX(), heroNormal.getY(), heroNormal.getZ(), 0,1,0);
-	glRotatef(90,cameraAxisOfRotation.getX(), cameraAxisOfRotation.getY(), cameraAxisOfRotation.getZ());
-	//glRotatef(myCar.getTheta(),0,1,0);
-	//glRotatef(-myCar.getTheta(), 0, 1, 0);
-	//glTranslatef(-myCar.getX(), 0, -myCar.getZ());
+	
+	
+	/*glRotatef(-myCar.getTheta(), 0, 1, 0);
+	glTranslatef(-myCar.getX(), 0, -myCar.getZ());*/
 	
 	drawScene();
+	
 
     //push the back buffer to the screen
     glutSwapBuffers();
