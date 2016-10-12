@@ -38,6 +38,8 @@ class Hero3:public Hero
 	void wingAnimate();
 
 	void updateAnimation();
+
+	//Point getPos();
 };
 
 #endif

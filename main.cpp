@@ -87,11 +87,13 @@ GLint leftMouseButton, rightMouseButton;
 // last known X and Y of the mouse
 int mouseX = 0, mouseY = 0;
 
-//Player object
+//Player objects
 Car myCar = Car();
 Car carSprite = Car();
-
 Hero3 hero3 = Hero3();
+
+Hero currentHero;
+
 //sprite object rotating around myCar
 Sprite mySprite = Sprite();
 //Arcball camera object, looking at player object location
@@ -706,7 +708,10 @@ void orientCar(){
 
 		myCar.setY(myBezPatch.getYPosition(u,v) + 2.5f);
 
-		myArcballCamera.setObjPos(myCar.getPos());
+		//works if use myCar.getPos(), but cant use currentHero.getPos()....WHY GOD WHY
+		myArcballCamera.setObjPos(currentHero.getPos());
+		//fprintf(stdout, "\nx: %f y: %f  z: %f \n", myCar.getPos().getX(), myCar.getPos().getY(), myCar.getPos().getZ() );
+		//fprintf(stdout, "\nx: %f y: %f  z: %f \n", currentHero->getPos().getX(), currentHero->getPos().getY(), currentHero->getPos().getZ() );
 }
 
 
@@ -714,6 +719,7 @@ void orientCar(){
 //updating passive motion variables
 //and updating input based variables for animation
 void myTimer(int value){
+
 	//get current heading of car, let car object handle updating
 	myCar.updateHeading();
 
@@ -986,6 +992,8 @@ int main(int argc, char **argv) {
 
     // do some basic OpenGL setup
     initScene();
+
+    currentHero = myCar;
 
     // and enter the GLUT loop, never to exit.
     glutMainLoop();

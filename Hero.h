@@ -1,12 +1,13 @@
+#include "Point.h"
 
 #ifndef HERO_H
 #define HERO_H
 class Hero{
 	protected:
 	//position
-	float carX;
-	float carY;
-	float carZ;
+	float heroX;
+	float heroY;
+	float heroZ;
 
 	public:
 	//setters for instance variables, not necessarily needed in A4 but useful for debugging
@@ -21,6 +22,7 @@ class Hero{
 
 	virtual void draw(){};
 	virtual void updateAnimation(){};
+	Point getPos();
 };
 
 #endif

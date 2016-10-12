@@ -3,9 +3,9 @@
 //default constructor for car, sets up all the instance variables to nice values as per the grid setup in A3
 Car::Car(){
 	//position
-	carX = 0;
-	carY = 2.5;
-	carZ = 0;
+	heroX = 0;
+	heroY = 2.5;
+	heroZ = 0;
 	
 	//heading
 	carTheta = 0;
@@ -30,9 +30,9 @@ Car::Car(){
 //constructor with extra parameters if want to change car to different starting values from a3
 Car::Car(float x, float y, float z, float theta, float dirZ, float dirX, float backTRot){
 	//position
-	carX = x;
-	carY = y;
-	carZ = z;
+	heroX = x;
+	heroY = y;
+	heroZ = z;
 	
 	//heading
 	carTheta = theta;
@@ -66,7 +66,7 @@ void Car::setBackwardsCarMotion(bool bcm){backwardsCarMotion = bcm;}
 
 //getters for all of the instance variables of the car
 //dont need for a4, but useful for debugging and may need later
-Point Car::getPos(){return Point(carX,carY,carZ);}
+//Point Car::getPos(){return Point(heroX,heroY,heroZ);}
 float Car::getTheta(){return carTheta;}
 float Car::getDirZ(){return carDirZ;}
 float Car::getDirX(){return carDirX;}
@@ -226,8 +226,8 @@ void Car::draw(){
 //update x and z translation based on heading (dirZ and dirX) by the specified step size
 //tell the camera that we did this, tell the car we are going forward because w key was pressed
 void Car::handleWKey(){
-	carZ -= carDirZ*carTranslationStepSize;
-	carX -= carDirX*carTranslationStepSize;
+	heroZ -= carDirZ*carTranslationStepSize;
+	heroX -= carDirX*carTranslationStepSize;
 	
 	forwardCarMotion = true;
 }
@@ -236,8 +236,8 @@ void Car::handleWKey(){
 //update x and z translation based on heading (dirZ and dirX) by the specified step size
 //tell the camera that we did this, tell the car we are going backwards because s key was pressed
 void Car::handleSKey(){
-	carZ += carDirZ*carTranslationStepSize;
-	carX += carDirX*carTranslationStepSize;
+	heroZ += carDirZ*carTranslationStepSize;
+	heroX += carDirX*carTranslationStepSize;
 	
 	backwardsCarMotion = true;
 }
@@ -245,10 +245,10 @@ void Car::handleSKey(){
 //keep car in bounds by checking position and limiting car position
 //updating camera lookat position to reflect constraint so camera knows object limitations
 void Car::checkCarBounds(){
-	if(carX >= 46){carX = 46;}
-	if(carZ >= 46){carZ = 46; }
-	if(carX <= -46){carX = -46;}
-	if(carZ <= -46){carZ = -46;}
+	if(heroX >= 46){heroX = 46;}
+	if(heroZ >= 46){heroZ = 46; }
+	if(heroX <= -46){heroX = -46;}
+	if(heroZ <= -46){heroZ = -46;}
 }
 
 void Car::checkMotion(){

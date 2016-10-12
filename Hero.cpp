@@ -1,9 +1,11 @@
 #include "Hero.h"
 
-void Hero::setX(float x){carX = x;}
-void Hero::setY(float y){carY = y;}
-void Hero::setZ(float z){carZ = z;}
+void Hero::setX(float x){heroX = x;}
+void Hero::setY(float y){heroY = y;}
+void Hero::setZ(float z){heroZ = z;}
 
-float Hero::getX(){return carX;}
-float Hero::getY(){return carY;}
-float Hero::getZ(){return carZ;}
+float Hero::getX(){return heroX;}
+float Hero::getY(){return heroY;}
+float Hero::getZ(){return heroZ;}
+
+Point Hero::getPos(){return Point(heroX,heroY,heroZ);}
