@@ -527,6 +527,8 @@ void orientCar(){
 		//fprintf(stdout, "\nu: %f, v: %f\n", u,v);
 
 		myCar.setY(myBezPatch.getYPosition(u,v) + 2.5f);
+
+		myArcballCamera.setObjPos(myCar.getPos());
 }
 
 
@@ -544,14 +546,13 @@ void myTimer(int value){
 	if (keys['w'] == true){
 		myCar.handleWKey();
 		orientCar();
-		myArcballCamera.setObjPos(myCar.getPos());
+		
 	}
 	
 	//move backwards if S is being pressed
 	if (keys['s'] == true){
 		myCar.handleSKey();
 		orientCar();
-		myArcballCamera.setObjPos(myCar.getPos());
 	}
 	
 	//updates step values which are to be used for updating car variables
@@ -747,6 +748,8 @@ int main(int argc, char **argv) {
     glutMotionFunc(mouseMotion);
 	glutKeyboardUpFunc(keyboard_up);
 	glutTimerFunc(1000.0f / 60.0f, myTimer, 0);
+
+	orientCar();
 	
 	// create our menu options and attach to mouse button
     createMenus();
