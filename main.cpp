@@ -92,7 +92,7 @@ Car myCar = Car();
 Car carSprite = Car();
 Hero3 hero3 = Hero3();
 
-Hero currentHero;
+Hero* currentHero = &myCar;
 
 //sprite object rotating around myCar
 Sprite mySprite = Sprite();
@@ -709,9 +709,10 @@ void orientCar(){
 		myCar.setY(myBezPatch.getYPosition(u,v) + 2.5f);
 
 		//works if use myCar.getPos(), but cant use currentHero.getPos()....WHY GOD WHY
-		myArcballCamera.setObjPos(currentHero.getPos());
+		myArcballCamera.setObjPos(currentHero->getPos());
+
 		//fprintf(stdout, "\nx: %f y: %f  z: %f \n", myCar.getPos().getX(), myCar.getPos().getY(), myCar.getPos().getZ() );
-		//fprintf(stdout, "\nx: %f y: %f  z: %f \n", currentHero->getPos().getX(), currentHero->getPos().getY(), currentHero->getPos().getZ() );
+		//fprintf(stdout, "\nx: %f y: %f  z: %f \n", currentHero->getX(), currentHero->getY(), currentHero->getZ() );
 }
 
 
@@ -993,7 +994,6 @@ int main(int argc, char **argv) {
     // do some basic OpenGL setup
     initScene();
 
-    currentHero = myCar;
 
     // and enter the GLUT loop, never to exit.
     glutMainLoop();

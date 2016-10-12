@@ -20,9 +20,11 @@ class Hero{
 	float getY();
 	float getZ();
 
+	Point getPos();
+
 	virtual void draw(){};
 	virtual void updateAnimation(){};
-	Point getPos();
+	
 };
 
 #endif
