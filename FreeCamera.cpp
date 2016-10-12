@@ -6,6 +6,7 @@ FreeCamera::FreeCamera(){
     cameraZ = 30;
     cameraTheta = -M_PI / 3.0f;
     cameraPhi = M_PI / 2.8f;
+    stepSize = 0.25;
 }
 	
 //always set an arcball camera with the xyz of the object being looked at, handle the camera positioning later
@@ -15,6 +16,7 @@ FreeCamera::FreeCamera(float cx, float cy, float cz){
 	cameraZ = cz;
 	cameraTheta = -M_PI / 3.0f;
     cameraPhi = M_PI / 2.8f;
+    stepSize = 0.25;
 }
 
 //handle mouse dragging for changing orientation (based on user input)
@@ -63,4 +65,16 @@ float* FreeCamera::getCameraInfo(){
 	cameraInfo[8] = 0.0f;
 	
 	return cameraInfo;
+}
+
+void FreeCamera::handleForwardKey(){
+	cameraX += cameraDirX*stepSize;
+	cameraY += cameraDirY*stepSize;
+	cameraZ += cameraDirZ*stepSize;
+
+}
+void FreeCamera::handleBackwardsKey(){
+	cameraX -= cameraDirX*stepSize;
+	cameraY -= cameraDirY*stepSize;
+	cameraZ -= cameraDirZ*stepSize;
 }
