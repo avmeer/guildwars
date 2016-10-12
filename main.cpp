@@ -55,6 +55,11 @@ time_t lastTime = time(NULL);
 int nbFrames = 0;
 int displayValue = 0;
 
+//sprite orientation
+float spriteAngle = 0.0f;
+Vector3f spriteAxisOfRotation = Vector3f();
+
+
 
 //variables for window
 static size_t windowWidth  = 640;
@@ -342,8 +347,18 @@ void drawScene(){
 		//get a point on the bezier curves based on an interpolated value from 0 to 1 and which curve
 		//both are updated in timer
 		Point point = bezierCurves[whichCurve].evaluateBezierCurve((float) interpolantValue - whichCurve);
+
+
+		Vector3f tangentVec = bezierCurves[whichCurve].evaluateTangentPoint((float) interpolantValue - whichCurve);
+		spriteAxisOfRotation = tangentVec.crossProduct(Vector3f(0.0f, 1.0f, 0.0f));
+		spriteAngle = tangentVec.getAngleBetween(Vector3f(0.0f, 1.0f, 0.0f));
+
+
+
 		//translate the sprite to a position along the bezier curves
 		glTranslatef(point.getX(),point.getY(),point.getZ());
+		//do sprite tangent shit
+		glRotatef(-spriteAngle, spriteAxisOfRotation.getX(), spriteAxisOfRotation.getY(), spriteAxisOfRotation.getZ());
 		mySprite.drawSprite();
 		glPopMatrix();
 		

@@ -33,8 +33,11 @@ Point BezierCurve::evaluateBezierCurve(float t){
 }
 
 //not used, but may be used in future assignments/labs to orient along tangent of curve
-Point BezierCurve::evaluateTangentPoint(float t){
-	return Point((-1.0f*p0 + 3.0f*p1 + -3.0f*p2 + p3)*pow(t,2) + (3.0f*p0 + -6.0f*p1 + 3.0f*p2)*t + (-3.0f*p0 + 3.0f*p1));
+Vector3f BezierCurve::evaluateTangentPoint(float t){
+	Point p = Point(3.0f*(-1.0f*p0 + 3.0f*p1 + -3.0f*p2 + p3)*pow(t,2) + 2.0f*(3.0f*p0 + -6.0f*p1 + 3.0f*p2)*t + (-3.0f*p0 + 3.0f*p1));
+	Vector3f tempVec = Vector3f(p.getX(), p.getY(), p.getZ());
+	tempVec.normalizeVec();
+	return tempVec;
 }
 
 //function to actually display the bezier curve

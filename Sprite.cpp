@@ -10,8 +10,9 @@ Sprite::Sprite(){
 //function to draw entire sprite using helper functions
 void Sprite::drawSprite(){
 	drawSpriteCenter();
-	drawInnerTorus();
-	drawOuterTorus();
+	//drawInnerTorus();
+	//drawOuterTorus();
+	glutSolidCube(1);
 }
 
 void Sprite::drawSpriteCenter(){

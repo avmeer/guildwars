@@ -27,6 +27,7 @@
 //////////////////////////////////////////
 
 #include "Point.h"
+#include "Vector3f.h"
 using namespace std;
 
 #ifndef BEZIERCURVE_H
@@ -61,7 +62,7 @@ class BezierCurve{
 	Point evaluateBezierCurve(float t);
 	
 	//function for evaluating the tangent to the bezier curve, not used in A4 but will be used later
-	Point evaluateTangentPoint(float t);
+	Vector3f evaluateTangentPoint(float t);
 	
 	//functions for drawing the curve, control points, cage, and toggling them.
 	void renderBezierCurve();
