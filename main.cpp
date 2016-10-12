@@ -159,11 +159,15 @@ void drawCity() {
 	for (int i = -50; i <= 50; i++){
 		for (int j = -50; j <= 50; j++){
 			if (i % 2 == 0 && j%2 == 0 && getRand() < 0.025){
+				float u = (i + 50.0) / 100.0f;
+				float v = (j + 50.0) / 100.0f;
+				float y =myBezPatch.getYPosition(u,v);
+
 				glColor3f(getRand(), getRand(), getRand());
 				glPushMatrix();
 				float futureHeight = getRand() * 10;//get random number between 1 and 10
 				while (futureHeight < 1){futureHeight = getRand() * 10;}//make sure not below 1 since getRand can return below 0.1
-				glTranslatef(i,futureHeight / 2,j);
+				glTranslatef(i,(futureHeight / 2)+y,j);
 				glScalef(1,futureHeight,1); //change heights of cubes placed
 				glutSolidCube( 1 );
 				glPopMatrix();
@@ -599,7 +603,7 @@ void myTimer(int value){
 	
 	//force a redisplay and re register a timer callback!
 	glutPostRedisplay();
-	glutTimerFunc( 25, myTimer, 0 );
+	glutTimerFunc(1000.0f / 60.0f, myTimer, 0);
 }
 
 // myMenu() /////////////////////////////////////////////////////////////////////
@@ -742,7 +746,7 @@ int main(int argc, char **argv) {
     glutMouseFunc(mouseCallback);
     glutMotionFunc(mouseMotion);
 	glutKeyboardUpFunc(keyboard_up);
-	glutTimerFunc( 25, myTimer, 0 );
+	glutTimerFunc(1000.0f / 60.0f, myTimer, 0);
 	
 	// create our menu options and attach to mouse button
     createMenus();
