@@ -516,21 +516,14 @@ void drawScene(bool drawCar=true){
 		glRotatef(myCar.getTheta(),0,1,0);
 		if(drawCar)
 	    	myCar.draw();
-		
-		//want the curve/sprite to be drawn around car
-		glPushMatrix();
-		//get a point on the bezier curves based on an interpolated value from 0 to 1 and which curve
-		//both are updated in timer
-		Point point = bezierCurves[whichCurve].evaluateBezierCurve((float) interpolantValue - whichCurve);
-
-
-		Vector3f tangentVec = bezierCurves[whichCurve].evaluateTangentPoint((float) interpolantValue - whichCurve);
-		spriteAxisOfRotation = tangentVec.crossProduct(Vector3f(0.0f, 1.0f, 0.0f));
-		spriteAngle = tangentVec.getAngleBetween(Vector3f(0.0f, 1.0f, 0.0f));
     }; glPopMatrix();
+
     glPushMatrix();
     //begin roller coaster hero stuff
     Point derpyPoint = trackBezCurves[whichCurve].evaluateBezierCurve((float) interpolantValue - whichCurve);
+    Vector3f tangentVec = trackBezCurves[whichCurve].evaluateTangentPoint((float) interpolantValue - whichCurve);
+    spriteAxisOfRotation = tangentVec.crossProduct(Vector3f(0.0f, 1.0f, 0.0f));
+	spriteAngle = tangentVec.getAngleBetween(Vector3f(0.0f, 1.0f, 0.0f));
     glTranslatef(derpyPoint.getX(),derpyPoint.getY(),derpyPoint.getZ());
 	glRotatef(-spriteAngle, spriteAxisOfRotation.getX(), spriteAxisOfRotation.getY(), spriteAxisOfRotation.getZ());
 	hero3.setX(derpyPoint.getX());
@@ -538,7 +531,6 @@ void drawScene(bool drawCar=true){
 	hero3.setZ(derpyPoint.getZ());
 	hero3.draw();
     glPopMatrix();
-
 }
 
 void drawFPS(){
@@ -643,7 +635,6 @@ void renderScene(void)  {
 	// gluLookAt(hero3.getX(),hero3.getY(),hero3.getZ(), 
 	// 		  hero3.getX(),hero3.getY(),hero3.getZ()+1, 
 	// 									  0.0, 1.0, 0.0);
-
 		//passing in false so first person cam is inside of hero, no get blocked
 	drawScene(false);
 	}
