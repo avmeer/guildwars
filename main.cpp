@@ -839,7 +839,17 @@ void myMenu( int value ) {
 }
 
 void mySubMenuArcball(int value){
-
+	switch(value){
+	case 0:
+		currentHero = &myCar;
+		break;
+	case 1:
+		currentHero = &myCar;
+		break;
+	case 2:
+		currentHero = &hero3;
+		break;
+	}
 }
 
 void mySubMenuFirstPerson(int value){
