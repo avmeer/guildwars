@@ -146,10 +146,6 @@ void BezierCurve::calculateStepDistances(){
 		distance += equalDistanceVal;
 		//printf("distance: %f", distance);
 	}
-
-	for(int i = 0; i <= 128; i++){
-		printf("\nkey: %d value: %f\n", i, equalDistanceTVals[i]);
-	}
 }
 
 float BezierCurve::lerp(float a, float b, float t){
@@ -162,6 +158,10 @@ int BezierCurve::find(float distance){
 		i++;
 	}
 	return i - 1;
+}
+
+float BezierCurve::getParamTVal(int value){
+	return equalDistanceTVals[value];
 }
 
 

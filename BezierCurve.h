@@ -78,5 +78,8 @@ class BezierCurve{
 	void calculateStepDistances();
 	float lerp(float, float, float);
 	int find(float distance);
+
+	float getParamTVal(int);
+
 };
 #endif

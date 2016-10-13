@@ -67,6 +67,11 @@ using namespace std;
 
 // GLOBAL VARIABLES ////////////////////////////////////////////////////////////
 
+//globals for arc length param
+int arcStep = 10;
+int whichArcCurve = 0;
+Vector3f arcParamTangent;
+
 //collection of all control points which will be made into Bcurves
 vector<Point> trackBezPoints;
 //collection of bezier curves (consist of 4 points each)
@@ -593,7 +598,7 @@ void initScene()  {
     generateEnvironmentDL();
 }
 
-void drawScene(bool drawCar=true, bool drawHero3=true){
+void drawScene(bool drawCar=true, bool drawHero3=true, bool drawTransport=true){
 	//call display list so dont have to recompute each time
 	glCallList( environmentDL );
 	
@@ -609,8 +614,28 @@ void drawScene(bool drawCar=true, bool drawHero3=true){
 	    	myCar.draw();
     }; glPopMatrix();
 
+    
+
     glPushMatrix();
-    //begin roller coaster hero stuff
+    float arcParamTVal = trackBezCurves[whichArcCurve].getParamTVal(arcStep);
+    Point arcParamPoint = trackBezCurves[whichArcCurve].evaluateBezierCurve(arcParamTVal);
+  	arcParamTangent = trackBezCurves[whichArcCurve].evaluateTangentPoint(arcParamTVal);
+  	spriteAxisOfRotation = tangentVec.crossProduct(Vector3f(0.0f, 1.0f, 0.0f));
+	spriteAngle = tangentVec.getAngleBetween(Vector3f(0.0f, 1.0f, 0.0f));
+    glTranslatef(arcParamPoint.getX(),arcParamPoint.getY() + 3,arcParamPoint.getZ());
+    glRotatef(-spriteAngle, spriteAxisOfRotation.getX(), spriteAxisOfRotation.getY(), spriteAxisOfRotation.getZ());
+    //orient with curve
+    if(drawTransport){
+    	transport.draw();
+    }
+    transport.setPos(arcParamPoint);
+
+ 
+
+    glPopMatrix();
+
+    glPushMatrix();
+    //begin roller coaster hero stuff NON PARAM
     Point derpyPoint = trackBezCurves[whichCurve].evaluateBezierCurve((float) interpolantValue - whichCurve);
 	tangentVec = trackBezCurves[whichCurve].evaluateTangentPoint((float) interpolantValue - whichCurve);
     spriteAxisOfRotation = tangentVec.crossProduct(Vector3f(0.0f, 1.0f, 0.0f));
@@ -723,7 +748,7 @@ void renderScene(void)  {
 			gluLookAt(myCar.getX(),myCar.getY(),myCar.getZ(), 
 					  myCar.getX(),myCar.getY(),myCar.getZ()+1, 
 												  0.0, 1.0, 0.0);
-			drawScene(false,true);
+			drawScene(false,true,true);
 		}
 
 		if (currentFirstPersonHero == &hero3){
@@ -732,7 +757,16 @@ void renderScene(void)  {
 											  0.0, 1.0, 0.0);
 			
 			//passing in false so first person cam is inside of hero, no get blocked
-			drawScene(true,false);
+			drawScene(true,false,true);
+		}	
+
+		if (currentFirstPersonHero == &transport){
+			gluLookAt(transport.getX(),transport.getY() + 3,transport.getZ(), 
+				  	  transport.getX() + arcParamTangent.getX()*50,transport.getY() + arcParamTangent.getY()*50,transport.getZ()+arcParamTangent.getZ()*50, 
+											  0.0, 1.0, 0.0);
+			
+			//passing in false so first person cam is inside of hero, no get blocked
+			drawScene(true,true,false);
 		}	
 
 	}
@@ -867,6 +901,14 @@ void myTimer(int value){
 	//render scene handles lopping everything but the decimal portion of the value
 	//that is passed into the bezierCurve evaluation function
 	interpolantValue += interpolantStepSize;
+	arcStep += 1;
+	if (arcStep == 128){
+		whichArcCurve++;
+		arcStep = 0;
+		if(whichArcCurve > trackBezCurves.size() - 1){
+			whichArcCurve = 0;
+		}
+	}
 	//be sure to update which curve we are using (0-1 is curve 1, 1-2 is curve 2 etc.)
 	whichCurve = (int) interpolantValue;
 	
@@ -936,7 +978,7 @@ void mySubMenuArcball(int value){
 		currentHero = &myCar;
 		break;
 	case 1:
-		currentHero = &myCar;
+		currentHero = &transport;
 		break;
 	case 2:
 		currentHero = &hero3;
@@ -950,7 +992,7 @@ void mySubMenuFirstPerson(int value){
 		currentFirstPersonHero = &myCar;
 		break;
 	case 1:
-		currentFirstPersonHero = &myCar;
+		currentFirstPersonHero = &transport;
 		break;
 	case 2:
 		currentFirstPersonHero = &hero3;

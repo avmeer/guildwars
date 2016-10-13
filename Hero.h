@@ -19,6 +19,8 @@ class Hero{
 	void setX(float x){heroX = x;}
 	void setY(float y){heroY = y;}
 	void setZ(float z){heroZ = z;}
+
+	void setPos(Point point){heroX = point.getX(); heroY = point.getY(); heroZ = point.getZ();}
 	
 	void setAxisOfRotation(Vector3f v){axisOfRotation = v;};
 	void setTheta(float t){theta=t;};
