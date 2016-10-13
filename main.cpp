@@ -103,7 +103,8 @@ int mouseX = 0, mouseY = 0;
 //Player objects
 Car myCar = Car();
 Car carSprite = Car();
-Transport hero3 = Transport();
+Hero3 hero3 = Hero3();
+Transport transport = Transport();
 
 Hero* currentHero = &myCar;
 Hero* currentFirstPersonHero = &myCar;
