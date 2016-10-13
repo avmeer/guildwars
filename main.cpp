@@ -701,7 +701,6 @@ void orientCar(){
 		float tempVar = surfaceNormal.getX();
 		surfaceNormal.setX(surfaceNormal.getZ());
 		surfaceNormal.setZ(tempVar);
-F
 
 		//fprintf(stdout, "\nx: %f, y: %f, z: %f\n", surfaceNormal.getX(), surfaceNormal.getY(), surfaceNormal.getZ());
 		carAxisOfRotation = surfaceNormal.crossProduct(Vector3f(0.0f, 1.0f, 0.0f));
@@ -907,81 +906,6 @@ void createMenus() {
 	glutAttachMenu(2); 
 }
 
-// loadControlPoints() /////////////////////////////////////////////////////////
-//
-//  Load our control points from file and store them in a global variable.
-//
-////////////////////////////////////////////////////////////////////////////////
-bool loadControlPoints( char* filename ) {
-	//open file stream to the file
-	ifstream myFile(filename);
-	
-	//if opened successfully, read in the data
-	if(myFile.is_open()){
-		//read in the first value in the file which denotes the number of points in the file
-		int numPoints;
-		myFile >> numPoints;
-		
-		//float values to store the x,y,z values, and char value to catch the commas in the csv
-		float x, y, z;
-		char comma;
-		
-		//based on the number of points that we read earlier, start grabbing data and storing into control points
-		for (int i = 0; i < numPoints; i++){
-			myFile >> x;
-			myFile >> comma;
-			myFile >> y;
-			myFile >> comma;
-			myFile >> z;
-			//ensure point being read correctly
-			//fprintf(stdout, "\nx: %f, y: %f, z: %f\n", x,y,z);
-			controlPoints.push_back(Point(x,y,z));	
-			trackBezPoints.push_back(Point(x,y,z));
-		} 
-
-		for (unsigned int j = 0; j < trackBezPoints.size(); j++){ 
-			trackBezPoints[j].setXYZ(trackBezPoints[j].getX() * 15.0f, trackBezPoints[j].getY() * 10.0f, trackBezPoints[j].getZ()*10.0f);
-		}
-		
-		//make individual curves from groups of 4 points
-		//note that the first 4 points denotes a curve, then the next 3 with the previous point denotes the next curve
-		//ie we can have 4, 7, 10 etc points
-		int startingIndex = 0;
-		//total curves is simply (numpoints - 1) / 3 so only create that many curves
-		for (unsigned int i = 0; i < ((controlPoints.size() - 1) / 3); i++){
-			//create a bezierCurve object based on 4 points and push onto a collection for later use
-			bezierCurves.push_back(BezierCurve(controlPoints[startingIndex], controlPoints[startingIndex + 1], controlPoints[startingIndex + 2], controlPoints[startingIndex + 3]));
-			trackBezCurves.push_back(BezierCurve(trackBezPoints[startingIndex], trackBezPoints[startingIndex + 1], trackBezPoints[startingIndex + 2], trackBezPoints[startingIndex + 3]));
-			//increment by only 3 to use last point of previous curve as starting point for next curve
-			//increment by only 3 to use last point of previous curve as starting point for next curve
-			startingIndex += 3;
-		}
-		
-		for (unsigned int i = 0; i < 100; i+=25){
-			for (unsigned int j = 0; j < 100; j+=25){
-				if(i == 50)
-					bezPatchPoints.push_back(Point(i,50,j));
-				else if (j == 50)
-					bezPatchPoints.push_back(Point(i,50,j));
-				else
-					bezPatchPoints.push_back(Point(i,getRand()*5,j));
-			}
-		}
-
-		myBezPatch = BezierPatch(&bezPatchPoints);
-
-		for (int k = 0; k < bezPatchPoints.size(); k++){
-			printf("\n%f,%f,%f", bezPatchPoints[k].getX(),bezPatchPoints[k].getY(),bezPatchPoints[k].getZ());
-		}
-		
-	}else{
-		//if here, file was not opened correctly, notify user
-		fprintf(stdout, "Error opening file, exiting");
-		exit(0);
-	}
-	return true;
-}
-
 
 // loadControlPoints() /////////////////////////////////////////////////////////
 //
@@ -994,6 +918,14 @@ bool loadWorldFile( char* filename ) {
 	
 	//if opened successfully, read in the data
 	if(myFile.is_open()){
+		//read in the first value in the file which denotes the number of points in the file
+		int numPoints;
+		
+		
+		//float values to store the x,y,z values, and char value to catch the commas in the csv
+		float x, y, z;
+		char comma;
+		
 
 		//assume that file has 16 points for curve
 		for (int i = 0; i < 16; i++){
@@ -1003,20 +935,13 @@ bool loadWorldFile( char* filename ) {
 			myFile >> comma;
 			myFile >> z;
 			//ensure point being read correctly
-			//fprintf(stdout, "\nx: %f, y: %f, z: %f\n", x,y,z);
+			fprintf(stdout, "\nPATCH x: %f, y: %f, z: %f\n", x,y,z);
 			bezPatchPoints.push_back(Point(x,y,z));
 		} 
 
 		myBezPatch = BezierPatch(&bezPatchPoints);
 
-		//read in the first value in the file which denotes the number of points in the file
-		int numPoints;
 		myFile >> numPoints;
-		
-		//float values to store the x,y,z values, and char value to catch the commas in the csv
-		float x, y, z;
-		char comma;
-		
 		//based on the number of points that we read earlier, start grabbing data and storing into control points
 		for (int i = 0; i < numPoints; i++){
 			myFile >> x;
@@ -1025,7 +950,7 @@ bool loadWorldFile( char* filename ) {
 			myFile >> comma;
 			myFile >> z;
 			//ensure point being read correctly
-			//fprintf(stdout, "\nx: %f, y: %f, z: %f\n", x,y,z);
+			fprintf(stdout, "CURVE \nx: %f, y: %f, z: %f\n", x,y,z);
 			controlPoints.push_back(Point(x,y,z));	
 			trackBezPoints.push_back(Point(x,y,z));
 		} 
@@ -1047,18 +972,17 @@ bool loadWorldFile( char* filename ) {
 			//increment by only 3 to use last point of previous curve as starting point for next curve
 			startingIndex += 3;
 		}
-
+		/*
 		int numObjects;
 		myFile >> numObjects;
-		char obj = '';
+		char* obj;
 		for (int i = 0; i < numObjects; i++){
 			myFile >> obj;
 			myFile >> comma;
 			myFile >> x;
 			myFile >> comma;
 			myFile >> z;
-			
-		} 
+		} */
 
 
 
@@ -1081,10 +1005,10 @@ int main(int argc, char **argv) {
 	
 	if (argc == 2){
 		//make sure a control point CSV file was passed in.  Then read the points from file
-		loadControlPoints(argv[1]);
+		loadWorldFile(argv[1]);
 	}else{
 		//a csv file wasnt passed in, notify user of error
-		fprintf(stdout, "Need to provide a single command line argument (name of file with control points)");
+		fprintf(stdout, "Need to provide a single command line argument (name of file with world info)");
 		exit(0);
 	}
 
