@@ -41,10 +41,12 @@ void Transport::drawDisk() {
 void Transport::draw() {
 	glPushMatrix();
 	glTranslatef(0, transportOffset, 0);
+    glRotatef(90,0,0,1);
 
 	drawHeroName();
 
 	glScalef(scaleFactor, scaleFactor, scaleFactor);
+
     //draw the main body of the transport
     drawCockpit();
 
@@ -117,7 +119,7 @@ void Transport::drawHeroName(){
 	glColor3f(.7, .7, .3);
 	glPushMatrix();
 	// where we want it written
-	glTranslatef(0, sphereRadius + sphereRadius/2, 0);
+	glTranslatef(0, sphereRadius/2, 2.5);
 	// how big we want it
 	glScalef(.01, .01, .01);
 	glRotatef(90, 0, 1, 0);

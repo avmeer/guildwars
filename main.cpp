@@ -60,6 +60,7 @@ using namespace std;
 
 //Heroes
 #include "Hero3.h"
+#include "Transport.h"
 
 //Lighting
 #include "Light.h"
@@ -103,6 +104,7 @@ int mouseX = 0, mouseY = 0;
 Car myCar = Car();
 Car carSprite = Car();
 Hero3 hero3 = Hero3();
+Transport transport = Transport();
 
 Hero* currentHero = &myCar;
 Hero* currentFirstPersonHero = &myCar;
