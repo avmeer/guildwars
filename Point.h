@@ -10,6 +10,8 @@ class Point{
 	Point();
 	Point(float _x, float _y, float _z);
 	void setXYZ(float _x, float _y, float _z);
+
+	float distance(Point);
 	
 	private:
 	float x, y, z;

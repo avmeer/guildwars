@@ -1,4 +1,6 @@
 #include "Point.h"
+#include <math.h>
+
 Point::Point(){
 	x = 0;
 	y = 0;
@@ -40,4 +42,11 @@ Point operator+( Point a, Point b ){
 // adds two Points together
 Point operator-( Point a, Point b ){
 	return Point( a.getX() - b.getX(), a.getY() - b.getY(), a.getZ() - b.getZ() );
+}
+
+float Point::distance(Point otherPoint){
+	float x2 = otherPoint.getX();
+	float y2 = otherPoint.getY();
+	float z2 = otherPoint.getZ();
+	return sqrt((x - x2)*(x - x2) + (y - y2)*(y - y2) + (z - z2)*(z - z2));
 }

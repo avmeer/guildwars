@@ -360,7 +360,8 @@ void drawCity() {
 	 
 	glDisable( GL_COLOR_MATERIAL );
 	glShadeModel(GL_SMOOTH);
-	Material myMat = Material(Color(0.0,	0.05,	0.05),	Color(0.4,	0.5,	0.5),	Color(0.04,	0.7,	0.7),	.078125);
+	Material myMat = Material();
+	myMat.gold();
 	myMat.setMaterial();
 	for(int i=0; i<worldObjects.size();i++){
 		glPushMatrix();
@@ -1022,7 +1023,7 @@ bool loadWorldFile( char* filename ) {
 			myFile >> comma;
 			myFile >> z;
 			//ensure point being read correctly
-			fprintf(stdout, "\nPATCH x: %f, y: %f, z: %f\n", x,y,z);
+			//fprintf(stdout, "\nPATCH x: %f, y: %f, z: %f\n", x,y,z);
 			bezPatchPoints.push_back(Point(x,y,z));
 		} 
 
@@ -1037,7 +1038,7 @@ bool loadWorldFile( char* filename ) {
 			myFile >> comma;
 			myFile >> z;
 			//ensure point being read correctly
-			fprintf(stdout, "CURVE \nx: %f, y: %f, z: %f\n", x,y,z);
+			//fprintf(stdout, "CURVE \nx: %f, y: %f, z: %f\n", x,y,z);
 			controlPoints.push_back(Point(x,y,z));	
 			trackBezPoints.push_back(Point(x,y,z));
 		} 
@@ -1088,11 +1089,13 @@ bool loadWorldFile( char* filename ) {
 
 			worldObjects.push_back(tempObj);
 
-			printf("OBJECTS \nx: %f, y: %f, z: %f, %c \n", x,y,z,obj);
+			//printf("OBJECTS \nx: %f, y: %f, z: %f, %c \n", x,y,z,obj);
 		} 
 
 
-
+	for (int i = 0; i < trackBezCurves.size(); i++){
+		trackBezCurves[i].calculateStepDistances();
+	}	
 		
 		
 	}else{

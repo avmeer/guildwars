@@ -25,6 +25,8 @@ BezierCurve::BezierCurve(Point p0, Point p1, Point p2, Point p3){
 	
 	//step size is 1/128 for good resolution of curve
 	this->stepSize = 0.0078125f;
+
+	//this->calculateStepDistances();
 }
 
 //evaluate a point along the bezier curve based on interpolation value t (helps with sprite anim and rendering bez curve)
@@ -111,14 +113,56 @@ void BezierCurve::drawControlPoints(){
 void BezierCurve::toggleControlCage(){displayControlCage = !displayControlCage;}
 void BezierCurve::toggleCurve(){displayBezierCurve = !displayBezierCurve;}
 
-// void BezierCurve::calculateStepPoints(){
-// 	Point point;
-// 	for(int i = 0; i <= 128; i += 1){
-// 			point = evaluateBezierCurve((float) i / 128.0f);
-// 			stepPoints[i] = point;
-// 		}
-// }
+void BezierCurve::calculateStepDistances(){
+	Point point;
+	Point prevPoint;
+	float distance = 0;
+	for(int i = 0; i <= 128; i += 1){
+		if (i != 0){
+			float valueToPassIn = ((float) i) / 128.0f;
+			float prevValueToPassIn = ((float) i - 1) / 128.0f;
+			point = evaluateBezierCurve(valueToPassIn);
+			prevPoint = evaluateBezierCurve(prevValueToPassIn);
+			distance += point.distance(prevPoint);
+		}
+		//printf("\n%f\n", distance);
+		stepDistances.insert(std::make_pair(i,distance));
+	}
 
+	float totalCurveDistance = stepDistances[128];
+	//printf("total distance: %f", totalCurveDistance);
+	float equalDistanceVal = totalCurveDistance / 128.0f;
+	float tVal;
+	int lower;
+	float lerpTVal;
+	distance = equalDistanceVal;
+
+	equalDistanceTVals.insert(std::make_pair(0,0.0f));
+	for(int i = 1; i <= 128; i++){
+		lower = find(distance);
+		lerpTVal = (distance - stepDistances[lower]) / (stepDistances[lower + 1] -  stepDistances[lower]);
+		tVal = lerp((float) lower / 128.0f, (float) (lower + 1) / 128.0f, lerpTVal);
+		equalDistanceTVals.insert(std::make_pair(i,tVal));
+		distance += equalDistanceVal;
+		//printf("distance: %f", distance);
+	}
+
+	for(int i = 0; i <= 128; i++){
+		printf("\nkey: %d value: %f\n", i, equalDistanceTVals[i]);
+	}
+}
+
+float BezierCurve::lerp(float a, float b, float t){
+	return (1-t) * a + t * b;
+}
+
+int BezierCurve::find(float distance){
+	int i = 0;
+	while(stepDistances[i] < distance && i <= 128){
+		i++;
+	}
+	return i - 1;
+}
 
 
 

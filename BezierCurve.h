@@ -44,7 +44,8 @@ class BezierCurve{
 	//vector for easily iterating through control points
 	vector<Point> controlPoints;
 
-	//map<int, Point> stepPoints;
+	map<int, float> stepDistances;
+	map<int, float> equalDistanceTVals;
 	
 	//resolution of curves
 	int resolution;
@@ -74,6 +75,8 @@ class BezierCurve{
 	void toggleControlCage();
 	void toggleCurve();
 
-	//void calculateStepPoints();
+	void calculateStepDistances();
+	float lerp(float, float, float);
+	int find(float distance);
 };
 #endif
