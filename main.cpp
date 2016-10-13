@@ -969,6 +969,10 @@ bool loadControlPoints( char* filename ) {
 		}
 
 		myBezPatch = BezierPatch(&bezPatchPoints);
+
+		for (int k = 0; k < bezPatchPoints.size(); k++){
+			printf("\n%f,%f,%f", bezPatchPoints[k].getX(),bezPatchPoints[k].getY(),bezPatchPoints[k].getZ());
+		}
 		
 	}else{
 		//if here, file was not opened correctly, notify user

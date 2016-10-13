@@ -24,6 +24,7 @@
 #include <fstream>			// we'll use ifstream	
 #include <string>			// for, well strings!
 #include <vector>			// and vectors (the storage container, not directional)
+#include <map>              // for the arc length parameterization look-up table
 //////////////////////////////////////////
 
 #include "Point.h"
