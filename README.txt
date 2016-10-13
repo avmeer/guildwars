@@ -41,7 +41,7 @@ Description of world file format:
 <Number of control points for track bezier curve>
 <x,y,z for control points>
 <Number of world objects>
-<type of object as character>,<x,z>
+<type of object as character>,<x,z> (y value calculated as per bezier surface)
 
 e.g.
 0.000000,0.006256,0.000000

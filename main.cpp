@@ -368,16 +368,18 @@ void drawCity() {
 	glDisable( GL_COLOR_MATERIAL );
 	glShadeModel(GL_SMOOTH);
 	Material myMat = Material();
-	myMat.gold();
-	myMat.setMaterial();
 	for(int i=0; i<worldObjects.size();i++){
 		glPushMatrix();
 		worldObject currentObj = worldObjects[i];
 		glTranslatef(currentObj.x,currentObj.y,currentObj.z);
 
 		if(currentObj.type=='t'){
+			myMat.gold();
+			myMat.setMaterial();
 			glutSolidTeapot(6);
 		}else{
+			myMat.cyanrubber();
+			myMat.setMaterial();
 			glutWireTeapot(6);
 		}
 		glPopMatrix();
@@ -936,6 +938,7 @@ void myTimer(int value){
 	myArcballCamera.setObjPos(currentHero->getPos());
 
 	hero3.updateAnimation();
+	transport.updateAnimation();
 	mrLightington.setPosition(hero3.getX(),hero3.getY(),hero3.getZ());
 	//force a redisplay and re register a timer callback!
 	glutPostRedisplay();
