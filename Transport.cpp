@@ -41,10 +41,12 @@ void Transport::drawDisk() {
 void Transport::draw() {
 	glPushMatrix();
 	glTranslatef(0, transportOffset, 0);
+    glRotatef(90,0,0,1);
 
 	drawHeroName();
 
 	glScalef(scaleFactor, scaleFactor, scaleFactor);
+
     //draw the main body of the transport
     drawCockpit();
 
