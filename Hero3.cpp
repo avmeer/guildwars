@@ -120,12 +120,10 @@ void Hero3::drawHeroName(){
 }
 
 void Hero3::draw(){
-	glDisable(GL_LIGHTING);
 	glPushMatrix();
 	glRotatef(-90,0,0,1);
 	drawHeroName();
 	glScalef(.03,.03,.03);
 	drawHead();
 	glPopMatrix();
-	glEnable(GL_LIGHTING);
 }

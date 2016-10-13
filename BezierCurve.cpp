@@ -111,6 +111,13 @@ void BezierCurve::drawControlPoints(){
 void BezierCurve::toggleControlCage(){displayControlCage = !displayControlCage;}
 void BezierCurve::toggleCurve(){displayBezierCurve = !displayBezierCurve;}
 
+// void BezierCurve::calculateStepPoints(){
+// 	Point point;
+// 	for(int i = 0; i <= 128; i += 1){
+// 			point = evaluateBezierCurve((float) i / 128.0f);
+// 			stepPoints[i] = point;
+// 		}
+// }
 
 
 
