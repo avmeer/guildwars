@@ -612,10 +612,10 @@ void drawScene(bool drawCar=true, bool drawHero3=true){
 	tangentVec = trackBezCurves[whichCurve].evaluateTangentPoint((float) interpolantValue - whichCurve);
     spriteAxisOfRotation = tangentVec.crossProduct(Vector3f(0.0f, 1.0f, 0.0f));
 	spriteAngle = tangentVec.getAngleBetween(Vector3f(0.0f, 1.0f, 0.0f));
-    glTranslatef(derpyPoint.getX(),derpyPoint.getY(),derpyPoint.getZ());
+    glTranslatef(derpyPoint.getX(),derpyPoint.getY() + 3,derpyPoint.getZ());
 	glRotatef(-spriteAngle, spriteAxisOfRotation.getX(), spriteAxisOfRotation.getY(), spriteAxisOfRotation.getZ());
 	hero3.setX(derpyPoint.getX());
-	hero3.setY(derpyPoint.getY());
+	hero3.setY(derpyPoint.getY() + 3);
 	hero3.setZ(derpyPoint.getZ());
 	if(drawHero3){hero3.draw();}
     glPopMatrix();
