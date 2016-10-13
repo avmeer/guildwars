@@ -56,6 +56,7 @@ using namespace std;
 #include "BezierPatch.h"
 #include "Vector3f.h"
 #include "FreeCamera.h"
+#include "Material.h"
 
 //Heroes
 #include "Hero3.h"
@@ -356,12 +357,15 @@ void drawCity() {
 			}
 		}
 	}
-
+	 
+	glDisable( GL_COLOR_MATERIAL );
+	glShadeModel(GL_SMOOTH);
+	Material myMat = Material(Color(0.0,	0.05,	0.05),	Color(0.4,	0.5,	0.5),	Color(0.04,	0.7,	0.7),	.078125);
+	myMat.setMaterial();
 	for(int i=0; i<worldObjects.size();i++){
 		glPushMatrix();
 		worldObject currentObj = worldObjects[i];
 		glTranslatef(currentObj.x,currentObj.y,currentObj.z);
-
 
 		if(currentObj.type=='t'){
 			glutSolidTeapot(6);
@@ -370,6 +374,8 @@ void drawCity() {
 		}
 		glPopMatrix();
 	}
+	glShadeModel(GL_FLAT);
+	glEnable( GL_COLOR_MATERIAL );
 }
 
 void drawCylinderBetweenPoints(Point a, Point b){
@@ -576,6 +582,8 @@ void initScene()  {
     glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
     //******************************************************************
 
+    //Material myMat = Material(Color(0.19225,  0.19225, 0.19225), Color(0.50754,  0.50754, 0.50754), Color(0.508273, 0.508273,  0.508273), .4);
+
     glShadeModel(GL_FLAT);
 
     srand( time(NULL) );	// seed our random number generator
@@ -716,8 +724,8 @@ void renderScene(void)  {
 		}
 
 		if (currentFirstPersonHero == &hero3){
-			gluLookAt(hero3.getX(),hero3.getY(),hero3.getZ(), 
-				  	  hero3.getX() + tangentVec.getX(),hero3.getY() + tangentVec.getY(),hero3.getZ()+tangentVec.getZ(), 
+			gluLookAt(hero3.getX(),hero3.getY() + 3,hero3.getZ(), 
+				  	  hero3.getX() + tangentVec.getX()*50,hero3.getY() + tangentVec.getY()*50,hero3.getZ()+tangentVec.getZ()*50, 
 											  0.0, 1.0, 0.0);
 			
 			//passing in false so first person cam is inside of hero, no get blocked
@@ -1101,6 +1109,8 @@ bool loadWorldFile( char* filename ) {
 //
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv) {
+	
+	printf("in main");
 	
 	if (argc == 2){
 		//make sure a control point CSV file was passed in.  Then read the points from file
