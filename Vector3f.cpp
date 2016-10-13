@@ -58,11 +58,6 @@ Vector3f Vector3f::crossProduct(Vector3f otherVec){
 	float xNew = a2*b3 - a3*b2;
 	float yNew = a3 * b1 - a1 * b3;
 	float zNew = a1*b2 - a2*b1;
-	if (yNew < 0) {
-		xNew *= -1;
-		yNew *= -1;
-		zNew *= -1;
-	}
 	Vector3f crossP = Vector3f(xNew, yNew, zNew);
 	crossP.normalizeVec();
 	return crossP;
