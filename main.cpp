@@ -147,6 +147,16 @@ ALuint sources[ NUM_SOURCES ];
 
 GLint windowId;                             // id for our main window
 
+struct worldObject {
+  float x;
+  float y;
+  float z;
+
+  char type;
+} ;
+
+vector<worldObject> worldObjects;
+
 
 // getRand() ///////////////////////////////////////////////////////////////////
 //
@@ -336,6 +346,20 @@ void drawCity() {
 				glPopMatrix();
 			}
 		}
+	}
+
+	for(int i=0; i<worldObjects.size();i++){
+		glPushMatrix();
+		worldObject currentObj = worldObjects[i];
+		glTranslatef(currentObj.x,currentObj.y,currentObj.z);
+
+
+		if(currentObj.type=='t'){
+			glutSolidTeapot(6);
+		}else{
+			glutWireTeapot(6);
+		}
+		glPopMatrix();
 	}
 }
 
@@ -956,7 +980,7 @@ bool loadWorldFile( char* filename ) {
 		} 
 
 		for (unsigned int j = 0; j < trackBezPoints.size(); j++){ 
-			trackBezPoints[j].setXYZ(trackBezPoints[j].getX() * 15.0f, trackBezPoints[j].getY() * 10.0f, trackBezPoints[j].getZ()*10.0f);
+			trackBezPoints[j].setXYZ(trackBezPoints[j].getX() , trackBezPoints[j].getY(), trackBezPoints[j].getZ());
 		}
 		
 		//make individual curves from groups of 4 points
@@ -982,7 +1006,20 @@ bool loadWorldFile( char* filename ) {
 			myFile >> x;
 			myFile >> comma;
 			myFile >> z;
-			printf("OBJECTS \nx: %f, z: %f, %c \n", x,z,obj);
+
+			float u = (x + 50.0) / 100.0f;
+			float v = (z + 50.0) / 100.0f;
+			float y = myBezPatch.getYPosition(u,v);
+
+			worldObject tempObj;
+			tempObj.x=x;
+			tempObj.y=y;
+			tempObj.z=z;
+			tempObj.type=obj;
+
+			worldObjects.push_back(tempObj);
+
+			printf("OBJECTS \nx: %f, y: %f, z: %f, %c \n", x,y,z,obj);
 		} 
 
 
