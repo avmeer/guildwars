@@ -529,7 +529,7 @@ void drawScene(bool drawCar=true){
 	hero3.setX(derpyPoint.getX());
 	hero3.setY(derpyPoint.getY());
 	hero3.setZ(derpyPoint.getZ());
-	hero3.draw();
+	//hero3.draw();
     glPopMatrix();
 }
 
@@ -626,15 +626,16 @@ void renderScene(void)  {
 
 	//first person cam stuff
 	
-	glRotatef(-myCar.getTheta()-90,0,1,0);
-	glRotatef(-carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
-	//glRotatef(-spriteAngle, spriteAxisOfRotation.getX(), spriteAxisOfRotation.getY(), spriteAxisOfRotation.getZ());
-	gluLookAt(myCar.getX(),myCar.getY(),myCar.getZ(), 
-			  myCar.getX(),myCar.getY(),myCar.getZ()+1, 
-										  0.0, 1.0, 0.0);
-	// gluLookAt(hero3.getX(),hero3.getY(),hero3.getZ(), 
-	// 		  hero3.getX(),hero3.getY(),hero3.getZ()+1, 
+	//glRotatef(-myCar.getTheta()-90,0,1,0);
+	//glRotatef(-90,0,1,0);
+	//glRotatef(-carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
+	glRotatef(-spriteAngle, spriteAxisOfRotation.getX(), spriteAxisOfRotation.getY(), spriteAxisOfRotation.getZ());
+	// gluLookAt(myCar.getX(),myCar.getY(),myCar.getZ(), 
+	// 		  myCar.getX(),myCar.getY(),myCar.getZ()+1, 
 	// 									  0.0, 1.0, 0.0);
+	gluLookAt(hero3.getX(),hero3.getY(),hero3.getZ(), 
+			  hero3.getX(),hero3.getY(),hero3.getZ()+1, 
+										  0.0, 1.0, 0.0);
 		//passing in false so first person cam is inside of hero, no get blocked
 	drawScene(false);
 	}
