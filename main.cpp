@@ -972,17 +972,18 @@ bool loadWorldFile( char* filename ) {
 			//increment by only 3 to use last point of previous curve as starting point for next curve
 			startingIndex += 3;
 		}
-		/*
+		
 		int numObjects;
 		myFile >> numObjects;
-		char* obj;
+		char obj;
 		for (int i = 0; i < numObjects; i++){
 			myFile >> obj;
 			myFile >> comma;
 			myFile >> x;
 			myFile >> comma;
 			myFile >> z;
-		} */
+			printf("OBJECTS \nx: %f, z: %f, %c \n", x,z,obj);
+		} 
 
 
 
