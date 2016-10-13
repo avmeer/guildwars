@@ -103,6 +103,7 @@ void Hero3::drawHead(){
 
 void Hero3::draw(){
 	glPushMatrix();
+	glRotatef(-90,0,0,1);
 	glScalef(.03,.03,.03);
 	drawHead();
 	glPopMatrix();
