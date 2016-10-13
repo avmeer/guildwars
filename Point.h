@@ -9,6 +9,7 @@ class Point{
 	float getZ();
 	Point();
 	Point(float _x, float _y, float _z);
+	void setXYZ(float _x, float _y, float _z);
 	
 	private:
 	float x, y, z;

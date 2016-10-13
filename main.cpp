@@ -62,6 +62,12 @@ using namespace std;
 
 // GLOBAL VARIABLES ////////////////////////////////////////////////////////////
 
+//collection of all control points which will be made into Bcurves
+vector<Point> trackBezPoints;
+//collection of bezier curves (consist of 4 points each)
+vector<BezierCurve> trackBezCurves;
+
+
 //cameraselection
 bool usingArcball = true;
 bool usingFirstPersonCam = true;
@@ -377,6 +383,15 @@ void generateEnvironmentDL() {
 	glPopMatrix();
 	
 	drawGrid();
+
+	//Draw bezier track!
+	glPushMatrix();
+	//glScalef(15.0f,10.0f,15.0f);
+	for (unsigned int i = 0; i < trackBezCurves.size(); i++){
+				trackBezCurves[i].renderBezierCurve();
+	}
+	glPopMatrix();
+
 	glEndList();
 }
 
@@ -527,7 +542,7 @@ void drawScene(bool drawCar=true){
 		//carSprite.drawCar();
 		//mySprite.drawSprite();
 
-		hero3.draw();
+		//hero3.draw();
 		glPopMatrix();
 		
 		//for each bezier curve, draw the control points, connect the control points, and draw the bezier curve
@@ -639,9 +654,13 @@ void renderScene(void)  {
 	
 	glRotatef(-myCar.getTheta()-90,0,1,0);
 	glRotatef(-carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
+	//glRotatef(-spriteAngle, spriteAxisOfRotation.getX(), spriteAxisOfRotation.getY(), spriteAxisOfRotation.getZ());
 	gluLookAt(myCar.getX(),myCar.getY(),myCar.getZ(), 
 			  myCar.getX(),myCar.getY(),myCar.getZ()+1, 
 										  0.0, 1.0, 0.0);
+	// gluLookAt(hero3.getX(),hero3.getY(),hero3.getZ(), 
+	// 		  hero3.getX(),hero3.getY(),hero3.getZ()+1, 
+	// 									  0.0, 1.0, 0.0);
 
 		//passing in false so first person cam is inside of hero, no get blocked
 	drawScene(false);
@@ -925,7 +944,12 @@ bool loadControlPoints( char* filename ) {
 			//ensure point being read correctly
 			//fprintf(stdout, "\nx: %f, y: %f, z: %f\n", x,y,z);
 			controlPoints.push_back(Point(x,y,z));	
+			trackBezPoints.push_back(Point(x,y,z));
 		} 
+
+		for (unsigned int j = 0; j < trackBezPoints.size(); j++){ 
+			trackBezPoints[j].setXYZ(trackBezPoints[j].getX() * 15.0f, trackBezPoints[j].getY() * 10.0f, trackBezPoints[j].getZ()*10.0f);
+		}
 		
 		//make individual curves from groups of 4 points
 		//note that the first 4 points denotes a curve, then the next 3 with the previous point denotes the next curve
@@ -935,6 +959,8 @@ bool loadControlPoints( char* filename ) {
 		for (unsigned int i = 0; i < ((controlPoints.size() - 1) / 3); i++){
 			//create a bezierCurve object based on 4 points and push onto a collection for later use
 			bezierCurves.push_back(BezierCurve(controlPoints[startingIndex], controlPoints[startingIndex + 1], controlPoints[startingIndex + 2], controlPoints[startingIndex + 3]));
+			trackBezCurves.push_back(BezierCurve(trackBezPoints[startingIndex], trackBezPoints[startingIndex + 1], trackBezPoints[startingIndex + 2], trackBezPoints[startingIndex + 3]));
+			//increment by only 3 to use last point of previous curve as starting point for next curve
 			//increment by only 3 to use last point of previous curve as starting point for next curve
 			startingIndex += 3;
 		}
