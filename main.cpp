@@ -60,6 +60,9 @@ using namespace std;
 //Heroes
 #include "Hero3.h"
 
+//Lighting
+#include "Light.h"
+
 // GLOBAL VARIABLES ////////////////////////////////////////////////////////////
 
 //collection of all control points which will be made into Bcurves
@@ -159,6 +162,9 @@ struct worldObject {
 } ;
 
 vector<worldObject> worldObjects;
+
+//lighting
+Light mrLightington = Light(GL_LIGHT0);
 
 
 // getRand() ///////////////////////////////////////////////////////////////////
@@ -439,7 +445,6 @@ void generateEnvironmentDL() {
 	//fprintf(stdout, "%d", bezPoints->size());
 	
 	
-	glDisable(GL_LIGHTING);
 	glColor3ub(153,0,0);
 	for (unsigned int j = 0; j < (*bezPoints).size() - numCurvePoints; j+=numCurvePoints){
 		glBegin(GL_QUAD_STRIP);
@@ -449,8 +454,6 @@ void generateEnvironmentDL() {
 		}
 		glEnd();
 	}
-	
-	glEnable(GL_LIGHTING);
 	glPopMatrix();
 	
 	drawGrid();
@@ -553,14 +556,19 @@ void initScene()  {
     // this is some code to enable a default light for the scene;
     // feel free to play around with this, but we won't talk about
     // lighting in OpenGL for another couple of weeks yet.
-    float lightCol[4] = { 1, 1, 1, 1};
+    /*float lightCol[4] = { 1, 1, 1, 1};
     float ambientCol[4] = { 0.0, 0.0, 0.0, 1.0 };
     float lPosition[4] = { 10, 10, 10, 1 };
     glLightfv( GL_LIGHT0, GL_POSITION,lPosition );
     glLightfv( GL_LIGHT0, GL_DIFFUSE,lightCol );
     glLightfv( GL_LIGHT0, GL_AMBIENT, ambientCol );
     glEnable( GL_LIGHTING );
-    glEnable( GL_LIGHT0 );
+    glEnable( GL_LIGHT0 );*/
+    glEnable( GL_LIGHTING ); 
+    glLightf( GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.5 );
+    mrLightington.enable();
+    mrLightington.setPosition(0,0,0);
+
 	
     // tell OpenGL not to use the material system; just use whatever we 
     // pass with glColor*()
@@ -875,6 +883,7 @@ void myTimer(int value){
 	myArcballCamera.setObjPos(currentHero->getPos());
 
 	hero3.updateAnimation();
+	mrLightington.setPosition(hero3.getX(),hero3.getY(),hero3.getZ());
 	//force a redisplay and re register a timer callback!
 	glutPostRedisplay();
 	glutTimerFunc(1000.0f / 60.0f, myTimer, 0);
