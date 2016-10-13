@@ -23,8 +23,7 @@
 
 
 TARGET = mp
-OBJECTS = main.o ArcballCamera.o Camera.o Point.o Car.o BezierCurve.o Sprite.o BezierPatch.o Vector3f.o Hero3.o Hero.o Freecamera.o Light.o Color.o Material.o 
-#Transport.o
+OBJECTS = main.o ArcballCamera.o Camera.o Point.o Car.o BezierCurve.o Sprite.o BezierPatch.o Vector3f.o Hero3.o Hero.o Freecamera.o Light.o Color.o Material.o Transport.o
 
 
 #Professor's desktop path!
