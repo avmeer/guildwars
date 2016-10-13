@@ -527,38 +527,17 @@ void drawScene(bool drawCar=true){
 		Vector3f tangentVec = bezierCurves[whichCurve].evaluateTangentPoint((float) interpolantValue - whichCurve);
 		spriteAxisOfRotation = tangentVec.crossProduct(Vector3f(0.0f, 1.0f, 0.0f));
 		spriteAngle = tangentVec.getAngleBetween(Vector3f(0.0f, 1.0f, 0.0f));
-
-
-
-		//translate the sprite to a position along the bezier curves
-		hero3.setX(point.getX()+myCar.getX());
-		hero3.setY(point.getY()+myCar.getY());
-		hero3.setZ(point.getZ()+myCar.getZ());
-
-		glTranslatef(point.getX(),point.getY(),point.getZ());
-		//do sprite tangent shit
-		glRotatef(-spriteAngle, spriteAxisOfRotation.getX(), spriteAxisOfRotation.getY(), spriteAxisOfRotation.getZ());
-		//glRotatef()
-		//glScalef(.1,.1,.1);
-		//carSprite.drawCar();
-		//mySprite.drawSprite();
-
-		//hero3.draw();
-		glPopMatrix();
-		
-		//for each bezier curve, draw the control points, connect the control points, and draw the bezier curve
-		//note that whether or not this gets actually drawn is done internally with bools that are updated
-		//via the menu items created in myMenu
-		for (unsigned int i = 0; i < bezierCurves.size(); i++){
-				bezierCurves[i].drawControlPoints();
-				bezierCurves[i].connectControlPoints();
-				bezierCurves[i].renderBezierCurve();
-		}
-		
-		
     }; glPopMatrix();
-
-    	
+    glPushMatrix();
+    //begin roller coaster hero stuff
+    Point derpyPoint = trackBezCurves[whichCurve].evaluateBezierCurve((float) interpolantValue - whichCurve);
+    glTranslatef(derpyPoint.getX(),derpyPoint.getY(),derpyPoint.getZ());
+	glRotatef(-spriteAngle, spriteAxisOfRotation.getX(), spriteAxisOfRotation.getY(), spriteAxisOfRotation.getZ());
+	hero3.setX(derpyPoint.getX());
+	hero3.setY(derpyPoint.getY());
+	hero3.setZ(derpyPoint.getZ());
+	hero3.draw();
+    glPopMatrix();
 
 }
 
