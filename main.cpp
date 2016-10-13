@@ -616,30 +616,34 @@ void renderScene(void)  {
 	
 	
 	if (usingFirstPersonCam){
-	//Clear the way for the second camera
-	glClear(GL_DEPTH_BUFFER_BIT);
-	glViewport(0, 0, windowWidth/3, windowHeight/3);
-	glScissor(0, 0, windowWidth/3, windowHeight/3);
-	glEnable(GL_SCISSOR_TEST);
-	glClear(GL_COLOR_BUFFER_BIT);
-	
-	glMatrixMode(GL_MODELVIEW); 
-	glLoadIdentity();
+		//Clear the way for the second camera
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glViewport(0, 0, windowWidth/3, windowHeight/3);
+		glScissor(0, 0, windowWidth/3, windowHeight/3);
+		glEnable(GL_SCISSOR_TEST);
+		glClear(GL_COLOR_BUFFER_BIT);
+		
+		glMatrixMode(GL_MODELVIEW); 
+		glLoadIdentity();
 
-	//first person cam stuff
-	
-	//glRotatef(-myCar.getTheta()-90,0,1,0);
-	//glRotatef(-90,0,1,0);
-	//glRotatef(-carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
-	//glRotatef(-spriteAngle, spriteAxisOfRotation.getX(), spriteAxisOfRotation.getY(), spriteAxisOfRotation.getZ());
-	// gluLookAt(myCar.getX(),myCar.getY(),myCar.getZ(), 
-	// 		  myCar.getX(),myCar.getY(),myCar.getZ()+1, 
-	// 									  0.0, 1.0, 0.0);
-	gluLookAt(hero3.getX(),hero3.getY(),hero3.getZ(), 
-			  hero3.getX() + tangentVec.getX(),hero3.getY() + tangentVec.getY(),hero3.getZ()+tangentVec.getZ(), 
-										  0.0, 1.0, 0.0);
-		//passing in false so first person cam is inside of hero, no get blocked
-	drawScene(false);
+		//first person cam stuff
+		
+		if (currentFirstPersonHero == &myCar){
+			glRotatef(-myCar.getTheta()-90,0,1,0);
+			glRotatef(-carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
+			gluLookAt(myCar.getX(),myCar.getY(),myCar.getZ(), 
+					  myCar.getX(),myCar.getY(),myCar.getZ()+1, 
+												  0.0, 1.0, 0.0);
+		}
+
+		if (currentFirstPersonHero == &hero3){
+			gluLookAt(hero3.getX(),hero3.getY(),hero3.getZ(), 
+				  	  hero3.getX() + tangentVec.getX(),hero3.getY() + tangentVec.getY(),hero3.getZ()+tangentVec.getZ(), 
+											  0.0, 1.0, 0.0);
+		}	
+
+			//passing in false so first person cam is inside of hero, no get blocked
+		drawScene(false);
 	}
     //push the back buffer to the screen
     glutSwapBuffers();
@@ -850,7 +854,17 @@ void mySubMenuArcball(int value){
 }
 
 void mySubMenuFirstPerson(int value){
-
+	switch(value){
+	case 0:
+		currentFirstPersonHero = &myCar;
+		break;
+	case 1:
+		currentFirstPersonHero = &myCar;
+		break;
+	case 2:
+		currentFirstPersonHero = &hero3;
+		break;
+	}
 }
 
 // createMenus() ///////////////////////////////////////////////////////////////
