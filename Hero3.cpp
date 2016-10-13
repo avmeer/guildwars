@@ -101,9 +101,29 @@ void Hero3::drawHead(){
 	glPopMatrix();
 }
 
+void Hero3::drawHeroName(){
+	// the text
+	char name[64]= "Schmitty Van Pumpernickel";
+	glDisable(GL_LIGHTING);
+	// choose a colour
+	glColor3f(.7, .7, .3);
+	glPushMatrix();
+	// where we want it written
+	glTranslatef(0, 5, 3);
+	// how big we want it
+	glScalef(.01, .01, .01);
+	glRotatef(90, 0, 1, 0);
+	for (int c=0; name[c] != 0; ++c)
+		glutStrokeCharacter(GLUT_STROKE_ROMAN, name[c]);
+	glPopMatrix();
+	glEnable(GL_LIGHTING);
+}
+
 void Hero3::draw(){
+
 	glPushMatrix();
 	glRotatef(-90,0,0,1);
+	drawHeroName();
 	glScalef(.03,.03,.03);
 	drawHead();
 	glPopMatrix();

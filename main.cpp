@@ -504,7 +504,7 @@ void initScene()  {
     generateEnvironmentDL();
 }
 
-void drawScene(bool drawCar=true){
+void drawScene(bool drawCar=true, bool drawHero3=true){
 	//call display list so dont have to recompute each time
 	glCallList( environmentDL );
 	
@@ -531,7 +531,7 @@ void drawScene(bool drawCar=true){
 	hero3.setX(derpyPoint.getX());
 	hero3.setY(derpyPoint.getY());
 	hero3.setZ(derpyPoint.getZ());
-	//hero3.draw();
+	if(drawHero3){hero3.draw();}
     glPopMatrix();
 }
 
@@ -634,16 +634,18 @@ void renderScene(void)  {
 			gluLookAt(myCar.getX(),myCar.getY(),myCar.getZ(), 
 					  myCar.getX(),myCar.getY(),myCar.getZ()+1, 
 												  0.0, 1.0, 0.0);
+			drawScene(false,true);
 		}
 
 		if (currentFirstPersonHero == &hero3){
 			gluLookAt(hero3.getX(),hero3.getY(),hero3.getZ(), 
 				  	  hero3.getX() + tangentVec.getX(),hero3.getY() + tangentVec.getY(),hero3.getZ()+tangentVec.getZ(), 
 											  0.0, 1.0, 0.0);
+			
+			//passing in false so first person cam is inside of hero, no get blocked
+			drawScene(true,false);
 		}	
 
-			//passing in false so first person cam is inside of hero, no get blocked
-		drawScene(false);
 	}
     //push the back buffer to the screen
     glutSwapBuffers();

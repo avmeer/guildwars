@@ -39,6 +39,8 @@ class Hero3:public Hero
 
 	void updateAnimation();
 
+	void drawHeroName();
+
 	//Point getPos();
 };
 
