@@ -244,9 +244,9 @@ void initializeOpenAL( int argc, char *argv[] ) {
 	alSourcei(sources[0], AL_LOOPING, AL_TRUE);
 
 	#ifdef __APPLE__
-		alutLoadWAVFile((ALbyte*)"wavs/Running.wav", &format, &data, &size, &freq);
+		alutLoadWAVFile((ALbyte*)"wavs/carengine.wav", &format, &data, &size, &freq);
 	#else
-		alutLoadWAVFile((ALbyte*)"wavs/Running.wav", &format, &data, &size, &freq, &loop);
+		alutLoadWAVFile((ALbyte*)"wavs/carengine.wav", &format, &data, &size, &freq, &loop);
 	#endif
 
 	alBufferData(buffers[1], format, data, size, freq);;
@@ -256,9 +256,9 @@ void initializeOpenAL( int argc, char *argv[] ) {
 	alSourcei(sources[1], AL_LOOPING, AL_TRUE);
 
 	#ifdef __APPLE__
-		alutLoadWAVFile((ALbyte*)"wavs/background.wav", &format, &data, &size, &freq);
+		alutLoadWAVFile((ALbyte*)"wavs/heylisten.wav", &format, &data, &size, &freq);
 	#else
-		alutLoadWAVFile((ALbyte*)"wavs/background.wav", &format, &data, &size, &freq, &loop);
+		alutLoadWAVFile((ALbyte*)"wavs/heylisten.wav", &format, &data, &size, &freq, &loop);
 	#endif
 
 	alBufferData(buffers[2], format, data, size, freq);;
@@ -617,6 +617,8 @@ void renderScene(void)  {
 					 0.0f, 1.0f, 0.0f);
 
 	positionSource(sources[1], myCar.getX(), myCar.getY(), myCar.getZ());
+
+	positionSource(sources[2], hero3.getX(), hero3.getY(), hero3.getZ());
 	
 	
 	if (usingFirstPersonCam){
@@ -1007,6 +1009,9 @@ int main(int argc, char **argv) {
 	atexit( cleanupOpenAL );            // callback that gets called right before the program exits
 
 	orientCar();
+
+	//play sound forever
+	alSourcePlay(sources[2]);
 	
 	// create our menu options and attach to mouse button
     createMenus();
