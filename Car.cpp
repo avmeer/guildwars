@@ -8,7 +8,6 @@ Car::Car(){
 	heroZ = 0;
 	
 	//heading
-	carTheta = 0;
 	carDirZ = 1;
 	carDirX = 0;
 
@@ -28,14 +27,14 @@ Car::Car(){
 }
 
 //constructor with extra parameters if want to change car to different starting values from a3
-Car::Car(float x, float y, float z, float theta, float dirZ, float dirX, float backTRot){
+Car::Car(float x, float y, float z, float t, float dirZ, float dirX, float backTRot){
 	//position
 	heroX = x;
 	heroY = y;
 	heroZ = z;
 	
 	//heading
-	carTheta = theta;
+	theta = t;
 	carDirZ = dirZ;
 	carDirX = dirX;
 	
@@ -54,7 +53,6 @@ Car::Car(float x, float y, float z, float theta, float dirZ, float dirX, float b
 
 //setters for all of the instance variables of the car
 //dont need for a4, but useful for debugging and may need later
-void Car::setTheta(float theta){carTheta = theta;}
 void Car::setDirZ(float z){carDirZ = z;}
 void Car::setDirX(float x){carDirX = x;}
 void Car::setBackTorusRotation(float btr){backTorusRotation = btr;}
@@ -66,8 +64,6 @@ void Car::setBackwardsCarMotion(bool bcm){backwardsCarMotion = bcm;}
 
 //getters for all of the instance variables of the car
 //dont need for a4, but useful for debugging and may need later
-//Point Car::getPos(){return Point(heroX,heroY,heroZ);}
-float Car::getTheta(){return carTheta;}
 float Car::getDirZ(){return carDirZ;}
 float Car::getDirX(){return carDirX;}
 float Car::getBackTorusRotation(){return backTorusRotation;}
@@ -259,18 +255,18 @@ void Car::checkMotion(){
 
 void Car::updateHeading(){
 	//get x and z components of heading vector to be applied to movement (based on car theta which is updated by a and d keys in timer)
-	carDirX = -cos(carTheta*M_PI/180.0);
-	carDirZ = sin(carTheta*M_PI/180.0);
+	carDirX = -cos(theta*M_PI/180.0);
+	carDirZ = sin(theta*M_PI/180.0);
 }
 
 void Car::handleAKey(){
 	//a turns the car left
-	carTheta += carHeadingStep;
+	theta += carHeadingStep;
 }
 
 void Car::handleDKey(){
 	//d turns the car right
-	carTheta -= carHeadingStep;
+	theta -= carHeadingStep;
 }
 
 void Car::updateBackTorus(){

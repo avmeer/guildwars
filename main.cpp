@@ -99,6 +99,7 @@ Car carSprite = Car();
 Hero3 hero3 = Hero3();
 
 Hero* currentHero = &myCar;
+Hero* currentFirstPersonHero = &myCar;
 
 //sprite object rotating around myCar
 Sprite mySprite = Sprite();

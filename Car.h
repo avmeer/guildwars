@@ -28,7 +28,6 @@
 class Car:public Hero{
 	private:
 	//heading
-	float carTheta;
 	float carDirZ;
 	float carDirX;
 
@@ -67,8 +66,6 @@ class Car:public Hero{
 	Vector3f getCarNormal();
 	
 	//getters for instance variables, not necessarily needed in A4 but useful for debugging
-	//Point getPos();
-	float getTheta();
 	float getDirZ();
 	float getDirX();
 	float getBackTorusRotation();
