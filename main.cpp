@@ -366,6 +366,25 @@ void drawCity() {
 	}
 }
 
+void drawCylinderBetweenPoints(Point a, Point b){
+ glPushMatrix();
+// This is the default direction for the cylinders to face in OpenGL
+Vector3f z = Vector3f(0,0,1);         
+// Get diff between two points you want cylinder along
+Point temp = (a - b);
+Vector3f p =  Vector3f(temp.getX(),temp.getY(),temp.getZ());                
+// Get CROSS product (the axis of rotation)
+Vector3f t = z.crossProduct(p);
+ 
+// Get angle. LENGTH is magnitude of the vector
+double angle = 180 / M_PI * acos((z.dotProduct(p)/p.getLength()));
+ 
+glTranslated(b.getX(),b.getY(),b.getZ());
+glRotated(angle,t.getX(),t.getY(),t.getZ());
+
+gluCylinder(gluNewQuadric(),.5,.5, p.getLength(), 10, 10);
+glPopMatrix();
+}
 
 
 
@@ -382,6 +401,7 @@ void drawTrack(){
 					glVertex3f(p1.getX(), p1.getY(), p1.getZ());
 					glVertex3f(p2.getX(), p2.getY(), p2.getZ());
 					glEnd();
+					drawCylinderBetweenPoints(Point(p1.getX(), p1.getY(), p1.getZ()),Point(p2.getX(), p2.getY(), p2.getZ()));
 				}
 	}
 }

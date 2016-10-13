@@ -19,6 +19,7 @@ class Vector3f{
 	void normalizeVec();
 	float getAngleBetween(Vector3f otherVec);
 
+	float getLength();
 
 
 	void setX(float);

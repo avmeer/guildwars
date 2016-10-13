@@ -36,3 +36,8 @@ Point operator*( float f, Point p ){
 Point operator+( Point a, Point b ){
 	return Point( a.getX() + b.getX(), a.getY() + b.getY(), a.getZ() + b.getZ() );
 }
+
+// adds two Points together
+Point operator-( Point a, Point b ){
+	return Point( a.getX() - b.getX(), a.getY() - b.getY(), a.getZ() - b.getZ() );
+}

@@ -40,6 +40,11 @@ void Vector3f::normalizeVec(){
 	z = z/magnitude;
 }
 
+float Vector3f::getLength(){
+	float magnitude = sqrt(x*x + y*y + z*z);
+	return magnitude;
+}
+
 float Vector3f::dotProduct(Vector3f otherVec){
 	return x*otherVec.getX() + y*otherVec.getY() + z*otherVec.getZ();
 }
