@@ -11,7 +11,7 @@ Material::Material(Color ambIn, Color difIn, Color specIn, float shineIn) {
   amb = ambIn;
   dif = difIn;
   spec = specIn;
-  shine = fmax(0, fmin(128, shineIn));
+  shine = shineIn;
   alpha = 1;
 }
 
@@ -22,5 +22,5 @@ void Material::setMaterial() {
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, amb4);
   glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, dif4);
   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, spec4);
-  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine);
+  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine * 128);
 }

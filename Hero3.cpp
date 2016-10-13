@@ -120,7 +120,6 @@ void Hero3::drawHeroName(){
 }
 
 void Hero3::draw(){
-
 	glPushMatrix();
 	glRotatef(-90,0,0,1);
 	drawHeroName();
