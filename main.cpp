@@ -114,6 +114,9 @@ vector<Point> controlPoints;
 //collection of bezier curves (consist of 4 points each)
 vector<BezierCurve> bezierCurves;
 
+vector<BezierCurve> innerBezierCurves;
+vector<BezierCurve> outerBezierCurves;
+
 vector<Point> bezPatchPoints;
 
 BezierPatch myBezPatch;
@@ -363,6 +366,27 @@ void drawCity() {
 	}
 }
 
+
+
+
+void drawTrack(){
+		for (unsigned int i = 0; i < innerBezierCurves.size(); i++){
+				innerBezierCurves[i].renderBezierCurve();
+				outerBezierCurves[i].renderBezierCurve();
+				for(float j = 0; j <1.0; j+=.05 ){
+					Point p1 = innerBezierCurves[i].evaluateBezierCurve(j);
+					Point p2 = outerBezierCurves[i].evaluateBezierCurve(j);
+					glLineWidth(2.5); 
+					glColor3f(1.0, 0.0, 0.0);
+					glBegin(GL_LINES);
+					glVertex3f(p1.getX(), p1.getY(), p1.getZ());
+					glVertex3f(p2.getX(), p2.getY(), p2.getZ());
+					glEnd();
+				}
+	}
+}
+
+
 // generateEnvironmentDL() /////////////////////////////////////////////////////
 //
 //  This function creates a display list with the code to draw a simple 
@@ -414,10 +438,12 @@ void generateEnvironmentDL() {
 	//Draw bezier track!
 	glPushMatrix();
 	//glScalef(15.0f,10.0f,15.0f);
-	for (unsigned int i = 0; i < trackBezCurves.size(); i++){
+	/*for (unsigned int i = 0; i < trackBezCurves.size(); i++){
 				trackBezCurves[i].renderBezierCurve();
-	}
+	}*/
 	glPopMatrix();
+
+	drawTrack();
 
 	glEndList();
 }
@@ -992,6 +1018,12 @@ bool loadWorldFile( char* filename ) {
 			//create a bezierCurve object based on 4 points and push onto a collection for later use
 			bezierCurves.push_back(BezierCurve(controlPoints[startingIndex], controlPoints[startingIndex + 1], controlPoints[startingIndex + 2], controlPoints[startingIndex + 3]));
 			trackBezCurves.push_back(BezierCurve(trackBezPoints[startingIndex], trackBezPoints[startingIndex + 1], trackBezPoints[startingIndex + 2], trackBezPoints[startingIndex + 3]));
+			
+			innerBezierCurves.push_back(BezierCurve(trackBezPoints[startingIndex]*.9, trackBezPoints[startingIndex + 1]*.9, trackBezPoints[startingIndex + 2]*.9, trackBezPoints[startingIndex + 3]*.9));
+			outerBezierCurves.push_back(BezierCurve(trackBezPoints[startingIndex]*1.1, trackBezPoints[startingIndex + 1]*1.1, trackBezPoints[startingIndex + 2]*1.1, trackBezPoints[startingIndex + 3]*1.1));
+
+
+
 			//increment by only 3 to use last point of previous curve as starting point for next curve
 			//increment by only 3 to use last point of previous curve as starting point for next curve
 			startingIndex += 3;
