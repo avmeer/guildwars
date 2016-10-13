@@ -67,6 +67,8 @@ vector<Point> trackBezPoints;
 //collection of bezier curves (consist of 4 points each)
 vector<BezierCurve> trackBezCurves;
 
+Vector3f tangentVec;
+
 
 //cameraselection
 bool usingArcball = true;
@@ -521,7 +523,7 @@ void drawScene(bool drawCar=true){
     glPushMatrix();
     //begin roller coaster hero stuff
     Point derpyPoint = trackBezCurves[whichCurve].evaluateBezierCurve((float) interpolantValue - whichCurve);
-    Vector3f tangentVec = trackBezCurves[whichCurve].evaluateTangentPoint((float) interpolantValue - whichCurve);
+	tangentVec = trackBezCurves[whichCurve].evaluateTangentPoint((float) interpolantValue - whichCurve);
     spriteAxisOfRotation = tangentVec.crossProduct(Vector3f(0.0f, 1.0f, 0.0f));
 	spriteAngle = tangentVec.getAngleBetween(Vector3f(0.0f, 1.0f, 0.0f));
     glTranslatef(derpyPoint.getX(),derpyPoint.getY(),derpyPoint.getZ());
@@ -629,12 +631,12 @@ void renderScene(void)  {
 	//glRotatef(-myCar.getTheta()-90,0,1,0);
 	//glRotatef(-90,0,1,0);
 	//glRotatef(-carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
-	glRotatef(-spriteAngle, spriteAxisOfRotation.getX(), spriteAxisOfRotation.getY(), spriteAxisOfRotation.getZ());
+	//glRotatef(-spriteAngle, spriteAxisOfRotation.getX(), spriteAxisOfRotation.getY(), spriteAxisOfRotation.getZ());
 	// gluLookAt(myCar.getX(),myCar.getY(),myCar.getZ(), 
 	// 		  myCar.getX(),myCar.getY(),myCar.getZ()+1, 
 	// 									  0.0, 1.0, 0.0);
 	gluLookAt(hero3.getX(),hero3.getY(),hero3.getZ(), 
-			  hero3.getX(),hero3.getY(),hero3.getZ()+1, 
+			  hero3.getX() + tangentVec.getX(),hero3.getY() + tangentVec.getY(),hero3.getZ()+tangentVec.getZ(), 
 										  0.0, 1.0, 0.0);
 		//passing in false so first person cam is inside of hero, no get blocked
 	drawScene(false);
