@@ -515,6 +515,10 @@ void drawScene(bool drawCar=true){
 
 
 		//translate the sprite to a position along the bezier curves
+		hero3.setX(point.getX()+myCar.getX());
+		hero3.setY(point.getY()+myCar.getY());
+		hero3.setZ(point.getZ()+myCar.getZ());
+
 		glTranslatef(point.getX(),point.getY(),point.getZ());
 		//do sprite tangent shit
 		glRotatef(-spriteAngle, spriteAxisOfRotation.getX(), spriteAxisOfRotation.getY(), spriteAxisOfRotation.getZ());
@@ -522,6 +526,7 @@ void drawScene(bool drawCar=true){
 		//glScalef(.1,.1,.1);
 		//carSprite.drawCar();
 		//mySprite.drawSprite();
+
 		hero3.draw();
 		glPopMatrix();
 		
@@ -708,11 +713,7 @@ void orientCar(){
 
 		myCar.setY(myBezPatch.getYPosition(u,v) + 2.5f);
 
-		//works if use myCar.getPos(), but cant use currentHero.getPos()....WHY GOD WHY
-		myArcballCamera.setObjPos(currentHero->getPos());
-
-		//fprintf(stdout, "\nx: %f y: %f  z: %f \n", myCar.getPos().getX(), myCar.getPos().getY(), myCar.getPos().getZ() );
-		//fprintf(stdout, "\nx: %f y: %f  z: %f \n", currentHero->getX(), currentHero->getY(), currentHero->getZ() );
+	
 }
 
 
@@ -801,6 +802,7 @@ void myTimer(int value){
 
 	}
 
+	myArcballCamera.setObjPos(currentHero->getPos());
 
 	hero3.updateAnimation();
 	//force a redisplay and re register a timer callback!
@@ -982,6 +984,8 @@ int main(int argc, char **argv) {
 	glutTimerFunc(1000.0f / 60.0f, myTimer, 0);
 
 	initializeOpenAL( argc, argv );     // do all of our setup for OpenAL
+
+	currentHero= &hero3;
 
 	//atexit( cleanupOpenGL );            // callback that gets called right before the program exits
 	atexit( cleanupOpenAL );            // callback that gets called right before the program exits
