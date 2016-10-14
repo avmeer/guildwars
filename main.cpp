@@ -426,7 +426,7 @@ void generateEnvironmentDL() {
 	glDisable( GL_COLOR_MATERIAL );
 	glShadeModel(GL_SMOOTH);
 	Material myMat = Material();
-	myMat.ruby();
+	myMat.emerald();
 	myMat.setMaterial();
 	//draw the bezier surface!
 	for (int i = -50; i < 51; i++) {
