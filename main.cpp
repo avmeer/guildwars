@@ -345,21 +345,27 @@ void drawGrid() {
 //
 ////////////////////////////////////////////////////////////////////////////////
 void drawCity() {
-    //Randomly place buildings of varying heights with random colors
-	for (int i = -50; i <= 50; i++){
-		for (int j = -50; j <= 50; j++){
-			if (i % 2 == 0 && j%2 == 0 && getRand() < 0.025){
-				float u = (i + 50.0) / 100.0f;
-				float v = (j + 50.0) / 100.0f;
-				float y =myBezPatch.getYPosition(u,v);
-
-				glColor3f(getRand(), getRand(), getRand());
+    //Randomly place trees of varying sizes
+	for (int i = -50; i < 51; i++) {
+		for (int j = -50; j < 51; j++) {
+			if (i%2 == 0 && j%2 == 0 && getRand() < 0.005) {
+				float cylHeight = getRand() + 1;
 				glPushMatrix();
-				float futureHeight = getRand() * 10;//get random number between 1 and 10
-				while (futureHeight < 1){futureHeight = getRand() * 10;}//make sure not below 1 since getRand can return below 0.1
-				glTranslatef(i,(futureHeight / 2)+y,j);
-				glScalef(1,futureHeight,1); //change heights of cubes placed
-				glutSolidCube( 1 );
+				glTranslatef(i, 0, j);
+				glColor3ub(105, 66, 0);
+				glRotatef(-90, 1, 0, 0);
+				//glScalef(1, cylHeight, 1);
+				//glutSolidCube(1);
+				GLUquadricObj *myCyl;
+				myCyl = gluNewQuadric();
+				gluQuadricDrawStyle(myCyl, GLU_FILL);
+				gluCylinder(myCyl, 0.5, 0.5, cylHeight, 10, 2);
+				glPopMatrix();
+				glPushMatrix();
+				glColor3ub(40, 132, 0);
+				glTranslatef(i, cylHeight, j);
+				glRotatef(-90, 1, 0, 0);
+				glutSolidCone(cylHeight * 1.1, cylHeight * 7, 15, 15);
 				glPopMatrix();
 			}
 		}
