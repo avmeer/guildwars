@@ -309,6 +309,14 @@ void drawCity() {
     // Randomly place trees of varying sizes
 	for (int i = -50; i < 51; i++) {
 		for (int j = -50; j < 51; j++) {
+			float u = (i + 50.0) / 100.0f;
+			float v = (j + 50.0) / 100.0f;
+			float y =myBezPatch.getYPosition(u,v);
+			glPushMatrix();
+				glTranslatef(i, y, j);
+				glutSolidCube(1);
+			glPopMatrix();
+
 			if (i%2 == 0 && j%2 == 0 && getRand() < 0.005) {
 				float u = (i + 50.0) / 100.0f;
 				float v = (j + 50.0) / 100.0f;
