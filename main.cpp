@@ -393,6 +393,7 @@ glPopMatrix();
 
 void drawTrack(){
 		for (unsigned int i = 0; i < innerBezierCurves.size(); i++){
+				glColor3f(1.0, 0.0, 0.0);
 				innerBezierCurves[i].renderBezierCurve();
 				outerBezierCurves[i].renderBezierCurve();
 				for(float j = 0; j <1.0; j+=.05 ){
@@ -586,6 +587,8 @@ void initScene()  {
     //headLight.setPosition(0,0,0);
     headLight.setColors(Color(0,0,0),Color(1,1,1),Color(0,0,0));
     headLight.setCutoffAngle(35);
+
+    glClearColor( 0, 0, 1, 1);
 
 	
     // tell OpenGL not to use the material system; just use whatever we 
