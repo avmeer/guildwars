@@ -309,16 +309,16 @@ void drawCity() {
     // Randomly place trees of varying sizes
 	for (int i = -50; i < 51; i++) {
 		for (int j = -50; j < 51; j++) {
-			if (i%2 == 0 && j%2 == 0 && getRand() < 0.005) {
+			if (i%2 == 0 && j%2 == 0 && getRand() < 0.012) {
 				float u = (i + 50.0) / 100.0f;
 				float v = (j + 50.0) / 100.0f;
 				float y =myBezPatch.getYPosition(u,v);
 
-				float cylHeight = getRand() + 1;
+				float cylHeight = getRand() + 2;
 
 				//draw tree stump
 				glPushMatrix();
-				glTranslatef(i, y - cylHeight/2.0f, j);
+				glTranslatef(i, y, j);
 				glColor3ub(105, 66, 0);
 				glRotatef(-90, 1, 0, 0);
 				GLUquadricObj *myCyl;
@@ -330,7 +330,7 @@ void drawCity() {
 				//draw tree leaves
 				glPushMatrix();
 				glColor3ub(40, 132, 0);
-				glTranslatef(i, cylHeight + (y - cylHeight/2.0f), j);
+				glTranslatef(i, cylHeight + y, j);
 				glRotatef(-90, 1, 0, 0);
 				glutSolidCone(cylHeight * 1.1, cylHeight * 7, 15, 15);
 				glPopMatrix();
