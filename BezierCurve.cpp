@@ -53,7 +53,7 @@ void BezierCurve::renderBezierCurve(){
 		Point point;
 		
 		//make curve a nice blue color
-		glColor3f( 0, 0, 1 );
+		//glColor3f( 0, 0, 1 ); Fuck your blue color it conflicts with the sky
 		
 		//start drawing line strips
 		//vertices of line strips based on stipping from 0 to 1 and passing in the interpolated value to the evaluatePoint function
