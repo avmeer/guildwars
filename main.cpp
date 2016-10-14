@@ -361,6 +361,8 @@ void drawCity() {
 		Vector3f axisOfRot = tempNormal.crossProduct(Vector3f(0.0f, 1.0f, 0.0f));
 		float angleRot = tempNormal.getAngleBetween(Vector3f(0.0f, 1.0f, 0.0f));
 
+		if (axisOfRot.getX() < 0 && axisOfRot.getZ() < 0){angleRot = -angleRot;}
+
 		glRotatef(-angleRot, axisOfRot.getX(),axisOfRot.getY(),axisOfRot.getZ());
 		glTranslatef(0,3,0);
 
