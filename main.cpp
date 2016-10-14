@@ -345,21 +345,33 @@ void drawGrid() {
 //
 ////////////////////////////////////////////////////////////////////////////////
 void drawCity() {
-    //Randomly place buildings of varying heights with random colors
-	for (int i = -50; i <= 50; i++){
-		for (int j = -50; j <= 50; j++){
-			if (i % 2 == 0 && j%2 == 0 && getRand() < 0.025){
+    // Randomly place trees of varying sizes
+	for (int i = -50; i < 51; i++) {
+		for (int j = -50; j < 51; j++) {
+			if (i%2 == 0 && j%2 == 0 && getRand() < 0.005) {
 				float u = (i + 50.0) / 100.0f;
 				float v = (j + 50.0) / 100.0f;
 				float y =myBezPatch.getYPosition(u,v);
 
-				glColor3f(getRand(), getRand(), getRand());
+				float cylHeight = getRand() + 1;
+
+				//draw tree stump
 				glPushMatrix();
-				float futureHeight = getRand() * 10;//get random number between 1 and 10
-				while (futureHeight < 1){futureHeight = getRand() * 10;}//make sure not below 1 since getRand can return below 0.1
-				glTranslatef(i,(futureHeight / 2)+y,j);
-				glScalef(1,futureHeight,1); //change heights of cubes placed
-				glutSolidCube( 1 );
+				glTranslatef(i, y - cylHeight/2.0f, j);
+				glColor3ub(105, 66, 0);
+				glRotatef(-90, 1, 0, 0);
+				GLUquadricObj *myCyl;
+				myCyl = gluNewQuadric();
+				gluQuadricDrawStyle(myCyl, GLU_FILL);
+				gluCylinder(myCyl, 0.5, 0.5, cylHeight, 10, 2);
+				glPopMatrix();
+
+				//draw tree leaves
+				glPushMatrix();
+				glColor3ub(40, 132, 0);
+				glTranslatef(i, cylHeight + (y - cylHeight/2.0f), j);
+				glRotatef(-90, 1, 0, 0);
+				glutSolidCone(cylHeight * 1.1, cylHeight * 7, 15, 15);
 				glPopMatrix();
 			}
 		}
@@ -459,13 +471,42 @@ void generateEnvironmentDL() {
 	vector<Point>* bezPoints = myBezPatch.getCurvePoints();
 	
 	//fprintf(stdout, "%d", bezPoints->size());
+
+
+
+
 	
 	
 	glColor3ub(153,0,0);
 	for (unsigned int j = 0; j < (*bezPoints).size() - numCurvePoints; j+=numCurvePoints){
 		glBegin(GL_QUAD_STRIP);
 		for (int i = 0; i < numCurvePoints; i++){
+				
+				float u = ((*bezPoints)[j + i].getX() + 50.0) / 100.0f;
+ 				float v = ((*bezPoints)[j + i].getZ() + 50.0) / 100.0f;
+				Point tempP = myBezPatch.dVBezier(u,v);
+				Vector3f dV = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
+				tempP = myBezPatch.dUBezier(u,v);
+				Vector3f dU = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
+
+				Vector3f normal = dU.crossProduct(dV);
+
+			glNormal3f(normal.getX(),normal.getY(),normal.getZ());
+
 			glVertex3f((*bezPoints)[j + i].getX(),(*bezPoints)[j + i].getY(),(*bezPoints)[j + i].getZ());
+
+
+			u = ((*bezPoints)[j + i+numCurvePoints].getX() + 50.0) / 100.0f;
+			 v = ((*bezPoints)[j + i+numCurvePoints].getZ() + 50.0) / 100.0f;
+			 tempP = myBezPatch.dVBezier(u,v);
+			 dV = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
+			tempP = myBezPatch.dUBezier(u,v);
+			 dU = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
+
+			 normal = dU.crossProduct(dV);
+
+			glNormal3f(normal.getX(),normal.getY(),normal.getZ());
+
 			glVertex3f((*bezPoints)[j + i + numCurvePoints].getX(),(*bezPoints)[j + i + numCurvePoints].getY(),(*bezPoints)[j + i + numCurvePoints].getZ());
 		}
 		glEnd();
