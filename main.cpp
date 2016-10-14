@@ -346,6 +346,24 @@ void drawCity() {
 		worldObject currentObj = worldObjects[i];
 		glTranslatef(currentObj.x,currentObj.y,currentObj.z);
 
+		//aligning objects with surface
+		float u = (currentObj.x + 50.0) / 100.0f;
+		float v = (currentObj.z + 50.0) / 100.0f;
+		Point tempP = myBezPatch.dVBezier(u,v);
+		Vector3f dV = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
+		tempP = myBezPatch.dUBezier(u,v);
+		Vector3f dU = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
+		Vector3f tempNormal = dU.crossProduct(dV);
+		//X and Z are flipped...
+		float tempVar = tempNormal.getX();
+		tempNormal.setX(surfaceNormal.getZ());
+		tempNormal.setZ(tempVar);
+		Vector3f axisOfRot = tempNormal.crossProduct(Vector3f(0.0f, 1.0f, 0.0f));
+		float angleRot = tempNormal.getAngleBetween(Vector3f(0.0f, 1.0f, 0.0f));
+
+		glRotatef(-angleRot, axisOfRot.getX(),axisOfRot.getY(),axisOfRot.getZ());
+		glTranslatef(0,3,0);
+
 		if(currentObj.type=='t'){
 			myMat.gold();
 			myMat.setMaterial();
