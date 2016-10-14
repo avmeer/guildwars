@@ -345,25 +345,31 @@ void drawGrid() {
 //
 ////////////////////////////////////////////////////////////////////////////////
 void drawCity() {
-    //Randomly place trees of varying sizes
+    // Randomly place trees of varying sizes
 	for (int i = -50; i < 51; i++) {
 		for (int j = -50; j < 51; j++) {
 			if (i%2 == 0 && j%2 == 0 && getRand() < 0.005) {
+				float u = (i + 50.0) / 100.0f;
+				float v = (j + 50.0) / 100.0f;
+				float y =myBezPatch.getYPosition(u,v);
+
 				float cylHeight = getRand() + 1;
+
+				//draw tree stump
 				glPushMatrix();
-				glTranslatef(i, 0, j);
+				glTranslatef(i, y - cylHeight/2.0f, j);
 				glColor3ub(105, 66, 0);
 				glRotatef(-90, 1, 0, 0);
-				//glScalef(1, cylHeight, 1);
-				//glutSolidCube(1);
 				GLUquadricObj *myCyl;
 				myCyl = gluNewQuadric();
 				gluQuadricDrawStyle(myCyl, GLU_FILL);
 				gluCylinder(myCyl, 0.5, 0.5, cylHeight, 10, 2);
 				glPopMatrix();
+
+				//draw tree leaves
 				glPushMatrix();
 				glColor3ub(40, 132, 0);
-				glTranslatef(i, cylHeight, j);
+				glTranslatef(i, cylHeight + (y - cylHeight/2.0f), j);
 				glRotatef(-90, 1, 0, 0);
 				glutSolidCone(cylHeight * 1.1, cylHeight * 7, 15, 15);
 				glPopMatrix();
