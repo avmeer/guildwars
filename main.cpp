@@ -955,14 +955,6 @@ void myMenu( int value ) {
 		//bye bye!
         exit(0);
 		break;
-	case 1:
-		//toggle all the control cages for each bezier curve (toggle variable in class for each curve)
-		for(unsigned int i = 0; i < bezierCurves.size(); i++){bezierCurves[i].toggleControlCage();}
-		break;
-	case 2:
-		//toggle all the bezier curves for each bezier curve (toggle variable in class for each curve)
-		for(unsigned int i = 0; i < bezierCurves.size(); i++){bezierCurves[i].toggleCurve();}
-		break;
 	case 3: 
 		usingArcball = !usingArcball;
 		break;
@@ -1012,23 +1004,21 @@ void createMenus() {
 
 	//Make sub-menu for first person camera
 	int subMenuFirstPerson = glutCreateMenu(mySubMenuFirstPerson);
-	glutAddMenuEntry("Hero 1", 0);
-	glutAddMenuEntry("Hero 2", 1);
-	glutAddMenuEntry("Hero 3", 2);
+	glutAddMenuEntry("Oghad Urr", 0);
+	glutAddMenuEntry("Dannister", 1);
+	glutAddMenuEntry("Schmitty Van Pumpernickel", 2);
 
 	//Make sub-menu for arcball camera
 	int subMenuArcball = glutCreateMenu(mySubMenuArcball);
-	glutAddMenuEntry("Hero 1", 0);
-	glutAddMenuEntry("Hero 2", 1);
-	glutAddMenuEntry("Hero 3", 2);
+	glutAddMenuEntry("Oghad Urr", 0);
+	glutAddMenuEntry("Dannister", 1);
+	glutAddMenuEntry("Schmitty Van Pumpernickel", 2);
 
 	//menu callback
 	int mainMenu = glutCreateMenu(myMenu);
 
 	//menu options
 	glutAddMenuEntry( "Quit", 0 ); 
-	glutAddMenuEntry( "Toggle displaying control cage", 1 );
-	glutAddMenuEntry( "Toggle displaying bezier curve", 2 );
 	glutAddMenuEntry( "Toggle Free Camera", 3 );
 	glutAddMenuEntry( "Toggle First Person Camera", 4 );
 	glutAddSubMenu("First Person Camera Hero", subMenuFirstPerson);
