@@ -458,20 +458,9 @@ void generateEnvironmentDL() {
 	glPushMatrix();
 	glTranslatef(-50,0,-50);
 	glScalef(1.333333333333333333333333333333333333333333333333,1,1.333333333333333333333333333333333333333333333333);
-	for (float u = 0; u <= 1.0; u+= stepSize){
-			//fprintf(stdout, "%f", u);
-			myBezPatch.populateBezierPatch(u, stepSize);
-	}
-	
+	for (float u = 0; u <= 1.0; u+= stepSize){myBezPatch.populateBezierPatch(u, stepSize);}
 	vector<Point>* bezPoints = myBezPatch.getCurvePoints();
-	
-	//fprintf(stdout, "%d", bezPoints->size());
 
-
-
-
-	
-	
 	//glColor3ub(153,0,0);
 	glDisable( GL_COLOR_MATERIAL );
 	glShadeModel(GL_SMOOTH);
@@ -1093,12 +1082,10 @@ bool loadWorldFile( char* filename ) {
 		//read in the first value in the file which denotes the number of points in the file
 		int numPoints;
 		
-		
 		//float values to store the x,y,z values, and char value to catch the commas in the csv
 		float x, y, z;
 		char comma;
 		
-
 		//assume that file has 16 points for curve
 		for (int i = 0; i < 16; i++){
 			myFile >> x;
@@ -1107,7 +1094,6 @@ bool loadWorldFile( char* filename ) {
 			myFile >> comma;
 			myFile >> z;
 			//ensure point being read correctly
-			//fprintf(stdout, "\nPATCH x: %f, y: %f, z: %f\n", x,y,z);
 			bezPatchPoints.push_back(Point(x,y,z));
 		} 
 
@@ -1122,7 +1108,6 @@ bool loadWorldFile( char* filename ) {
 			myFile >> comma;
 			myFile >> z;
 			//ensure point being read correctly
-			//fprintf(stdout, "CURVE \nx: %f, y: %f, z: %f\n", x,y,z);
 			controlPoints.push_back(Point(x,y,z));	
 			trackBezPoints.push_back(Point(x,y,z));
 		} 
@@ -1172,8 +1157,6 @@ bool loadWorldFile( char* filename ) {
 			tempObj.type=obj;
 
 			worldObjects.push_back(tempObj);
-
-			//printf("OBJECTS \nx: %f, y: %f, z: %f, %c \n", x,y,z,obj);
 		} 
 
 
