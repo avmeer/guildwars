@@ -262,9 +262,9 @@ void initializeOpenAL( int argc, char *argv[] ) {
 
     /* TODO #08: Create Our Stationary Sound */
 	#ifdef __APPLE__
-		alutLoadWAVFile((ALbyte*)"wavs/siren.wav", &format, &data, &size, &freq);
+		alutLoadWAVFile((ALbyte*)"wavs/ambiance.wav", &format, &data, &size, &freq);
 	#else
-		alutLoadWAVFile((ALbyte*)"wavs/siren.wav", &format, &data, &size, &freq, &loop);
+		alutLoadWAVFile((ALbyte*)"wavs/ambiance.wav", &format, &data, &size, &freq, &loop);
 	#endif
 
 	alBufferData(buffers[0], format, data, size, freq);;
@@ -296,9 +296,6 @@ void initializeOpenAL( int argc, char *argv[] ) {
 
 	alSourcei(sources[2], AL_BUFFER, buffers[2]);
 	alSourcei(sources[2], AL_LOOPING, AL_TRUE);
-
-    /* TODO #10: Position our Stationary Source */
-	positionSource(sources[0], 0, 0, 0);
     
     //PrintOpenALInfo();					// print our OpenAL versioning information
 }
@@ -732,6 +729,7 @@ void renderScene(void)  {
 					 0.0f, 1.0f, 0.0f);
 
 	positionSource(sources[1], myCar.getX(), myCar.getY(), myCar.getZ());
+	positionSource(sources[0], myArcballCamera.getX(), myArcballCamera.getY(), myArcballCamera.getZ());
 
 	positionSource(sources[2], hero3.getX(), hero3.getY(), hero3.getZ());
 	
@@ -1198,6 +1196,7 @@ int main(int argc, char **argv) {
 
 	//play sound forever
 	alSourcePlay(sources[2]);
+	alSourcePlay(sources[0]);
 	
 	// create our menu options and attach to mouse button
     createMenus();
