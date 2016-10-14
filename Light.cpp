@@ -2,7 +2,7 @@
 
 Light::Light(GLenum lightNum) {
   number = lightNum;
-  float dif4[4] = { .1, .1, .1, 1}; 
+  float dif4[4] = { 1, 1, 1, 1}; 
   float spec4[4] = { 1, 1, 1, 1 };
   float amb4[4] = { 0.5, 0.5, 0.5, 1.0 }; 
   glLightfv(number, GL_AMBIENT, amb4);
