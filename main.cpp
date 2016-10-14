@@ -67,33 +67,32 @@ using namespace std;
 
 // GLOBAL VARIABLES ////////////////////////////////////////////////////////////
 
-//globals for arc length param
+//globals for arc length param movement along track
 int arcStep = 10;
 int whichArcCurve = 0;
 Vector3f arcParamTangent;
 
-//collection of all control points which will be made into Bcurves
+//Data for bez curve representing motion along track
 vector<Point> trackBezPoints;
-//collection of bezier curves (consist of 4 points each)
 vector<BezierCurve> trackBezCurves;
 
-Vector3f tangentVec;
-
+//collection of curves for displaying track
+vector<BezierCurve> innerBezierCurves;
+vector<BezierCurve> outerBezierCurves;
 
 //cameraselection
 bool usingArcball = true;
 bool usingFirstPersonCam = true;
 
-//fps global vars
+//variables for calculating frames per second
 time_t lastTime = time(NULL);
 int nbFrames = 0;
 int displayValue = 0;
 
-//sprite orientation
+//variables needed to orient track heros along track movement
+Vector3f tangentVec;
 float spriteAngle = 0.0f;
 Vector3f spriteAxisOfRotation = Vector3f();
-
-
 
 //variables for window
 static size_t windowWidth  = 640;
@@ -114,8 +113,6 @@ Transport transport = Transport();
 Hero* currentHero = &myCar;
 Hero* currentFirstPersonHero = &myCar;
 
-//sprite object rotating around myCar
-Sprite mySprite = Sprite();
 //Arcball camera object, looking at player object location
 ArcballCamera myArcballCamera = ArcballCamera(myCar.getX(), myCar.getY(), myCar.getZ());
 FreeCamera myFreeCam = FreeCamera();
@@ -125,13 +122,11 @@ vector<Point> controlPoints;
 //collection of bezier curves (consist of 4 points each)
 vector<BezierCurve> bezierCurves;
 
-vector<BezierCurve> innerBezierCurves;
-vector<BezierCurve> outerBezierCurves;
-
+//data for bezier patch
 vector<Point> bezPatchPoints;
-
 BezierPatch myBezPatch;
 
+//data for orienting wandering hero along surface
 Vector3f surfaceNormal = Vector3f();
 Vector3f carAxisOfRotation = Vector3f();
 float carAngle = 0.0f;
@@ -657,21 +652,26 @@ void drawScene(bool drawCar=true, bool drawHero3=true, bool drawTransport=true){
 	    	myCar.draw();
     }; glPopMatrix();
 
-    
+    Point p;
+    Vector3f tangVec;
+    Vector3f rotationAxis;
+    float arcParamTVal;
+    float angle;
 
+    
     glPushMatrix();
-    float arcParamTVal = trackBezCurves[whichArcCurve].getParamTVal(arcStep);
-    Point arcParamPoint = trackBezCurves[whichArcCurve].evaluateBezierCurve(arcParamTVal);
-  	arcParamTangent = trackBezCurves[whichArcCurve].evaluateTangentPoint(arcParamTVal);
-  	spriteAxisOfRotation = tangentVec.crossProduct(Vector3f(0.0f, 1.0f, 0.0f));
-	spriteAngle = tangentVec.getAngleBetween(Vector3f(0.0f, 1.0f, 0.0f));
-    glTranslatef(arcParamPoint.getX(),arcParamPoint.getY() + 3,arcParamPoint.getZ());
-    glRotatef(-spriteAngle, spriteAxisOfRotation.getX(), spriteAxisOfRotation.getY(), spriteAxisOfRotation.getZ());
+    arcParamTVal = trackBezCurves[whichArcCurve].getParamTVal(arcStep);
+    p = trackBezCurves[whichArcCurve].evaluateBezierCurve(arcParamTVal);
+  	tangVec = trackBezCurves[whichArcCurve].evaluateTangentPoint(arcParamTVal);
+  	rotationAxis = tangVec.crossProduct(Vector3f(0.0f, 1.0f, 0.0f));
+	angle = tangVec.getAngleBetween(Vector3f(0.0f, 1.0f, 0.0f));
+    glTranslatef(p.getX(),p.getY() + 3,p.getZ());
+    glRotatef(-angle, rotationAxis.getX(), rotationAxis.getY(), rotationAxis.getZ());
     //orient with curve
     if(drawTransport){
     	transport.draw();
     }
-    transport.setPos(arcParamPoint);
+    transport.setPos(p);
 
  
 
@@ -960,10 +960,6 @@ void myTimer(int value){
 		whichCurve = 0.0f;
 		interpolantValue = 0.0f;
 	}
-	
-	//update the sprite anims variables, let the class handle this
-	mySprite.updateSprite();
-
 
 	time_t currentTime = time(NULL);
 	nbFrames++;
@@ -998,14 +994,6 @@ void myMenu( int value ) {
 	case 0:
 		//bye bye!
         exit(0);
-		break;
-	case 1:
-		//toggle all the control cages for each bezier curve (toggle variable in class for each curve)
-		for(unsigned int i = 0; i < bezierCurves.size(); i++){bezierCurves[i].toggleControlCage();}
-		break;
-	case 2:
-		//toggle all the bezier curves for each bezier curve (toggle variable in class for each curve)
-		for(unsigned int i = 0; i < bezierCurves.size(); i++){bezierCurves[i].toggleCurve();}
 		break;
 	case 3: 
 		usingArcball = !usingArcball;
@@ -1056,23 +1044,21 @@ void createMenus() {
 
 	//Make sub-menu for first person camera
 	int subMenuFirstPerson = glutCreateMenu(mySubMenuFirstPerson);
-	glutAddMenuEntry("Hero 1", 0);
-	glutAddMenuEntry("Hero 2", 1);
-	glutAddMenuEntry("Hero 3", 2);
+	glutAddMenuEntry("Oghad Urr", 0);
+	glutAddMenuEntry("Dannister", 1);
+	glutAddMenuEntry("Schmitty Van Pumpernickel", 2);
 
 	//Make sub-menu for arcball camera
 	int subMenuArcball = glutCreateMenu(mySubMenuArcball);
-	glutAddMenuEntry("Hero 1", 0);
-	glutAddMenuEntry("Hero 2", 1);
-	glutAddMenuEntry("Hero 3", 2);
+	glutAddMenuEntry("Oghad Urr", 0);
+	glutAddMenuEntry("Dannister", 1);
+	glutAddMenuEntry("Schmitty Van Pumpernickel", 2);
 
 	//menu callback
 	int mainMenu = glutCreateMenu(myMenu);
 
 	//menu options
 	glutAddMenuEntry( "Quit", 0 ); 
-	glutAddMenuEntry( "Toggle displaying control cage", 1 );
-	glutAddMenuEntry( "Toggle displaying bezier curve", 2 );
 	glutAddMenuEntry( "Toggle Free Camera", 3 );
 	glutAddMenuEntry( "Toggle First Person Camera", 4 );
 	glutAddSubMenu("First Person Camera Hero", subMenuFirstPerson);
