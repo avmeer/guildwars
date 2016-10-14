@@ -477,7 +477,14 @@ void generateEnvironmentDL() {
 
 	
 	
-	glColor3ub(153,0,0);
+	//glColor3ub(153,0,0);
+	glDisable( GL_COLOR_MATERIAL );
+	glShadeModel(GL_SMOOTH);
+	Material myMat = Material();
+	myMat.ruby();
+	myMat.setMaterial();
+	
+
 	for (unsigned int j = 0; j < (*bezPoints).size() - numCurvePoints; j+=numCurvePoints){
 		glBegin(GL_QUAD_STRIP);
 		for (int i = 0; i < numCurvePoints; i++){
@@ -512,6 +519,9 @@ void generateEnvironmentDL() {
 		glEnd();
 	}
 	glPopMatrix();
+	glShadeModel(GL_FLAT);
+	glEnable( GL_COLOR_MATERIAL );
+
 	
 	drawGrid();
 
