@@ -302,43 +302,6 @@ void initializeOpenAL( int argc, char *argv[] ) {
     //PrintOpenALInfo();					// print our OpenAL versioning information
 }
 
-
-
-// drawGrid() //////////////////////////////////////////////////////////////////
-//
-//  Function to draw a grid in the XZ-Plane using OpenGL 2D Primitives (GL_LINES)
-//
-////////////////////////////////////////////////////////////////////////////////
-void drawGrid() {
-    /*
-     *	We will get to why we need to do this when we talk about lighting,
-     *	but for now whenever we want to draw something with an OpenGL
-     *	Primitive - like a line, quad, point - we need to disable lighting
-     *	and then reenable it for use with the GLUT 3D Primitives.
-     */
-    glDisable( GL_LIGHTING );
-
-    //DRAW A GRID IN THE XZ-PLANE USING GL_LINES
-	for (int i = -50; i <= 50; i++ ){
-		//randomize color of the lines
-		glColor3f(getRand(), getRand(), getRand());
-		glBegin(GL_LINES);
-		//draw Z lines
-		glVertex3f(i,0,-50);
-		glVertex3f(i,0,50);
-		
-		//draw X lines
-		glVertex3f(-50,0,i);
-		glVertex3f(50,0,i);
-		glEnd();
-	}
-	/*
-     *	As noted above, we are done drawing with OpenGL Primitives, so we
-     *	must turn lighting back on.
-     */
-    glEnable( GL_LIGHTING );
-}
-
 // drawCity() //////////////////////////////////////////////////////////////////
 //
 //  Function to draw a random city using GLUT 3D Primitives
@@ -510,20 +473,7 @@ void generateEnvironmentDL() {
 	glPopMatrix();
 	glShadeModel(GL_FLAT);
 	glEnable( GL_COLOR_MATERIAL );
-
-	
-	drawGrid();
-
-	//Draw bezier track!
-	glPushMatrix();
-	//glScalef(15.0f,10.0f,15.0f);
-	/*for (unsigned int i = 0; i < trackBezCurves.size(); i++){
-				trackBezCurves[i].renderBezierCurve();
-	}*/
-	glPopMatrix();
-
 	drawTrack();
-
 	glEndList();
 }
 
