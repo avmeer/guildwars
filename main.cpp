@@ -465,13 +465,42 @@ void generateEnvironmentDL() {
 	vector<Point>* bezPoints = myBezPatch.getCurvePoints();
 	
 	//fprintf(stdout, "%d", bezPoints->size());
+
+
+
+
 	
 	
 	glColor3ub(153,0,0);
 	for (unsigned int j = 0; j < (*bezPoints).size() - numCurvePoints; j+=numCurvePoints){
 		glBegin(GL_QUAD_STRIP);
 		for (int i = 0; i < numCurvePoints; i++){
+				
+				float u = ((*bezPoints)[j + i].getX() + 50.0) / 100.0f;
+ 				float v = ((*bezPoints)[j + i].getZ() + 50.0) / 100.0f;
+				Point tempP = myBezPatch.dVBezier(u,v);
+				Vector3f dV = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
+				tempP = myBezPatch.dUBezier(u,v);
+				Vector3f dU = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
+
+				Vector3f normal = dU.crossProduct(dV);
+
+			glNormal3f(normal.getX(),normal.getY(),normal.getZ());
+
 			glVertex3f((*bezPoints)[j + i].getX(),(*bezPoints)[j + i].getY(),(*bezPoints)[j + i].getZ());
+
+
+			u = ((*bezPoints)[j + i+numCurvePoints].getX() + 50.0) / 100.0f;
+			 v = ((*bezPoints)[j + i+numCurvePoints].getZ() + 50.0) / 100.0f;
+			 tempP = myBezPatch.dVBezier(u,v);
+			 dV = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
+			tempP = myBezPatch.dUBezier(u,v);
+			 dU = Vector3f(tempP.getX(),tempP.getY(),tempP.getZ());
+
+			 normal = dU.crossProduct(dV);
+
+			glNormal3f(normal.getX(),normal.getY(),normal.getZ());
+
 			glVertex3f((*bezPoints)[j + i + numCurvePoints].getX(),(*bezPoints)[j + i + numCurvePoints].getY(),(*bezPoints)[j + i + numCurvePoints].getZ());
 		}
 		glEnd();
