@@ -173,6 +173,7 @@ vector<worldObject> worldObjects;
 
 //lighting
 Light mrLightington = Light(GL_LIGHT0);
+Light headLight = Light(GL_LIGHT1);
 
 
 // getRand() ///////////////////////////////////////////////////////////////////
@@ -626,6 +627,11 @@ void initScene()  {
     mrLightington.setPosition(0,0,0);
     mrLightington.setColors(Color(0,0,0),Color(1,1,1),Color(0,0,0));
 
+    headLight.enable();
+    //headLight.setPosition(0,0,0);
+    headLight.setColors(Color(0,0,0),Color(1,1,1),Color(0,0,0));
+    headLight.setCutoffAngle(35);
+
 	
     // tell OpenGL not to use the material system; just use whatever we 
     // pass with glColor*()
@@ -642,6 +648,10 @@ void initScene()  {
 }
 
 void drawScene(bool drawCar=true, bool drawHero3=true, bool drawTransport=true){
+
+	float pos[4] = {myCar.getX(),myCar.getY(),myCar.getZ(), 1};
+	glLightfv(GL_LIGHT1, GL_POSITION, pos);
+
 	//call display list so dont have to recompute each time
 	glCallList( environmentDL );
 	
@@ -650,9 +660,13 @@ void drawScene(bool drawCar=true, bool drawHero3=true, bool drawTransport=true){
     glPushMatrix(); {
 		//translate the car to current position (which is changed by user input)
 		glTranslatef(myCar.getX(),myCar.getY(),myCar.getZ());
+
 		//adjust cars heading (updated in timer via user input)
 		glRotatef(-carAngle,carAxisOfRotation.getX(),carAxisOfRotation.getY(),carAxisOfRotation.getZ());
 		glRotatef(myCar.getTheta(),0,1,0);
+
+
+		
 		if(drawCar)
 	    	myCar.draw();
     }; glPopMatrix();
@@ -1225,7 +1239,7 @@ int main(int argc, char **argv) {
 
 	initializeOpenAL( argc, argv );     // do all of our setup for OpenAL
 
-	currentHero= &hero3;
+	//currentHero= &hero3;
 
 	//atexit( cleanupOpenGL );            // callback that gets called right before the program exits
 	atexit( cleanupOpenAL );            // callback that gets called right before the program exits

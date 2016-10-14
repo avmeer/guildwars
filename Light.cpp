@@ -33,7 +33,7 @@ void Light::setPosition(float xIn, float yIn, float zIn) {
   x = xIn;
   y = yIn;
   z = zIn;
-  float pos[4] = { x, y, z, 1 };
+  float pos[4] = { x, y, z, 1};
   glLightfv(number, GL_POSITION, pos);
 }
 
@@ -51,4 +51,8 @@ void Light::setColors(Color ambIn, Color difIn, Color specIn) {
   glLightfv(number, GL_AMBIENT, amb4);
   glLightfv(number, GL_DIFFUSE, dif4);
   glLightfv(number, GL_SPECULAR, spec4);
+}
+
+void Light::setCutoffAngle(float angle){
+  glLightfv(number, GL_SPOT_CUTOFF, &angle);
 }

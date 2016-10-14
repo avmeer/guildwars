@@ -25,6 +25,7 @@ class Light {
     void setPosition(float xIn, float yIn, float zIn);
     void enable();
     void setColors(Color ambIn, Color difIn, Color specIn);
+    void setCutoffAngle(float angle);
   
 };
 
